@@ -1,0 +1,14 @@
+.footer-links,
+.dev-link {
+  color: #fff !important;
+  text-decoration: none;
+  font-size: 18px;
+  letter-spacing: 2px;
+}
+.footer-links:hover,
+.dev-link:hover {
+  text-decoration: dotted underline;
+}
+.dev-link {
+  font-size: 15px;
+}

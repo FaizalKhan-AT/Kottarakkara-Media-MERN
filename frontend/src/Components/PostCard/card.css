@@ -1,0 +1,61 @@
+.card-img-top {
+  /* box-shadow: var(--shadow); */
+  border-radius: 5px 5px 12px 12px;
+}
+.card {
+  cursor: pointer;
+}
+.card-title {
+  text-decoration: none;
+}
+.card-title:hover {
+  text-decoration: underline;
+}
+.btn-glass {
+  background: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+}
+.material-symbols-outlined,
+.material-symbols-rounded {
+  user-select: none;
+}
+.material-symbols-outlined.like,
+.material-symbols-outlined.share,
+.material-symbols-rounded.eye {
+  font-variation-settings: "FILL" 0, "wght" 300, "GRAD" 0, "opsz" 48;
+}
+.material-symbols-outlined.liked,
+.material-symbols-outlined.vid-like {
+  font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 48;
+}
+.menu {
+  box-shadow: var(--shadow);
+}
+.menu div {
+  border-radius: 5px;
+}
+.menu div:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.material-symbols-outlined.like + span,
+.material-symbols-outlined.liked + span {
+  transform: scale(0);
+  transition: var(--trans);
+  transform-origin: left;
+}
+
+.material-symbols-outlined.like:hover + span,
+.material-symbols-outlined.liked:hover + span {
+  transform: scale(1);
+}
+
+.by-line {
+  font-size: 14px;
+}
+.video-card {
+  border-radius: 5px 5px 10px 10px;
+}

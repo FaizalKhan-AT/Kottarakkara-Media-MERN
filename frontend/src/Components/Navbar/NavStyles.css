@@ -1,0 +1,43 @@
+.navbar {
+  background: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  z-index: 20;
+}
+.nav-link {
+  text-decoration: none;
+  color: #272727;
+  font-size: 17px;
+  font-weight: 500;
+  position: relative;
+}
+.nav-link::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 3px;
+  border-radius: 15px;
+  transform: scale(0);
+  transform-origin: right;
+  transition: 0.3s ease-in-out;
+  background: #000;
+  left: 0;
+  bottom: -2px;
+}
+.nav-link:hover::after {
+  background: #e20613;
+  transform: scale(1);
+}
+.btn-search {
+  cursor: pointer;
+}
+.date-info {
+  right: 5px;
+  bottom: -40px;
+  border-radius: 0 0 5px 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.search-inp:focus {
+  caret-color: #e20613;
+  border-color: #e20613;
+}

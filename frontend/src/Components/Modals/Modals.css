@@ -1,0 +1,6 @@
+.modal-share {
+  display: none;
+}
+.modal-share.active {
+  display: block;
+}

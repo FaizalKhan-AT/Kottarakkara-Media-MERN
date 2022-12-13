@@ -1,0 +1,38 @@
+:root {
+  --shadow: 0 0 12px rgba(0, 0, 0, 0.3);
+  --red-color: #e20613;
+  --trans: 0.3s ease-in-out;
+}
+body {
+  /* background-image: url("./assets/Logo/151829519_234146458172245_342999993439837766_n.jpg"); */
+}
+.form-control,
+.btn {
+  box-shadow: none !important;
+}
+.btn-rounded {
+  border-radius: 25px;
+}
+.card-text,
+.card-title {
+  overflow: hidden;
+  --lines: 3;
+  --line-height: 1.4;
+  line-height: var(--line-height);
+  max-height: calc(var(--lines) * 1em * var(--line-height));
+}
+
+.card-text {
+  font-size: 13px;
+}
+.card {
+  transition: var(--trans);
+}
+.card:hover {
+  box-shadow: var(--shadow);
+}
+.bar {
+  width: 2px;
+  height: 20px;
+  background: var(--red-color);
+}
