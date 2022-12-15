@@ -1,18 +1,28 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ShareModal from "../Modals/ShareModal";
 import "./card.css";
-
-const PostCard: React.FC = () => {
+interface Props {
+  id: number;
+}
+const PostCard: React.FC<Props> = ({ id }) => {
   const [liked, setLiked] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
+  const navigate = useNavigate();
   const handleOpenModal = () => setOpen(!open);
   return (
     <>
       <ShareModal open={open} handleOpen={handleOpenModal} />
       <div className={`card mb-1`}>
         <div className="position-relative">
-          <div className="w-100 d-flex mt-2 position-absolute align-items-center justify-content-between px-3">
+          <div
+            style={{ zIndex: "18" }}
+            className="overlay post position-absolute start-0 end-0 top-0 bottom-0"
+          ></div>
+          <div
+            style={{ zIndex: "19" }}
+            className="w-100 d-flex mt-2 position-absolute align-items-center justify-content-between px-3"
+          >
             <span
               onClick={() => setLiked(!liked)}
               className="btn- d-flex align-items-center justify-content-center"
@@ -39,7 +49,10 @@ const PostCard: React.FC = () => {
               </span>
             </div>
           </div>
-          <div className="w-100 bottom-0 mb-2 d-flex mt-2 position-absolute align-items-center justify-content-between px-3">
+          <div
+            style={{ zIndex: "19" }}
+            className="w-100 bottom-0 mb-2 d-flex mt-2 position-absolute align-items-center justify-content-between px-3"
+          >
             <div className="d-flex gap-2 align-items-center">
               <span className="bar"></span>
               <span style={{ fontWeight: "500" }} className="text-light">
@@ -75,6 +88,7 @@ const PostCard: React.FC = () => {
             </div>
             <div
               style={{ fontSize: "13px" }}
+              onClick={() => navigate(`/post/${id}`)}
               className="btn btn-outline-danger btn-rounded"
             >
               Read more

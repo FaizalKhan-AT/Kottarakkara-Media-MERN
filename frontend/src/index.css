@@ -3,12 +3,16 @@
   --red-color: #e20613;
   --trans: 0.3s ease-in-out;
 }
-body {
-  /* background-image: url("./assets/Logo/151829519_234146458172245_342999993439837766_n.jpg"); */
+.red-color {
+  color: var(--red-color);
 }
 .form-control,
-.btn {
+.btn,
+.btn-close {
   box-shadow: none !important;
+}
+.pointer {
+  cursor: pointer;
 }
 .btn-rounded {
   border-radius: 25px;

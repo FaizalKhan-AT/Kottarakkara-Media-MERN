@@ -32,8 +32,13 @@ const Footer: React.FC = () => {
           <div className="d-flex align-items-center gap-3">
             {icons.map((icon, idx) => {
               return (
-                <a href="http://" target="_blank" rel="noopener noreferrer">
-                  <img src={icon.icon} width="25" key={idx} alt="" />
+                <a
+                  key={idx}
+                  href="http://"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <img src={icon.icon} width="25" alt={icon.share} />
                 </a>
               );
             })}
@@ -56,7 +61,7 @@ const Footer: React.FC = () => {
             Kottarakkara Media. All rights reserved &copy; 2023
             <br />
             <span className="">
-              Site developed by{" "}
+              Developed by{" "}
               <a
                 className="dev-link"
                 href="https://faizalkhan-at.github.io/animated-porfolio-angular/"

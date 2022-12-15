@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import ShareModal from "../Modals/ShareModal";
 import "./card.css";
 
@@ -6,6 +7,7 @@ const VideoCard: React.FC = () => {
   const [liked, setLiked] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
   const handleOpenModal = () => setOpen(!open);
+  const navigate = useNavigate();
   return (
     <>
       <ShareModal open={open} handleOpen={handleOpenModal} />
@@ -68,6 +70,7 @@ const VideoCard: React.FC = () => {
             <span
               style={{ fontSize: "13px" }}
               className="btn btn-outline-danger btn-rounded"
+              onClick={() => navigate("/post/11/true")}
             >
               Watch Now
             </span>

@@ -41,3 +41,7 @@
   caret-color: #e20613;
   border-color: #e20613;
 }
+.post-nav {
+  height: 10vh;
+  background: rgba(0, 0, 0, 0.4);
+}
