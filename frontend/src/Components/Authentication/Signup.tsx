@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "../../config";
 import { validatePassword, validateEmail } from "./Validate";
 interface Props {
   name: string;
@@ -11,11 +13,13 @@ interface FormData {
 const Signup: React.FC<Props> = ({ name }) => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
+  const navigate = useNavigate();
   const [formData, setFormData] = useState<FormData>({
     username: "",
     password: "",
     email: "",
   });
+
   const handleChange = (e: React.FormEvent) => {
     const target = e.target as HTMLInputElement;
     setFormData({ ...formData, [target.name]: target.value });
@@ -29,10 +33,27 @@ const Signup: React.FC<Props> = ({ name }) => {
   };
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(e.target);
     const err = validateData();
     setError(err);
     if (err !== "true") return;
+    axios
+      .post("/editor/signup", {
+        Headers: {
+          "Content-type": "application/json",
+        },
+        ...formData,
+      })
+      .then((res) => {
+        const { status, error: err } = res.data;
+        switch (status) {
+          case "error":
+            setError(err);
+            return;
+          case "ok":
+            navigate("/super-admin");
+            break;
+        }
+      });
     setError("");
   };
 
@@ -116,7 +137,6 @@ const Signup: React.FC<Props> = ({ name }) => {
                 className="alert alert-danger mt-2 position-relative"
                 role="alert"
               >
-                {error}
                 <button
                   onClick={() => setError("")}
                   type="button"
@@ -124,6 +144,7 @@ const Signup: React.FC<Props> = ({ name }) => {
                   data-bs-dismiss="alert"
                   aria-label="Close"
                 ></button>
+                <span className="py-2">{error}</span>
               </div>
             ) : (
               ""

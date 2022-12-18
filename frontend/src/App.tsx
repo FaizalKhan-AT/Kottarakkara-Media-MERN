@@ -2,8 +2,10 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Routes, Route, Link } from "react-router-dom";
 import AddNewEditor from "./Pages/Auth/AddNewEditor";
 import EditorsLogin from "./Pages/Auth/EditorsLogin";
+import EditorHome from "./Pages/EditorPages/EditorHome";
 import Home from "./Pages/Home/Home";
 import Post from "./Pages/Post/Post";
+
 const App: React.FC = () => {
   return (
     <>
@@ -16,7 +18,7 @@ const App: React.FC = () => {
           <Route path="add-new-editor" element={<AddNewEditor />} />
         </Route>
         <Route path="/editor">
-          <Route index element={<h1>Editors panel</h1>} />
+          <Route index element={<EditorHome />} />
           <Route path="login" element={<EditorsLogin />} />
         </Route>
         <Route

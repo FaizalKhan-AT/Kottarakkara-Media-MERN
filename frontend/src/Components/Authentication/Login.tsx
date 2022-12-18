@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "../../config";
+
 type Props = {
   name: string;
 };
@@ -9,6 +12,7 @@ interface FormData {
 const Login: React.FC<Props> = ({ name }) => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
+  const navigate = useNavigate();
   const [formData, setFormData] = useState<FormData>({
     password: "",
     email: "",
@@ -17,8 +21,30 @@ const Login: React.FC<Props> = ({ name }) => {
     const target = e.target as HTMLInputElement;
     setFormData({ ...formData, [target.name]: target.value });
   };
+  const saveToLocalStorage = (token: string) => {
+    localStorage.setItem("token", token);
+  };
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    axios
+      .post("/editor/login", {
+        Headers: {
+          "Content-type": "application/json",
+        },
+        ...formData,
+      })
+      .then((res) => {
+        const { status, error: err, data } = res.data;
+        switch (status) {
+          case "error":
+            setError(err);
+            return;
+          case "ok":
+            saveToLocalStorage(data.token);
+            navigate("/editor");
+            break;
+        }
+      });
   };
   return (
     <>

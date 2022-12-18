@@ -47,7 +47,7 @@ const ShareModal: React.FC<Props> = ({ open, handleOpen }) => {
   ];
   return (
     <div
-      style={{ zIndex: "19" }}
+      style={{ zIndex: "20" }}
       className={`position-absolute modal-share ${open ? "active" : ""}`}
     >
       <div
