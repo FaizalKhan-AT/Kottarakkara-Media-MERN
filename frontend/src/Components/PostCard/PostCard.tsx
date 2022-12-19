@@ -3,9 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 import ShareModal from "../Modals/ShareModal";
 import "./card.css";
 interface Props {
+  editor?: boolean;
   id: number;
 }
-const PostCard: React.FC<Props> = ({ id }) => {
+const PostCard: React.FC<Props> = ({ id, editor }) => {
   const [liked, setLiked] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
   const navigate = useNavigate();
@@ -70,7 +71,10 @@ const PostCard: React.FC<Props> = ({ id }) => {
           />
         </div>
         <div className="card-body px-2 d-flex flex-column justify-content-between">
-          <Link to="post" className="card-title fw-bold text-dark w-100">
+          <Link
+            to={`/post/${id}`}
+            className="card-title fw-bold text-dark w-100"
+          >
             മലയാളം. പ്രത്യേക പ്രതീകങ്ങൾ ഇത് മെച്ചപ്പെടുത്താൻ
           </Link>
           <div className="d-flex align-items-center justify-content-between by-line my-1">
@@ -86,13 +90,24 @@ const PostCard: React.FC<Props> = ({ id }) => {
               <span className="material-symbols-rounded eye">visibility</span>
               <span>100K views</span>
             </div>
-            <div
-              style={{ fontSize: "13px" }}
-              onClick={() => navigate(`/post/${id}`)}
-              className="btn btn-outline-danger btn-rounded"
-            >
-              Read more
-            </div>
+
+            {editor ? (
+              <div
+                style={{ fontSize: "13px" }}
+                onClick={() => navigate(`/editor/edit`)}
+                className="btn btn-outline-danger btn-rounded"
+              >
+                Edit
+              </div>
+            ) : (
+              <div
+                style={{ fontSize: "13px" }}
+                onClick={() => navigate(`/post/${id}`)}
+                className="btn btn-outline-danger btn-rounded"
+              >
+                Read more
+              </div>
+            )}
           </div>
         </div>
       </div>

@@ -45,3 +45,12 @@
   height: 10vh;
   background: rgba(0, 0, 0, 0.4);
 }
+.add-news-btn {
+  transition: var(--trans);
+}
+.add-news-btn:hover .add-text {
+  display: block;
+}
+.add-text {
+  display: none;
+}

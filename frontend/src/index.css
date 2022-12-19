@@ -7,6 +7,8 @@
   color: var(--red-color);
 }
 .form-control,
+.form-select,
+.form-check-input,
 .btn,
 .btn-close {
   box-shadow: none !important;

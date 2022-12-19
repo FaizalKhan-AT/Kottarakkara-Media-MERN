@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import ShareModal from "../Modals/ShareModal";
 import "./card.css";
 
-const VideoCard: React.FC = () => {
+const VideoCard: React.FC<{ editor?: boolean }> = ({ editor }) => {
   const [liked, setLiked] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
   const handleOpenModal = () => setOpen(!open);
@@ -66,14 +66,25 @@ const VideoCard: React.FC = () => {
                 share
               </span>
             </div>
-
-            <span
-              style={{ fontSize: "13px" }}
-              className="btn btn-outline-danger btn-rounded"
-              onClick={() => navigate("/post/11/true")}
-            >
-              Watch Now
-            </span>
+            <div className="d-flex align-items-center gap-2">
+              {editor ? (
+                <span
+                  style={{ fontSize: "13px" }}
+                  className="btn btn-outline-danger btn-rounded"
+                  onClick={() => navigate("/editor/edit")}
+                >
+                  Edit
+                </span>
+              ) : (
+                <span
+                  style={{ fontSize: "13px" }}
+                  className="btn btn-outline-danger btn-rounded"
+                  onClick={() => navigate("/post/11/true")}
+                >
+                  Watch Now
+                </span>
+              )}
+            </div>
           </div>
         </div>
       </div>

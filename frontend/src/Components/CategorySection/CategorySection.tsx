@@ -11,10 +11,7 @@ type Props = {
 const CategorySection: React.FC<Props> = ({ name, related }) => {
   return (
     <>
-      <div
-        className="d-flex gap-2 align-items-center 
-      "
-      >
+      <div className="d-flex gap-2 align-items-center">
         <span style={{ height: "30px", width: "4px" }} className="bar"></span>
         <span className="fw-bold text-dark h3 mb-0">{name}</span>
       </div>
