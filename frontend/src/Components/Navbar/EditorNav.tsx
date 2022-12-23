@@ -22,7 +22,7 @@ const EditorNav: FC = () => {
               <div>
                 <div
                   title="Add new news"
-                  onClick={() => navigate("/editor/post-news")}
+                  onClick={() => navigate("/editor/post")}
                   className="btn btn-danger add-news-btn btn-rounded d-flex gap-1 align-items-center justify-content-center"
                 >
                   <span className="material-symbols-outlined fs-2">

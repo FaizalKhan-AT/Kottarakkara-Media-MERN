@@ -98,7 +98,7 @@ const PostCard: React.FC<Props> = ({ id, editor, post }) => {
               <div className="d-flex align-items-center gap-2">
                 <div
                   style={{ fontSize: "13px" }}
-                  onClick={() => navigate(`/editor/edit`)}
+                  onClick={() => navigate(`/editor/edit/${post._id}`)}
                   className="btn btn-outline-primary btn-rounded"
                 >
                   Edit

@@ -3,6 +3,7 @@ import { Routes, Route, Link } from "react-router-dom";
 import AddNewEditor from "./Pages/Auth/AddNewEditor";
 import EditorsLogin from "./Pages/Auth/EditorsLogin";
 import AddNews from "./Pages/EditorPages/AddNew";
+import EditNews from "./Pages/EditorPages/EditNews";
 import EditorHome from "./Pages/EditorPages/EditorHome";
 import Home from "./Pages/Home/Home";
 import Post from "./Pages/Post/Post";
@@ -19,16 +20,17 @@ const App: React.FC = () => {
         </Route>
         <Route path="/editor">
           <Route index element={<EditorHome />} />
-          <Route path="post-news" element={<AddNews />} />
+          <Route path="post" element={<AddNews />} />
           <Route path="login" element={<EditorsLogin />} />
+          <Route path="edit/:id" element={<EditNews />} />
         </Route>
         <Route
           path="*"
           element={
-            <h1 className="text-center mt-5">
+            <h2 className="text-center mt-5">
               404 Page not found. Requested page Doesn't Exist{" "}
               <Link to="/">Home</Link>
-            </h1>
+            </h2>
           }
         ></Route>
       </Routes>

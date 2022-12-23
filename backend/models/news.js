@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const news = mongoose.Schema({
   category: { type: String, required: true },
-  external: { type: String, required: true },
+  external: { type: Boolean, required: true },
   file: { type: String, required: true },
   format: { type: String, required: true },
   newsContent: { type: String, required: true },

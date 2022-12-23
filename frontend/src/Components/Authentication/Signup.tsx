@@ -9,6 +9,7 @@ interface FormData {
   username: string;
   password: string;
   email: string;
+  external: boolean;
 }
 const Signup: React.FC<Props> = ({ name }) => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -18,6 +19,7 @@ const Signup: React.FC<Props> = ({ name }) => {
     username: "",
     password: "",
     email: "",
+    external: false,
   });
 
   const handleChange = (e: React.FormEvent) => {

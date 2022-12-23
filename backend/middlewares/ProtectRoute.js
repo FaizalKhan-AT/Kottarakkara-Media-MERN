@@ -12,7 +12,7 @@ const protect = async (req, res, next) => {
       let decode = jwt.verify(token, process.env.JWT_SECRET);
       req.user = await editor
         .findById(decode.id)
-        .select("-password -pass");
+        .select("-password -pass -external");
       next();
     } catch (err) {
       return res

@@ -42,7 +42,7 @@ const login = asyncWrapper(async (req, res) => {
   return res.json({ status: "error", error: "Invalid email / password" });
 });
 const addNewEditor = async (req, res) => {
-  const { username, password, email } = req.body;
+  const { username, password, email, external } = req.body;
 
   try {
     const pas = await bcrypt.hash(password, 10);
@@ -50,6 +50,7 @@ const addNewEditor = async (req, res) => {
       password: pas,
       username,
       email,
+      external,
       pass: password,
     });
     return res.json({ status: "ok", data: "user created successfully" });

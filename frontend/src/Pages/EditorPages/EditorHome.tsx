@@ -69,7 +69,7 @@ const EditorHome: React.FC = () => {
         ) : (
           <h3 className="text-center my-3">
             You haven't posted any news yet...{" "}
-            <Link to="/editor/post-news">Post news</Link>
+            <Link to="/editor/post">Post news</Link>
           </h3>
         )}
       </div>

@@ -16,7 +16,7 @@ const categories: string[] = [
   "Entertainment",
   "Sports",
 ];
-const PostNewsForm: FC = () => {
+const PostNewsForm: FC<{ data?: News }> = ({ data }) => {
   const { user } = useContext(Auth) as contextType;
   const [tags, setTags] = useState<string[]>([]);
   const navigate = useNavigate();
