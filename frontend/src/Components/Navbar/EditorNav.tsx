@@ -15,21 +15,22 @@ const EditorNav: FC = () => {
             <img width="180" src={logo} alt="Kottarakara media logo" />
           </Link>
           <div
-            style={{ width: "35%" }}
-            className="d-flex justify-content-between align-items-center"
+            style={{ width: "80%" }}
+            className="d-flex justify-content-end align-items-center"
           >
-            <div>
-              <div
-                onClick={() => navigate("/editor/post-news")}
-                className="btn btn-danger add-news-btn btn-rounded d-flex gap-1 align-items-center justify-content-center"
-              >
-                <span className="material-symbols-outlined fs-2">
-                  add_circle
-                </span>
-                <span className="add-text">Add new news</span>
+            <div className="d-flex align-items-center gap-3">
+              <div>
+                <div
+                  title="Add new news"
+                  onClick={() => navigate("/editor/post-news")}
+                  className="btn btn-danger add-news-btn btn-rounded d-flex gap-1 align-items-center justify-content-center"
+                >
+                  <span className="material-symbols-outlined fs-2">
+                    add_circle
+                  </span>
+                  <span className="add-text">Post news</span>
+                </div>
               </div>
-            </div>
-            <div className="d-flex align-items-center gap-2">
               <span className="material-symbols-outlined h1 mb-0">
                 account_circle
               </span>
@@ -38,10 +39,11 @@ const EditorNav: FC = () => {
                 <span className="fw-bold red-color">{user?.username}</span>
               </div>
               <button
+                title="Logout"
                 className="btn btn-primary d-flex align-items-center justify-content-center btn-rounded"
                 onClick={handleLogout}
               >
-                <span className="">Logout</span>
+                <span className=""></span>
                 <span className="material-symbols-outlined ms-1">logout</span>
               </button>
             </div>

@@ -4,12 +4,16 @@ const connectDB = require("./db/connect");
 const cors = require("cors");
 const Editor = require("./Routes/editor");
 const User = require("./Routes/user");
+const News = require("./Routes/news");
 const { protect } = require("./middlewares/ProtectRoute");
 require("dotenv").config();
+const path = require("path");
 //middlewares
 app.use(express.json());
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(cors());
 app.use("/api/v1/editor/", Editor);
+app.use("/api/v1/news", News);
 app.use("/api/v1/user", protect, User);
 const startServer = async () => {
   try {

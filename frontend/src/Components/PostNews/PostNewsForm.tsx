@@ -1,4 +1,9 @@
-import { FC, FormEvent, useRef, useState } from "react";
+import { FC, FormEvent, useContext, useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "../../config";
+import { Auth, contextType } from "../../contexts/AuthContext";
+import { News } from "../../interfaces/NewsInterface";
+import Error from "../Error/Error";
 import "./postNews.css";
 const categories: string[] = [
   "Local News",
@@ -8,18 +13,47 @@ const categories: string[] = [
   "Obituary",
   "Live",
   "Tech",
+  "Entertainment",
   "Sports",
 ];
 const PostNewsForm: FC = () => {
-  const [formData, setFormData] = useState<any>({});
+  const { user } = useContext(Auth) as contextType;
+  const [tags, setTags] = useState<string[]>([]);
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState<News>({
+    category: "",
+    external: false,
+    file: null,
+    format: "",
+    newsContent: "",
+    place: "",
+    titleEng: "",
+    titleMal: "",
+    type: "",
+    tags,
+    likes: 0,
+    views: 0,
+    postedAt: new Date().toLocaleDateString("en-gb"),
+    userId: user?._id as string,
+    author: user?.username as string,
+  });
+  useEffect(() => {
+    if (!localStorage.getItem("user")) {
+      return;
+    }
+    const { id, username } = JSON.parse(localStorage.getItem("user") as string);
+    if (id !== "" && username !== "") {
+      setFormData({ ...formData, author: username, userId: id });
+    }
+  }, []);
+
   const [img, setImg] = useState<File | null>();
   const [vid, setVid] = useState<File | null>();
   const [error, setError] = useState<string>("");
   const [tagInp, setTagInp] = useState<string>("");
-  const [tags, setTags] = useState<string[]>([]);
   const handleChange = (e: FormEvent) => {
     const target = e.target as HTMLInputElement;
-    setFormData({ ...formData, [target.name]: target.value });
+    setFormData({ ...formData, [target.name]: target.value.toLowerCase() });
   };
   const vidUpRef = useRef<HTMLInputElement>(null);
   const imgUpRef = useRef<HTMLInputElement>(null);
@@ -47,6 +81,7 @@ const PostNewsForm: FC = () => {
       })
     );
   };
+
   const handleFileChange = (e: FormEvent) => {
     const target = e.target as HTMLInputElement;
     const [file] = target.files as FileList;
@@ -60,11 +95,25 @@ const PostNewsForm: FC = () => {
           return;
         }
         setImg(file);
-        setFormData({ ...formData, type: target.name });
+        setFormData({
+          ...formData,
+          type: target.name,
+          file,
+          format: file.type,
+        });
         break;
       case "video":
+        if (file.size > 500000000) {
+          setError("video size is more than 500mb");
+          return;
+        }
         setVid(file);
-        setFormData({ ...formData, type: target.name });
+        setFormData({
+          ...formData,
+          type: target.name,
+          file,
+          format: file.type,
+        });
         break;
     }
     target.value = "";
@@ -74,13 +123,49 @@ const PostNewsForm: FC = () => {
   };
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
+    if (!formData.category) {
+      setError("Please select a category");
+      return;
+    }
+    if (tags.length < 1) {
+      setError("Add some news tags");
+      return;
+    }
+    if (!formData.file) {
+      setError("upload a video or image for the news...");
+      return;
+    }
+    setError("");
+
+    axios
+      .post("/news", formData, {
+        headers: {
+          "Content-type": "multipart/form-data",
+        },
+      })
+      .then((res) => {
+        const { status, error, data } = res.data;
+        switch (status) {
+          case "ok":
+            navigate("/editor");
+            break;
+          case "error":
+            setError(error);
+            return;
+        }
+      })
+      .catch((err) => {
+        setError("Something went wrong :( ...");
+      });
   };
+
   return (
     <>
       <form className="row w-100 " onSubmit={handleSubmit}>
         <div className="col-md-6 my-2">
           <label className="form-label">
             Title of the news in Malayalam (under 200 letters)
+            <span className="text-danger">*</span>
           </label>
           <input
             onChange={handleChange}
@@ -95,6 +180,7 @@ const PostNewsForm: FC = () => {
         <div className="col-md-6 my-2">
           <label className="form-label">
             Title of the news in English (under 200 letters)
+            <span className="text-danger">*</span>
           </label>
           <input
             onChange={handleChange}
@@ -107,7 +193,9 @@ const PostNewsForm: FC = () => {
           />
         </div>
         <div className="col-md-6 my-2">
-          <label className="form-label">Place of happenning</label>
+          <label className="form-label">
+            Place of happenning <span className="text-danger">*</span>
+          </label>
           <input
             onChange={handleChange}
             name="place"
@@ -119,14 +207,18 @@ const PostNewsForm: FC = () => {
           />
         </div>
         <div className="col-md-6 my-2">
-          <label className="form-label">News category</label>
+          <label className="form-label">
+            News category <span className="text-danger">*</span>
+          </label>
           <select
             name="category"
             className="form-select"
             onChange={handleChange}
             required
           >
-            <option disabled>--Select a category--</option>
+            <option selected disabled>
+              --Select a category--
+            </option>
             {categories.map((op, idx) => {
               return (
                 <option value={op} key={op + idx}>
@@ -137,7 +229,9 @@ const PostNewsForm: FC = () => {
           </select>
         </div>
         <div className="col-md-12 my-2">
-          <label className="form-label">Content of the news</label>
+          <label className="form-label">
+            Content of the news <span className="text-danger">*</span>
+          </label>
           <textarea
             onChange={handleChange}
             name="newsContent"
@@ -149,7 +243,9 @@ const PostNewsForm: FC = () => {
           ></textarea>
         </div>
         <div className="col-md-12 my-2">
-          <label className="form-label">Upload Files (image / video)</label>
+          <label className="form-label">
+            Upload Files (image / video) <span className="text-danger">*</span>
+          </label>
           <input
             ref={vidUpRef}
             type="file"
@@ -175,7 +271,7 @@ const PostNewsForm: FC = () => {
                 value={"video"}
                 onClick={handleUploadVid}
               />{" "}
-              video (1080p)(upload a compressed video)
+              video (1080p)(upload a compressed video below 500mb)
             </label>
             <label className="form-label">
               <input
@@ -212,7 +308,9 @@ const PostNewsForm: FC = () => {
           )}
         </div>
         <div className="col-md-6 my-2">
-          <label className="form-label">Video tags</label>
+          <label className="form-label">
+            Video tags <span className="text-danger">*</span>
+          </label>
           <div className="d-flex align-items-center gap-2">
             <input
               type="text"
@@ -255,26 +353,13 @@ const PostNewsForm: FC = () => {
             ""
           )}
         </div>
-        <div className="col-md-12 row w-100 my-4 justify-content-center">
-          <button type="submit" className="btn btn-primary col-md-6">
+        <div className="col-md-12 row w-100 my-4  justify-content-center">
+          <button type="submit" className="btn btn-primary col-md-6 ">
             Post News
           </button>
         </div>
       </form>
-      {error ? (
-        <div className="alert alert-danger mt-2 position-relative" role="alert">
-          <button
-            onClick={() => setError("")}
-            type="button"
-            className="btn-close position-absolute end-0 top-0 mt-1 me-2"
-            data-bs-dismiss="alert"
-            aria-label="Close"
-          ></button>
-          <span className="py-2">{error}</span>
-        </div>
-      ) : (
-        ""
-      )}
+      {error ? <Error error={error} setError={setError} /> : ""}
     </>
   );
 };

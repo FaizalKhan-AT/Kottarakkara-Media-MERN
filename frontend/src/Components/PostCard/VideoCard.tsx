@@ -1,9 +1,14 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { FILE_BASE_URL } from "../../env";
+import { News } from "../../interfaces/NewsInterface";
 import ShareModal from "../Modals/ShareModal";
 import "./card.css";
-
-const VideoCard: React.FC<{ editor?: boolean }> = ({ editor }) => {
+interface Props {
+  editor?: boolean;
+  post: News;
+}
+const VideoCard: React.FC<Props> = ({ editor, post }) => {
   const [liked, setLiked] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
   const handleOpenModal = () => setOpen(!open);
@@ -19,30 +24,30 @@ const VideoCard: React.FC<{ editor?: boolean }> = ({ editor }) => {
           >
             <span className="bar"></span>
             <span style={{ fontWeight: "500" }} className="text-light">
-              Category
+              {post.category}
             </span>
           </div>
           <video
             className="video-card"
             width="100%"
             controlsList="nodownload"
-            autoPlay
             muted
             loop
             controls
-            title="this is a video"
+            title={post.titleEng}
           >
-            <source
-              type="video/mp4"
-              src="https://player.vimeo.com/external/370467553.sd.mp4?s=96de8b923370fb7fa8616d4e0b74eaf3fac9e576&profile_id=164&oauth2_token_id=57447761"
-            />
+            <source type={post.format} src={FILE_BASE_URL + post.file} />
           </video>
         </div>
         <div className="card-body my-0 py-1">
-          <span className="h5 text-limit">
-            Title of the video can be shown here And other details
-          </span>
-          <div className="d-flex align-items-center justify-content-between mt-2">
+          <Link
+            to={`/post/${post._id}`}
+            className="card-title fw-bold text-dark w-100"
+          >
+            {post.titleMal.split(post.titleMal.charAt(60))[0]}...
+          </Link>
+
+          <div className="d-flex align-items-center my-2 justify-content-between mt-2">
             <div className="d-flex align-items-center gap-2">
               <div className="d-flex align-items-center">
                 <span
@@ -53,11 +58,11 @@ const VideoCard: React.FC<{ editor?: boolean }> = ({ editor }) => {
                 >
                   favorite
                 </span>
-                <span className="">1.3K Likes</span>
+                <span className="">{post.likes} Likes</span>
               </div>
               <div className="d-flex align-items-center gap-1 ">
                 <span className="material-symbols-rounded ">visibility</span>
-                <span>100K views</span>
+                <span>{post.views} views</span>
               </div>
               <span
                 onClick={handleOpenModal}
@@ -79,7 +84,7 @@ const VideoCard: React.FC<{ editor?: boolean }> = ({ editor }) => {
                 <span
                   style={{ fontSize: "13px" }}
                   className="btn btn-outline-danger btn-rounded"
-                  onClick={() => navigate("/post/11/true")}
+                  onClick={() => navigate(`/post/${post._id}`)}
                 >
                   Watch Now
                 </span>

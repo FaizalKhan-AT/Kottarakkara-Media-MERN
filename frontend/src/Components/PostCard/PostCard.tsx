@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { FILE_BASE_URL } from "../../env";
+import { News } from "../../interfaces/NewsInterface";
 import ShareModal from "../Modals/ShareModal";
 import "./card.css";
 interface Props {
   editor?: boolean;
   id: number;
+  post: News;
 }
-const PostCard: React.FC<Props> = ({ id, editor }) => {
+const PostCard: React.FC<Props> = ({ id, editor, post }) => {
   const [liked, setLiked] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
   const navigate = useNavigate();
@@ -36,7 +39,7 @@ const PostCard: React.FC<Props> = ({ id, editor }) => {
                 >
                   favorite
                 </span>
-                <span className="text-light">1.3K Likes</span>
+                <span className="text-light">{post.likes} Likes</span>
               </div>
             </span>
             <div className="position-realtive">
@@ -57,38 +60,35 @@ const PostCard: React.FC<Props> = ({ id, editor }) => {
             <div className="d-flex gap-2 align-items-center">
               <span className="bar"></span>
               <span style={{ fontWeight: "500" }} className="text-light">
-                Category
+                {post.category}
               </span>
             </div>
           </div>
           <img
-            src="https://images.unsplash.com/photo-1669802004186-31c3cf5eb4ad?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHx0b3BpYy1mZWVkfDV8Ym84alFLVGFFMFl8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60"
+            src={FILE_BASE_URL + post.file}
             width="100%"
             height={150}
             style={{ objectFit: "cover" }}
             className="card-img-top"
-            alt="post-title"
+            alt={post.titleEng}
           />
         </div>
         <div className="card-body px-2 d-flex flex-column justify-content-between">
           <Link
-            to={`/post/${id}`}
+            to={`/post/${post._id}`}
             className="card-title fw-bold text-dark w-100"
           >
-            മലയാളം. പ്രത്യേക പ്രതീകങ്ങൾ ഇത് മെച്ചപ്പെടുത്താൻ
+            {post.titleMal}
           </Link>
           <div className="d-flex align-items-center justify-content-between by-line my-1">
-            <span>{new Date().toLocaleDateString()}</span>
-            <span className="fw-bold">@Al techie</span>
+            <span>{post.postedAt}</span>
+            <span className="fw-bold">@{post.author}</span>
           </div>
-          <p className="card-text mt-2">
-            മലയാളം. പ്രത്യേക പ്രതീകങ്ങൾ. ഇത് മെച്ചപ്പെടുത്താൻ സഹായിക്കുക! Google
-            എഴുത്ത് ഉപകരണങ്ങൾ .
-          </p>
+          <p className="card-text mt-2">{post.newsContent}</p>
           <div className="d-flex align-items-center justify-content-between">
             <div className="d-flex align-items-center gap-1 ">
               <span className="material-symbols-rounded eye">visibility</span>
-              <span>100K views</span>
+              <span>{post.views} views</span>
             </div>
 
             {editor ? (
@@ -102,7 +102,7 @@ const PostCard: React.FC<Props> = ({ id, editor }) => {
             ) : (
               <div
                 style={{ fontSize: "13px" }}
-                onClick={() => navigate(`/post/${id}`)}
+                onClick={() => navigate(`/post/${post._id}`)}
                 className="btn btn-outline-danger btn-rounded"
               >
                 Read more

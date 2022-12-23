@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "../config";
 
 interface User {
-  id: string;
+  _id: string;
   username: string;
   email: string;
 }
@@ -11,6 +11,7 @@ export interface contextType {
   user: User | null;
   setUser: React.Dispatch<React.SetStateAction<User | null>>;
   handleLogout: () => void;
+  checkAuth: () => void;
 }
 interface Props {
   children: React.ReactNode;
@@ -61,7 +62,7 @@ const AuthContext: React.FC<Props> = ({ children }) => {
   }, []);
 
   return (
-    <Auth.Provider value={{ user, setUser, handleLogout }}>
+    <Auth.Provider value={{ user, setUser, handleLogout, checkAuth }}>
       {children}
     </Auth.Provider>
   );

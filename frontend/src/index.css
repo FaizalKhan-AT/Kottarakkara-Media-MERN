@@ -2,6 +2,7 @@
   --shadow: 0 0 12px rgba(0, 0, 0, 0.3);
   --red-color: #e20613;
   --trans: 0.3s ease-in-out;
+  text-transform: capitalize;
 }
 .red-color {
   color: var(--red-color);
@@ -20,7 +21,8 @@
   border-radius: 25px;
 }
 .card-text,
-.card-title {
+.card-title,
+.text-limit {
   overflow: hidden;
   --lines: 3;
   --line-height: 1.4;

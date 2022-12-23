@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "../../config";
+import { Auth, contextType } from "../../contexts/AuthContext";
 
 type Props = {
   name: string;
@@ -12,6 +13,7 @@ interface FormData {
 const Login: React.FC<Props> = ({ name }) => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
+  const { checkAuth } = useContext(Auth) as contextType;
   const navigate = useNavigate();
   const [formData, setFormData] = useState<FormData>({
     password: "",
@@ -21,8 +23,9 @@ const Login: React.FC<Props> = ({ name }) => {
     const target = e.target as HTMLInputElement;
     setFormData({ ...formData, [target.name]: target.value });
   };
-  const saveToLocalStorage = (token: string) => {
+  const saveToLocalStorage = (token: string, data: any) => {
     localStorage.setItem("token", token);
+    localStorage.setItem("user", JSON.stringify(data));
   };
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,7 +43,8 @@ const Login: React.FC<Props> = ({ name }) => {
             setError(err);
             return;
           case "ok":
-            saveToLocalStorage(data.token);
+            saveToLocalStorage(data.token, data);
+            checkAuth();
             navigate("/editor");
             break;
         }
@@ -124,7 +128,7 @@ const Login: React.FC<Props> = ({ name }) => {
             )}
             <div className="w-100 px-3 my-2">
               <button type="submit" className="w-100 btn btn-primary">
-                Register
+                Login
               </button>
             </div>
           </div>

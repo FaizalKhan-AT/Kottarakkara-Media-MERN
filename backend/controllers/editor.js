@@ -1,9 +1,21 @@
 const editor = require("../models/editor");
+const news = require("../models/news");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const asyncWrapper = require("../middlewares/AsyncWrapper");
-const getAllNews = (req, res) => {
-  res.send("hehehe");
+const getAllNews = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const post = await news.find({ userId: id }).sort({ type: -1 });
+    if (post) {
+      return res.json({ status: "ok", data: post });
+    }
+  } catch (err) {
+    return res.json({
+      status: "error",
+      error: "Editor doesn't have any news posts yet..",
+    });
+  }
 };
 const login = asyncWrapper(async (req, res) => {
   const { email, password } = req.body;
@@ -33,11 +45,12 @@ const addNewEditor = async (req, res) => {
   const { username, password, email } = req.body;
 
   try {
-    const pass = await bcrypt.hash(password, 10);
+    const pas = await bcrypt.hash(password, 10);
     const response = await editor.create({
-      password: pass,
+      password: pas,
       username,
       email,
+      pass: password,
     });
     return res.json({ status: "ok", data: "user created successfully" });
   } catch (err) {
