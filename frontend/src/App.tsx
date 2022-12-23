@@ -13,7 +13,6 @@ const App: React.FC = () => {
       <Routes>
         <Route path="/" element={<Home />}></Route>
         <Route path="/post/:id" element={<Post />} />
-        <Route path="/post/:id/:vid" element={<Post />} />
         <Route path="/super-admin">
           <Route index element={<h1>Super admin panel</h1>} />
           <Route path="add-new-editor" element={<AddNewEditor />} />

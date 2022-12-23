@@ -14,6 +14,7 @@ const uploadNews = async (req, res) => {
     userId,
     author,
     postedAt,
+    tags,
   } = req.body;
   try {
     const response = await news.create({
@@ -31,17 +32,33 @@ const uploadNews = async (req, res) => {
       file: req.file.path,
       author,
       postedAt,
+      tags,
     });
     return res.json({
       status: "ok",
       data: "News uploaded successfully",
     });
   } catch (err) {
-    console.log(err);
     return res.json({
       status: "error",
       error:
         "Something went wrong :( couldn't post the news..! try again later",
+    });
+  }
+};
+const getSingleNews = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const post = await news.findById(id);
+    if (post) {
+      post.views++;
+      await post.save();
+      return res.json({ status: "ok", data: post });
+    } else return res.json({ status: "error", error: "post not found" });
+  } catch (error) {
+    return res.json({
+      status: "error",
+      error: "something went wrong :( ",
     });
   }
 };
@@ -51,7 +68,6 @@ const getLatestNews = async (req, res) => {
     if (posts) {
       let result = [];
       const length = posts.length;
-      console.log(length);
       return res.json({ status: "ok", data: posts });
     } else
       return res.json({
@@ -65,7 +81,9 @@ const getLatestNews = async (req, res) => {
     });
   }
 };
+
 module.exports = {
   uploadNews,
   getLatestNews,
+  getSingleNews,
 };

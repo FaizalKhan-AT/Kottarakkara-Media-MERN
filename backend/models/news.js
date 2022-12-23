@@ -15,6 +15,7 @@ const news = mongoose.Schema({
   userId: { type: String, required: true },
   postedAt: { type: String, required: true },
   author: { type: String, required: true },
+  tags: [{ type: String, required: true }],
 });
 
 module.exports = mongoose.model("post", news);

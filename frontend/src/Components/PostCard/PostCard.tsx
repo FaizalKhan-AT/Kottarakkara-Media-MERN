@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FILE_BASE_URL } from "../../env";
 import { News } from "../../interfaces/NewsInterface";
+import { formatNumber } from "../../usefulFunctions/formatNumber";
 import ShareModal from "../Modals/ShareModal";
 import "./card.css";
 interface Props {
@@ -39,7 +40,9 @@ const PostCard: React.FC<Props> = ({ id, editor, post }) => {
                 >
                   favorite
                 </span>
-                <span className="text-light">{post.likes} Likes</span>
+                <span className="text-light">
+                  {formatNumber(post.likes)} Likes
+                </span>
               </div>
             </span>
             <div className="position-realtive">
@@ -88,16 +91,24 @@ const PostCard: React.FC<Props> = ({ id, editor, post }) => {
           <div className="d-flex align-items-center justify-content-between">
             <div className="d-flex align-items-center gap-1 ">
               <span className="material-symbols-rounded eye">visibility</span>
-              <span>{post.views} views</span>
+              <span>{formatNumber(post.views)} views</span>
             </div>
 
             {editor ? (
-              <div
-                style={{ fontSize: "13px" }}
-                onClick={() => navigate(`/editor/edit`)}
-                className="btn btn-outline-danger btn-rounded"
-              >
-                Edit
+              <div className="d-flex align-items-center gap-2">
+                <div
+                  style={{ fontSize: "13px" }}
+                  onClick={() => navigate(`/editor/edit`)}
+                  className="btn btn-outline-primary btn-rounded"
+                >
+                  Edit
+                </div>
+                <div
+                  style={{ fontSize: "13px" }}
+                  className="btn btn-outline-danger btn-rounded"
+                >
+                  delete
+                </div>
               </div>
             ) : (
               <div

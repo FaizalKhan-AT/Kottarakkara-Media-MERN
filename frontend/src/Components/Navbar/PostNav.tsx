@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { News } from "../../interfaces/NewsInterface";
+import { formatNumber } from "../../usefulFunctions/formatNumber";
 import ShareModal from "../Modals/ShareModal";
 import "./NavStyles.css";
-const PostNav: React.FC = () => {
+const PostNav: React.FC<{ post: News | null }> = ({ post }) => {
   const [open, setOpen] = useState<boolean>(false);
   const [liked, setLiked] = useState<boolean>(false);
   const handleOpenModal = () => setOpen(!open);
@@ -27,7 +29,7 @@ const PostNav: React.FC = () => {
           <div className="d-flex gap-2 align-items-center">
             <span style={{ height: "35px" }} className="bar"></span>
             <span style={{ fontWeight: "500" }} className="text-light fs-4">
-              Category
+              {post?.category}
             </span>
           </div>
         </div>
@@ -41,13 +43,15 @@ const PostNav: React.FC = () => {
             >
               favorite
             </span>
-            <span className="">1.3K Likes</span>
+            <span className="">
+              {formatNumber(post?.likes as number)} Likes
+            </span>
           </div>
           <div className="d-flex align-items-center gap-1 ">
             <span className="material-symbols-rounded eye fs-2">
               visibility
             </span>
-            <span>100K views</span>
+            <span>{formatNumber(post?.views as number)} views</span>
           </div>
           <div>
             <span className="ms-2 d-flex pointer me-4 align-items-center justify-content-center">

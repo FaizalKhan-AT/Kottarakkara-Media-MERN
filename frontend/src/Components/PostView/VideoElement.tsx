@@ -1,11 +1,13 @@
 import React from "react";
+import { FILE_BASE_URL } from "../../env";
+import { News } from "../../interfaces/NewsInterface";
 import PostNav from "../Navbar/PostNav";
 
-const VideoElement: React.FC = () => {
+const VideoElement: React.FC<{ post: News }> = ({ post }) => {
   return (
     <>
       <div className="w-100 position-relative">
-        <PostNav />
+        <PostNav post={post} />
         <video
           style={{ borderRadius: "0 0 50px 50px", boxShadow: "var(--shadow)" }}
           width="100%"
@@ -15,12 +17,9 @@ const VideoElement: React.FC = () => {
           muted
           loop
           controls
-          title="this is a video"
+          title={post.titleEng}
         >
-          <source
-            type="video/mp4"
-            src="https://player.vimeo.com/external/370467553.sd.mp4?s=96de8b923370fb7fa8616d4e0b74eaf3fac9e576&profile_id=164&oauth2_token_id=57447761"
-          />
+          <source type={post.format} src={FILE_BASE_URL + post.file} />
         </video>
       </div>
     </>

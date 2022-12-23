@@ -1,14 +1,42 @@
-import React from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Navigate, useParams } from "react-router-dom";
 import CategorySection from "../../Components/CategorySection/CategorySection";
+import Error from "../../Components/Error/Error";
 import Footer from "../../Components/Footer/Footer";
 import PostView from "../../Components/PostView/PostView";
+import axios from "../../config";
+import { News } from "../../interfaces/NewsInterface";
 
 const Post: React.FC = () => {
   const { id } = useParams();
+  const [post, setPost] = useState<News>();
+  const [error, setError] = useState<string>("");
+  const fetchPost = () => {
+    axios
+      .get(`/news/post/${id}`)
+      .then((res) => {
+        const { status, error, data } = res.data;
+        switch (status) {
+          case "ok":
+            setPost(data);
+            break;
+          case "error":
+            setError(error);
+        }
+      })
+      .catch((err) => {
+        setError("Something went wrong :( try again");
+      });
+  };
+  useEffect(() => {
+    fetchPost();
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <>
-      <PostView />
+      {error ? <Error error={error} setError={setError} /> : ""}
+      <PostView post={post ? post : null} />
       <br />
       <br />
       <div className="container">

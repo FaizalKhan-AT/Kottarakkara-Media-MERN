@@ -1,10 +1,12 @@
 import React from "react";
+import { FILE_BASE_URL } from "../../env";
+import { News } from "../../interfaces/NewsInterface";
 import PostNav from "../Navbar/PostNav";
 
-const ImageElement: React.FC = () => {
+const ImageElement: React.FC<{ post: News | null }> = ({ post }) => {
   return (
     <div className="w-100 position-relative">
-      <PostNav />
+      <PostNav post={post} />
       <img
         width="100%"
         height="400"
@@ -13,8 +15,8 @@ const ImageElement: React.FC = () => {
           borderRadius: "0 0 50px 50px",
           boxShadow: "var(--shadow)",
         }}
-        src="https://images.unsplash.com/photo-1581196607303-95c00f31c676?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
-        alt="post-title"
+        src={FILE_BASE_URL + post?.file}
+        alt={post?.titleEng}
       />
     </div>
   );

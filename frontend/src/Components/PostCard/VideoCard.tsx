@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FILE_BASE_URL } from "../../env";
 import { News } from "../../interfaces/NewsInterface";
+import { formatNumber } from "../../usefulFunctions/formatNumber";
 import ShareModal from "../Modals/ShareModal";
 import "./card.css";
 interface Props {
@@ -58,11 +59,11 @@ const VideoCard: React.FC<Props> = ({ editor, post }) => {
                 >
                   favorite
                 </span>
-                <span className="">{post.likes} Likes</span>
+                <span className="">{formatNumber(post.likes)} Likes</span>
               </div>
               <div className="d-flex align-items-center gap-1 ">
                 <span className="material-symbols-rounded ">visibility</span>
-                <span>{post.views} views</span>
+                <span>{formatNumber(post.views)} views</span>
               </div>
               <span
                 onClick={handleOpenModal}
