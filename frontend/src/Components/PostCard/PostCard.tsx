@@ -12,11 +12,10 @@ import ShareModal from "../Modals/ShareModal";
 import "./card.css";
 interface Props {
   editor?: boolean;
-  id: number;
   post: News;
   fetchFn?: () => void;
 }
-const PostCard: React.FC<Props> = ({ id, editor, post, fetchFn }) => {
+const PostCard: React.FC<Props> = ({ editor, post, fetchFn }) => {
   const [liked, setLiked] = useState<boolean>(false);
   const { setPost } = useContext(Post) as PostType;
   const [open, setOpen] = useState<boolean>(false);

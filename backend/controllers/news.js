@@ -161,6 +161,28 @@ const likeSinglePost = async (req, res) => {
     });
   }
 };
+const getRelatedNews = async (req, res) => {
+  const { category, id } = req.params;
+  let cat = category.replace("-", " ");
+  try {
+    const posts = await news.find({
+      _id: { $ne: id },
+      category: cat,
+      type: "image",
+    });
+    if (posts) {
+      return res.status(200).json({ status: "ok", data: posts });
+    } else
+      return res
+        .status(404)
+        .json({ status: "error", error: "no related posts found" });
+  } catch (err) {
+    return res.status(500).json({
+      status: "error",
+      error: "Something went wrong :( internal server error",
+    });
+  }
+};
 module.exports = {
   uploadNews,
   getLatestNews,
@@ -168,4 +190,5 @@ module.exports = {
   updateSingleNews,
   likeSinglePost,
   deleteSingleNews,
+  getRelatedNews,
 };

@@ -10,8 +10,9 @@ import "./category.css";
 type Props = {
   name: string;
   related?: boolean;
+  relatedNews?: News[];
 };
-const CategorySection: React.FC<Props> = ({ name, related }) => {
+const CategorySection: React.FC<Props> = ({ relatedNews, name, related }) => {
   const [latest, setLatest] = useState<News[]>([]);
   const [error, setError] = useState<string>("");
   const fetchLatestNews = () => {
@@ -32,6 +33,7 @@ const CategorySection: React.FC<Props> = ({ name, related }) => {
         setError("Something went wrong :( try refreshing the page");
       });
   };
+
   useEffect(() => {
     fetchLatestNews();
   }, []);
@@ -42,11 +44,15 @@ const CategorySection: React.FC<Props> = ({ name, related }) => {
         <span className="fw-bold text-dark h3 mb-0">{name}</span>
       </div>
       {related ? (
-        <div className="mt-3 card-section">
-          {/* {[...Array(10)].map((_, idx) => {
-            return <PostCard id={idx + 1} key={idx} />;
-          })} */}
-        </div>
+        (relatedNews?.length as number) > 0 ? (
+          <div className="mt-3 card-section ">
+            {relatedNews?.map((post, idx) => {
+              return <PostCard post={post} key={post._id} />;
+            })}
+          </div>
+        ) : (
+          <h4 className="text-center my-2 mb-4">No related news to show ...</h4>
+        )
       ) : (
         <div className="mt-3 card-section">
           {latest.length > 0
@@ -54,14 +60,14 @@ const CategorySection: React.FC<Props> = ({ name, related }) => {
                 return post.type === "video" ? (
                   <VideoCard post={post} key={post._id} />
                 ) : (
-                  <PostCard post={post} id={idx + 1} key={post._id} />
+                  <PostCard post={post} key={post._id} />
                 );
               })
             : ""}
         </div>
       )}
       <div className="w-100 text-center my-3">
-        <Link to="news/" className="btn btn-outline-danger btn-rounded">
+        <Link to="/news/" className="btn btn-outline-danger btn-rounded">
           View More
         </Link>
       </div>

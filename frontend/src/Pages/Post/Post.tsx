@@ -11,6 +11,26 @@ const Post: React.FC = () => {
   const { id } = useParams();
   const [post, setPost] = useState<News>();
   const [error, setError] = useState<string>("");
+  const [relatedNews, setRelatedNews] = useState<News[]>([]);
+
+  const fetchRelatedNews = (category: string, id: string) => {
+    axios
+      .get(`/news/related/${category}/${id}`)
+      .then((res) => {
+        const { status, error, data } = res.data;
+        switch (status) {
+          case "ok":
+            setRelatedNews(data);
+            break;
+          case "error":
+            setError(error);
+            break;
+        }
+      })
+      .catch((err) => {
+        setError("Something went wrong :( try refreshing the page");
+      });
+  };
   const fetchPost = () => {
     axios
       .get(`/news/post/${id}`)
@@ -19,6 +39,7 @@ const Post: React.FC = () => {
         switch (status) {
           case "ok":
             setPost(data);
+            fetchRelatedNews(data.category.replace(" ", "-"), data._id);
             break;
           case "error":
             setError(error);
@@ -40,7 +61,11 @@ const Post: React.FC = () => {
       <br />
       <br />
       <div className="container">
-        <CategorySection name="Related Articles" related />
+        <CategorySection
+          relatedNews={relatedNews}
+          name="Related Articles"
+          related
+        />
       </div>
       <br />
       <Footer />

@@ -119,7 +119,6 @@ const EditorHome: React.FC = () => {
                   fetchFn={fetchPosts}
                   editor
                   post={post}
-                  id={idx + 1}
                   key={post._id}
                 />
               );

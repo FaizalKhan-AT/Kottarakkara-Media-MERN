@@ -5,6 +5,7 @@ const {
   updateSingleNews,
   deleteSingleNews,
   likeSinglePost,
+  getRelatedNews,
 } = require("../controllers/news");
 const upload = require("../middlewares/FileUpload");
 
@@ -16,5 +17,6 @@ Router.route("/post/:id")
   .patch(upload.single("file"), updateSingleNews)
   .delete(deleteSingleNews);
 Router.route("/latest").get(getLatestNews);
+Router.route("/related/:category/:id").get(getRelatedNews);
 Router.route("/like/:id").get(likeSinglePost);
 module.exports = Router;
