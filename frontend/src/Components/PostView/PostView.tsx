@@ -48,20 +48,23 @@ const PostView: React.FC<Props> = ({ post }) => {
           </span>
           {post?.newsContent.slice(1)}
         </div>
-      </div>
-      <div className="d-flex flex-wrap align-items-center">
-        {/* {post?.tags.length > 0
-          ? tags.map((tag, idx) => {
-              return (
-                <div
-                  key={idx + tag}
-                  className="chip d-flex align-items-center justify-content-between py-2 px-2 gap-2"
-                >
-                  <span>{tag}</span>
-                </div>
-              );
-            })
-          : ""} */}
+        <div
+          style={{ width: "80%" }}
+          className="d-flex flex-wrap align-items-center gap-2"
+        >
+          {(post?.tags.length as number) > 0
+            ? post?.tags.map((tag, idx) => {
+                return (
+                  <div
+                    key={idx + tag}
+                    className="chip px-3 d-flex align-items-center justify-content-between py-2 px-2 gap-2"
+                  >
+                    <span>{tag}</span>
+                  </div>
+                );
+              })
+            : ""}
+        </div>
       </div>
     </>
   );

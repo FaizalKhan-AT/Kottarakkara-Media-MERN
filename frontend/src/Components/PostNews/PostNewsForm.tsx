@@ -2,6 +2,8 @@ import { FC, FormEvent, useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "../../config";
 import { Auth, contextType } from "../../contexts/AuthContext";
+import { Post, PostType } from "../../contexts/PostContext";
+import { FILE_BASE_URL } from "../../env";
 import { News } from "../../interfaces/NewsInterface";
 import Error from "../Error/Error";
 import "./postNews.css";
@@ -16,27 +18,34 @@ const categories: string[] = [
   "Entertainment",
   "Sports",
 ];
-const PostNewsForm: FC<{ data?: News }> = ({ data }) => {
+const PostNewsForm: FC<{ edit?: boolean }> = ({ edit }) => {
   const { user } = useContext(Auth) as contextType;
-  const [tags, setTags] = useState<string[]>([]);
+  const { post } = useContext(Post) as PostType;
+  const [tags, setTags] = useState<string[]>(
+    edit ? (post?.tags as string[]) : []
+  );
   const navigate = useNavigate();
-  const [formData, setFormData] = useState<News>({
-    category: "",
-    external: false,
-    file: null,
-    format: "",
-    newsContent: "",
-    place: "",
-    titleEng: "",
-    titleMal: "",
-    type: "",
-    tags,
-    likes: 0,
-    views: 0,
-    postedAt: new Date().toLocaleDateString("en-gb"),
-    userId: user?._id as string,
-    author: user?.username as string,
-  });
+  const [formData, setFormData] = useState<News>(
+    edit && post
+      ? post
+      : {
+          category: "",
+          external: false,
+          file: null,
+          format: "",
+          newsContent: "",
+          place: "",
+          titleEng: "",
+          titleMal: "",
+          type: "",
+          tags,
+          likes: 0,
+          views: 0,
+          postedAt: new Date().toLocaleDateString("en-gb"),
+          userId: user?._id as string,
+          author: user?.username as string,
+        }
+  );
   useEffect(() => {
     if (!localStorage.getItem("user")) {
       return;
@@ -121,28 +130,35 @@ const PostNewsForm: FC<{ data?: News }> = ({ data }) => {
   const createURL = (file: File) => {
     return URL.createObjectURL(file);
   };
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
+  const validate = () => {
     if (!formData.category) {
       setError("Please select a category");
-      return;
-    }
-    if (tags.length < 1) {
-      setError("Add some news tags");
-      return;
+      return false;
     }
     if (!formData.file) {
       setError("upload a video or image for the news...");
-      return;
+      return false;
     }
+    if (tags.length < 1) {
+      setError("Add some news tags");
+      return false;
+    }
+    return true;
+  };
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    if (!validate()) return;
     setError("");
-
     axios
-      .post("/news", formData, {
-        headers: {
-          "Content-type": "multipart/form-data",
-        },
-      })
+      .post(
+        "/news",
+        { ...formData, tags },
+        {
+          headers: {
+            "Content-type": "multipart/form-data",
+          },
+        }
+      )
       .then((res) => {
         const { status, error, data } = res.data;
         switch (status) {
@@ -158,10 +174,37 @@ const PostNewsForm: FC<{ data?: News }> = ({ data }) => {
         setError("Something went wrong :( ...");
       });
   };
-
+  const handleEdit = (e: FormEvent) => {
+    e.preventDefault();
+    if (!validate()) return;
+    axios
+      .patch(
+        `/news/post/${post?._id}`,
+        { ...formData, tags, path: post?.file },
+        {
+          headers: {
+            "Content-type": "multipart/form-data",
+          },
+        }
+      )
+      .then((res) => {
+        const { status, error } = res.data;
+        switch (status) {
+          case "ok":
+            navigate("/editor");
+            break;
+          case "error":
+            setError(error);
+            break;
+        }
+      })
+      .catch((err) => {
+        setError("Something went wrong :( try again... ");
+      });
+  };
   return (
     <>
-      <form className="row w-100 " onSubmit={handleSubmit}>
+      <form className="row w-100 " onSubmit={edit ? handleEdit : handleSubmit}>
         <div className="col-md-6 my-2">
           <label className="form-label">
             Title of the news in Malayalam (under 200 letters)
@@ -285,9 +328,46 @@ const PostNewsForm: FC<{ data?: News }> = ({ data }) => {
             </label>
           </div>
         </div>
+        {edit && post ? (
+          <div className="col-md-12 my-2">
+            <h4 style={{ textDecoration: "dotted underline var(--red-color)" }}>
+              Previously uploaded file
+            </h4>
+            {post.type === "image" ? (
+              <img
+                width="300px"
+                src={FILE_BASE_URL + post.file}
+                alt={post.titleEng}
+              />
+            ) : (
+              ""
+            )}
+            {post.type === "video" ? (
+              <video
+                className="video-card"
+                width="300px"
+                controlsList="nodownload"
+                autoPlay
+                muted
+                loop
+                controls
+              >
+                <source type={post.format} src={FILE_BASE_URL + post.file} />
+              </video>
+            ) : (
+              ""
+            )}
+          </div>
+        ) : (
+          ""
+        )}
         <div className="col-md-12 my-2">
           {img ? (
-            <img width="100%" src={createURL(img)} alt="uploaded image" />
+            <img
+              width="100%"
+              src={createURL(img as File)}
+              alt="uploaded image"
+            />
           ) : (
             ""
           )}
@@ -301,7 +381,7 @@ const PostNewsForm: FC<{ data?: News }> = ({ data }) => {
               loop
               controls
             >
-              <source type={vid.type} src={createURL(vid)} />
+              <source type={vid?.type} src={createURL(vid as File)} />
             </video>
           ) : (
             ""
@@ -309,7 +389,7 @@ const PostNewsForm: FC<{ data?: News }> = ({ data }) => {
         </div>
         <div className="col-md-6 my-2">
           <label className="form-label">
-            Video tags <span className="text-danger">*</span>
+            News tags <span className="text-danger">*</span>
           </label>
           <div className="d-flex align-items-center gap-2">
             <input
@@ -355,7 +435,7 @@ const PostNewsForm: FC<{ data?: News }> = ({ data }) => {
         </div>
         <div className="col-md-12 row w-100 my-4  justify-content-center">
           <button type="submit" className="btn btn-primary col-md-6 ">
-            Post News
+            {edit ? "Edit news" : "Post News"}
           </button>
         </div>
       </form>

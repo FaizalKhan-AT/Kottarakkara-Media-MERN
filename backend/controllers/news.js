@@ -1,4 +1,7 @@
 const news = require("../models/news");
+const fs = require("fs");
+const path = require("path");
+
 const uploadNews = async (req, res) => {
   const {
     category,
@@ -39,7 +42,7 @@ const uploadNews = async (req, res) => {
       data: "News uploaded successfully",
     });
   } catch (err) {
-    return res.json({
+    return res.status(500).json({
       status: "error",
       error:
         "Something went wrong :( couldn't post the news..! try again later",
@@ -53,10 +56,11 @@ const getSingleNews = async (req, res) => {
     if (post) {
       post.views++;
       await post.save();
-      return res.json({ status: "ok", data: post });
-    } else return res.json({ status: "error", error: "post not found" });
+      return res.status(200).json({ status: "ok", data: post });
+    } else
+      return res.status(404).json({ status: "error", error: "post not found" });
   } catch (error) {
-    return res.json({
+    return res.status(500).json({
       status: "error",
       error: "something went wrong :( ",
     });
@@ -68,22 +72,78 @@ const getLatestNews = async (req, res) => {
     if (posts) {
       let result = [];
       const length = posts.length;
-      return res.json({ status: "ok", data: posts });
+      return res.status(200).json({ status: "ok", data: posts });
     } else
-      return res.json({
+      return res.status(404).json({
         status: "error",
         error: "something went wrong :( while fetching the news",
       });
   } catch (err) {
-    return res.json({
+    return res.status(500).json({
       status: "error",
       error: "something went wrong :( while fetching the news",
     });
   }
 };
+const handleFileDelete = (fp) => {
+  let filename = path.join(__dirname, "..", fp);
+  let tempFile = fs.openSync(filename, "r");
 
+  fs.closeSync(tempFile);
+
+  fs.unlinkSync(filename);
+};
+const updateSingleNews = async (req, res) => {
+  let data = req.body;
+  if (req.file) {
+    handleFileDelete(data.path);
+    data = { ...data, file: req.file.path };
+  }
+  try {
+    const post = await news.findOneAndUpdate({ _id: req.body._id }, data, {
+      new: true,
+      runValidators: true,
+    });
+    if (post)
+      return res
+        .status(200)
+        .json({ status: "ok", data: "post updated successfully" });
+    else
+      return res
+        .status(404)
+        .json({ status: "error", error: "no post with that id" });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ status: "error", error: "something went wrong :(" });
+  }
+};
+
+const deleteSingleNews = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const post = await news.findOneAndDelete({ _id: id });
+    if (post) {
+      handleFileDelete(post.file);
+      return res
+        .status(200)
+        .json({ status: "ok", data: "Post deleted successfully" });
+    } else
+      return res.status(404).json({
+        status: "error",
+        error: "Couldn't delete the post, post doesn't exist",
+      });
+  } catch (error) {
+    return res.status(500).json({
+      status: "error",
+      error: "Something went wrong :( internal server error",
+    });
+  }
+};
 module.exports = {
   uploadNews,
   getLatestNews,
   getSingleNews,
+  updateSingleNews,
+  deleteSingleNews,
 };

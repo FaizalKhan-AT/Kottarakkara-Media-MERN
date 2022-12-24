@@ -57,7 +57,7 @@ const ShareModal: React.FC<Props> = ({ open, handleOpen }) => {
       ></div>
       <div
         style={{ zIndex: "20", width: "40%" }}
-        className="card position-fixed px-3 py-4 start-50 top-50 translate-middle"
+        className="card modal-size position-fixed px-3 py-4 start-50 top-50 translate-middle"
       >
         <div>
           <div className="d-flex gap-2 h4 align-items-center justify-content-between">

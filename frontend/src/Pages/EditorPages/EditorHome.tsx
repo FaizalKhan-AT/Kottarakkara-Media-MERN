@@ -60,9 +60,20 @@ const EditorHome: React.FC = () => {
           <div className="card-section">
             {posts.map((post, idx) => {
               return post.type === "video" ? (
-                <VideoCard editor post={post} key={post._id} />
+                <VideoCard
+                  fetchFn={fetchPosts}
+                  editor
+                  post={post}
+                  key={post._id}
+                />
               ) : (
-                <PostCard editor post={post} id={idx + 1} key={post._id} />
+                <PostCard
+                  fetchFn={fetchPosts}
+                  editor
+                  post={post}
+                  id={idx + 1}
+                  key={post._id}
+                />
               );
             })}
           </div>

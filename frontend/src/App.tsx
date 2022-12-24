@@ -22,7 +22,7 @@ const App: React.FC = () => {
           <Route index element={<EditorHome />} />
           <Route path="post" element={<AddNews />} />
           <Route path="login" element={<EditorsLogin />} />
-          <Route path="edit/:id" element={<EditNews />} />
+          <Route path="edit" element={<EditNews />} />
         </Route>
         <Route
           path="*"

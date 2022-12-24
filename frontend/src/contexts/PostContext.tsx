@@ -4,7 +4,7 @@ export interface PostType {
   post: News | null;
   setPost: React.Dispatch<React.SetStateAction<News | null>>;
 }
-const Post = createContext<PostType | null>(null);
+export const Post = createContext<PostType | null>(null);
 interface Props {
   children: React.ReactNode;
 }

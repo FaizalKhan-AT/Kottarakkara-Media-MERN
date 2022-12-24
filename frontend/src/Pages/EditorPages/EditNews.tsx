@@ -6,29 +6,8 @@ import axios from "../../config";
 import { News } from "../../interfaces/NewsInterface";
 
 const EditNews: FC = () => {
-  const { id } = useParams();
   const [error, setError] = useState<string>("");
   const [post, setPost] = useState<News>();
-  const fetchPost = () => {
-    axios
-      .get(`/news/post/${id}`)
-      .then((res) => {
-        const { status, error, data } = res.data;
-        switch (status) {
-          case "ok":
-            setPost(data);
-            break;
-          case "error":
-            setError(error);
-        }
-      })
-      .catch((err) => {
-        setError("Something went wrong :( try again");
-      });
-  };
-  useEffect(() => {
-    fetchPost();
-  }, []);
   return (
     <>
       {error ? <Error error={error} setError={setError} /> : ""}
@@ -41,7 +20,7 @@ const EditNews: FC = () => {
           Edit news
         </div>
         <br />
-        <PostNewsForm data={post} />
+        <PostNewsForm edit />
       </div>
     </>
   );

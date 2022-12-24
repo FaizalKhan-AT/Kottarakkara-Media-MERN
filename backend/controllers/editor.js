@@ -6,7 +6,7 @@ const asyncWrapper = require("../middlewares/AsyncWrapper");
 const getAllNews = async (req, res) => {
   const { id } = req.params;
   try {
-    const post = await news.find({ userId: id }).sort({ type: -1 });
+    const post = await news.find({ userId: id }).sort({ postedAt: -1 });
     if (post) {
       return res.json({ status: "ok", data: post });
     }
@@ -68,6 +68,7 @@ const addNewEditor = async (req, res) => {
     }
   }
 };
+
 module.exports = {
   getAllNews,
   addNewEditor,

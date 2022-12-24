@@ -1,23 +1,59 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "../../config";
+import { PostType, Post } from "../../contexts/PostContext";
 import { FILE_BASE_URL } from "../../env";
 import { News } from "../../interfaces/NewsInterface";
 import { formatNumber } from "../../usefulFunctions/formatNumber";
+import Error from "../Error/Error";
+import DeleteModal from "../Modals/DeleteModal";
 import ShareModal from "../Modals/ShareModal";
 import "./card.css";
 interface Props {
   editor?: boolean;
   id: number;
   post: News;
+  fetchFn?: () => void;
 }
-const PostCard: React.FC<Props> = ({ id, editor, post }) => {
+const PostCard: React.FC<Props> = ({ id, editor, post, fetchFn }) => {
   const [liked, setLiked] = useState<boolean>(false);
+  const { setPost } = useContext(Post) as PostType;
   const [open, setOpen] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
+  const [delModalOpen, setDelModalOpen] = useState<boolean>(false);
   const navigate = useNavigate();
+  const handleDeleteModal = () => setDelModalOpen(!delModalOpen);
   const handleOpenModal = () => setOpen(!open);
+  const handlePostDelete = () => {
+    axios
+      .delete(`/news/post/${post._id}`)
+      .then((res) => {
+        const { status, error } = res.data;
+        switch (status) {
+          case "ok":
+            handleDeleteModal();
+            fetchFn?.();
+            break;
+          case "error":
+            setError(error);
+            break;
+        }
+      })
+      .catch((err) => {
+        setError("somewent wrong :( while deleting");
+        handleDeleteModal();
+      });
+  };
   return (
     <>
+      {error ? <Error error={error} setError={setError} /> : ""}
       <ShareModal open={open} handleOpen={handleOpenModal} />
+      <DeleteModal
+        open={delModalOpen}
+        deleteFn={handlePostDelete}
+        handleOpen={handleDeleteModal}
+        data={post?.titleMal}
+      />
       <div className={`card mb-1`}>
         <div className="position-relative">
           <div
@@ -98,7 +134,10 @@ const PostCard: React.FC<Props> = ({ id, editor, post }) => {
               <div className="d-flex align-items-center gap-2">
                 <div
                   style={{ fontSize: "13px" }}
-                  onClick={() => navigate(`/editor/edit/${post._id}`)}
+                  onClick={() => {
+                    setPost(post);
+                    navigate(`/editor/edit/`);
+                  }}
                   className="btn btn-outline-primary btn-rounded"
                 >
                   Edit
@@ -106,6 +145,7 @@ const PostCard: React.FC<Props> = ({ id, editor, post }) => {
                 <div
                   style={{ fontSize: "13px" }}
                   className="btn btn-outline-danger btn-rounded"
+                  onClick={handleDeleteModal}
                 >
                   delete
                 </div>
