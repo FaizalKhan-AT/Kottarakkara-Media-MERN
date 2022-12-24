@@ -1,19 +1,29 @@
+import { AxiosResponse } from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Error from "../../Components/Error/Error";
 import Footer from "../../Components/Footer/Footer";
 import EditorNav from "../../Components/Navbar/EditorNav";
+import FilterNav from "../../Components/Navbar/FilterNav";
 import PostCard from "../../Components/PostCard/PostCard";
 import VideoCard from "../../Components/PostCard/VideoCard";
 import axios from "../../config";
 import { News } from "../../interfaces/NewsInterface";
-
+export interface Filter {
+  type: string;
+  time: string;
+}
 const EditorHome: React.FC = () => {
   const [error, setError] = useState<string>("");
   const [posts, setPosts] = useState<News[]>([]);
-  const fetchPosts = () => {
-    if (!localStorage.getItem("user")) return;
+  const [search, setSearch] = useState<News[]>([]);
+  const checkLocalStorage = () => {
+    if (!localStorage.getItem("user")) return null;
     const { id } = JSON.parse(localStorage.getItem("user") as string);
+    return id;
+  };
+  const fetchPosts = () => {
+    let id = checkLocalStorage();
     if (id) {
       axios
         .get(`/editor/${id}`)
@@ -22,6 +32,7 @@ const EditorHome: React.FC = () => {
           switch (status) {
             case "ok":
               setPosts(data);
+              setSearch(data);
               break;
             case "error":
               setError(error);
@@ -37,6 +48,41 @@ const EditorHome: React.FC = () => {
   useEffect(() => {
     fetchPosts();
   }, []);
+  const handleSearch = (key: string) => {
+    setPosts(
+      search.filter((item) => {
+        if (item.titleEng.includes(key.toLocaleLowerCase())) return item;
+        else if (item.titleMal.includes(key.toLocaleLowerCase())) return item;
+      })
+    );
+  };
+
+  const handleFilter = (filter: Filter) => {
+    const { type, time } = filter;
+    const response = (res: AxiosResponse<any, any>) => {
+      const { status, error, data } = res.data;
+      switch (status) {
+        case "ok":
+          setPosts(data);
+          setSearch(data);
+          break;
+        case "error":
+          setError(error);
+          break;
+      }
+    };
+    let id = checkLocalStorage();
+    if (id) {
+      if (time !== "" && type !== "") {
+        axios
+          .get(`/editor/filter/${id}/${type}/${time}`)
+          .then(response)
+          .catch((err) => {
+            setError("something went wrong :( couldn't fetch data");
+          });
+      }
+    }
+  };
   return (
     <>
       <EditorNav />
@@ -46,6 +92,8 @@ const EditorHome: React.FC = () => {
       >
         Editor's Panel
       </div>
+      <br />
+      <FilterNav handleFilter={handleFilter} handleSearch={handleSearch} />
       <br />
       <div
         style={{ height: `${posts.length < 1 ? "44vh" : ""}` }}

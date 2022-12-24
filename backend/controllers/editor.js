@@ -3,6 +3,7 @@ const news = require("../models/news");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const asyncWrapper = require("../middlewares/AsyncWrapper");
+const { post } = require("../Routes/editor");
 const getAllNews = async (req, res) => {
   const { id } = req.params;
   try {
@@ -14,6 +15,42 @@ const getAllNews = async (req, res) => {
     return res.json({
       status: "error",
       error: "Editor doesn't have any news posts yet..",
+    });
+  }
+};
+const filterPosts = async (req, res) => {
+  const { id, type, time } = req.params;
+  console.log(req.params);
+  try {
+    if (time !== "" && type !== "") {
+      if (type === "All") {
+        const posts = await news.find({ userId: id }).sort({
+          postedAt: time === "Oldest" ? 1 : -1,
+        });
+        if (posts) {
+          return res.status(200).json({ status: "ok", data: posts });
+        } else
+          return res.status(404).json({
+            status: "error",
+            error: "user doesn't have any posts",
+          });
+      } else {
+        const posts = await news.find({ userId: id, type }).sort({
+          postedAt: time === "Oldest" ? 1 : -1,
+        });
+        if (posts) {
+          return res.status(200).json({ status: "ok", data: posts });
+        } else
+          return res.status(404).json({
+            status: "error",
+            error: "user doesn't have any posts",
+          });
+      }
+    }
+  } catch (error) {
+    return res.status(500).json({
+      status: "error",
+      error: "something went wrong :( internal server error",
     });
   }
 };
@@ -73,4 +110,5 @@ module.exports = {
   getAllNews,
   addNewEditor,
   login,
+  filterPosts,
 };
