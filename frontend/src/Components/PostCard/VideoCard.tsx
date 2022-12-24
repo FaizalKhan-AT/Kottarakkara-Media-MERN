@@ -5,6 +5,7 @@ import { Post, PostType } from "../../contexts/PostContext";
 import { FILE_BASE_URL } from "../../env";
 import { News } from "../../interfaces/NewsInterface";
 import { formatNumber } from "../../usefulFunctions/formatNumber";
+import { likePost } from "../../usefulFunctions/likePost";
 import Error from "../Error/Error";
 import DeleteModal from "../Modals/DeleteModal";
 import ShareModal from "../Modals/ShareModal";
@@ -91,7 +92,13 @@ const VideoCard: React.FC<Props> = ({ editor, post, fetchFn }) => {
             <div className="d-flex align-items-center gap-2">
               <div className="d-flex align-items-center">
                 <span
-                  onClick={() => setLiked(!liked)}
+                  onClick={() => {
+                    setLiked(!liked);
+                    if (!liked) {
+                      likePost(post._id as string, setError);
+                      post.likes++;
+                    }
+                  }}
                   className={`${
                     liked ? "text-danger vid-like" : "text-dark"
                   } material-symbols-outlined mt-1 mx-1 `}

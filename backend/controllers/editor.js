@@ -3,7 +3,7 @@ const news = require("../models/news");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const asyncWrapper = require("../middlewares/AsyncWrapper");
-const { post } = require("../Routes/editor");
+
 const getAllNews = async (req, res) => {
   const { id } = req.params;
   try {
@@ -20,7 +20,7 @@ const getAllNews = async (req, res) => {
 };
 const filterPosts = async (req, res) => {
   const { id, type, time } = req.params;
-  console.log(req.params);
+
   try {
     if (time !== "" && type !== "") {
       if (type === "All") {

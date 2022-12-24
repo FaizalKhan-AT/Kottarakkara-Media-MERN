@@ -2,16 +2,20 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { News } from "../../interfaces/NewsInterface";
 import { formatNumber } from "../../usefulFunctions/formatNumber";
+import { likePost } from "../../usefulFunctions/likePost";
+import Error from "../Error/Error";
 import ShareModal from "../Modals/ShareModal";
 import "./NavStyles.css";
 const PostNav: React.FC<{ post: News | null }> = ({ post }) => {
   const [open, setOpen] = useState<boolean>(false);
   const [liked, setLiked] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
   const handleOpenModal = () => setOpen(!open);
   const navigate = useNavigate();
 
   return (
     <>
+      {error ? <Error error={error} setError={setError} /> : ""}
       <ShareModal open={open} handleOpen={handleOpenModal} />
       <div
         style={{ zIndex: "21" }}
@@ -36,7 +40,12 @@ const PostNav: React.FC<{ post: News | null }> = ({ post }) => {
         <div className="d-flex align-items-center gap-3 text-light">
           <div className="d-flex align-items-center">
             <span
-              onClick={() => setLiked(!liked)}
+              onClick={() => {
+                setLiked(!liked);
+                if (!liked) {
+                  likePost(post?._id as string, setError);
+                }
+              }}
               className={`${
                 liked ? "text-danger vid-like" : ""
               }  material-symbols-outlined mt-1 mx-1 pointer fs-2`}

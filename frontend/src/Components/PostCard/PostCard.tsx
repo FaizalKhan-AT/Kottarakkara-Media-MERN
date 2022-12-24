@@ -5,6 +5,7 @@ import { PostType, Post } from "../../contexts/PostContext";
 import { FILE_BASE_URL } from "../../env";
 import { News } from "../../interfaces/NewsInterface";
 import { formatNumber } from "../../usefulFunctions/formatNumber";
+import { likePost } from "../../usefulFunctions/likePost";
 import Error from "../Error/Error";
 import DeleteModal from "../Modals/DeleteModal";
 import ShareModal from "../Modals/ShareModal";
@@ -65,7 +66,13 @@ const PostCard: React.FC<Props> = ({ id, editor, post, fetchFn }) => {
             className="w-100 d-flex mt-2 position-absolute align-items-center justify-content-between px-3"
           >
             <span
-              onClick={() => setLiked(!liked)}
+              onClick={() => {
+                setLiked(!liked);
+                if (!liked) {
+                  likePost(post._id as string, setError);
+                  post.likes++;
+                }
+              }}
               className="btn- d-flex align-items-center justify-content-center"
             >
               <div className="d-flex align-items-center">

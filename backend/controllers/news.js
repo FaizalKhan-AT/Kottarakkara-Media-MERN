@@ -140,10 +140,32 @@ const deleteSingleNews = async (req, res) => {
     });
   }
 };
+const likeSinglePost = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const post = await news.findOne({ _id: id });
+    if (post) {
+      post.likes++;
+      await post.save();
+      return res
+        .status(200)
+        .json({ status: "ok", data: "post liked successfully" });
+    } else
+      return res
+        .status(404)
+        .json({ status: "error", error: "no post with that id" });
+  } catch (err) {
+    return res.status(500).json({
+      status: "error",
+      error: "Something went wrong :( internal server error",
+    });
+  }
+};
 module.exports = {
   uploadNews,
   getLatestNews,
   getSingleNews,
   updateSingleNews,
+  likeSinglePost,
   deleteSingleNews,
 };
