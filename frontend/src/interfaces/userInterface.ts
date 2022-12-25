@@ -3,3 +3,8 @@ export interface User {
   token: string;
   username: string;
 }
+export interface Admin {
+  id: string;
+  username: string;
+  admin: boolean;
+}

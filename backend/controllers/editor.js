@@ -58,7 +58,7 @@ const login = asyncWrapper(async (req, res) => {
   const { email, password } = req.body;
   const user = await editor.findOne({ email }).lean();
   if (!user)
-    return res.json({ status: "error", error: "Invalid email / password" });
+    return res.status(404).json({ status: "error", error: "User not found" });
   if (await bcrypt.compare(password, user.password)) {
     const token = jwt.sign(
       {
@@ -71,7 +71,7 @@ const login = asyncWrapper(async (req, res) => {
         expiresIn: "10d",
       }
     );
-    return res.json({
+    return res.status(200).json({
       status: "ok",
       data: { username: user.username, token, email: user.email, id: user._id },
     });

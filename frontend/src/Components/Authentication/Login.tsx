@@ -1,19 +1,26 @@
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "../../config";
-import { Auth, contextType } from "../../contexts/AuthContext";
+import {
+  adminAuth,
+  adminType,
+  Auth,
+  contextType,
+} from "../../contexts/AuthContext";
 
 type Props = {
   name: string;
+  admin?: boolean;
 };
 interface FormData {
   password: string;
   email: string;
 }
-const Login: React.FC<Props> = ({ name }) => {
+const Login: React.FC<Props> = ({ name, admin }) => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const { checkAuth } = useContext(Auth) as contextType;
+  const { checkAdmin } = useContext(adminAuth) as adminType;
   const navigate = useNavigate();
   const [formData, setFormData] = useState<FormData>({
     password: "",
@@ -24,8 +31,13 @@ const Login: React.FC<Props> = ({ name }) => {
     setFormData({ ...formData, [target.name]: target.value });
   };
   const saveToLocalStorage = (token: string, data: any) => {
-    localStorage.setItem("token", token);
-    localStorage.setItem("user", JSON.stringify(data));
+    if (admin) {
+      localStorage.setItem("token", token);
+      localStorage.setItem("admin", JSON.stringify(data));
+    } else {
+      localStorage.setItem("etoken", token);
+      localStorage.setItem("user", JSON.stringify(data));
+    }
   };
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -50,6 +62,29 @@ const Login: React.FC<Props> = ({ name }) => {
         }
       });
   };
+  const handleAdminLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    axios
+      .post("/admin/login", {
+        Headers: {
+          "Content-type": "application/json",
+        },
+        ...formData,
+      })
+      .then((res) => {
+        const { status, error: err, data } = res.data;
+        switch (status) {
+          case "error":
+            setError(err);
+            return;
+          case "ok":
+            saveToLocalStorage(data.token, data);
+            checkAdmin();
+            navigate("/admin");
+            break;
+        }
+      });
+  };
   return (
     <>
       <div
@@ -67,7 +102,10 @@ const Login: React.FC<Props> = ({ name }) => {
           {name}
         </div>
         <br />
-        <form className="w-100" onSubmit={handleSubmit}>
+        <form
+          className="w-100"
+          onSubmit={admin ? handleAdminLogin : handleSubmit}
+        >
           <div className="d-flex w-100 align-items-center flex-column gap-3">
             <div className="w-100 px-3">
               <label className="form-label d-flex align-items-center gap-2">

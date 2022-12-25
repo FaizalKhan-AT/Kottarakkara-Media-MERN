@@ -1,6 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Routes, Route, Link } from "react-router-dom";
 import AddNewEditor from "./Pages/Auth/AddNewEditor";
+import AdminLogin from "./Pages/Auth/AdminLogin";
 import EditorsLogin from "./Pages/Auth/EditorsLogin";
 import AddNews from "./Pages/EditorPages/AddNew";
 import EditNews from "./Pages/EditorPages/EditNews";
@@ -14,8 +15,9 @@ const App: React.FC = () => {
       <Routes>
         <Route path="/" element={<Home />}></Route>
         <Route path="/post/:id" element={<Post />} />
-        <Route path="/super-admin">
+        <Route path="/admin">
           <Route index element={<h1>Super admin panel</h1>} />
+          <Route path="login" element={<AdminLogin />} />
           <Route path="add-new-editor" element={<AddNewEditor />} />
         </Route>
         <Route path="/editor">
