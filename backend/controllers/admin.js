@@ -1,7 +1,7 @@
 const admin = require("../models/admin");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-
+const editor = require("../models/editor");
 const Login = async (req, res) => {
   const { email, password } = req.body;
   const user = await admin.findOne({ email }).lean();
@@ -62,8 +62,26 @@ const getAdmin = (req, res) => {
 
   return res.status(200).json({ status: "ok", data: req.user });
 };
+const getAllEditors = async (req, res) => {
+  try {
+    const editors = await editor.find({});
+    if (editors) {
+      return res.status(200).json({ status: "ok", data: editors });
+    } else
+      return res.status(404).json({
+        status: "error",
+        error: "something went wrong :( while fetching the editors",
+      });
+  } catch (err) {
+    return res.status(500).json({
+      status: "error",
+      error: "something went wrong :( internal error",
+    });
+  }
+};
 module.exports = {
   Login,
   addNewAdmin,
   getAdmin,
+  getAllEditors,
 };

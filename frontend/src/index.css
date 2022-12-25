@@ -39,6 +39,9 @@
 .card:hover {
   box-shadow: var(--shadow);
 }
+.card:hover.expand {
+  box-shadow: none;
+}
 .bar {
   width: 2px;
   height: 20px;

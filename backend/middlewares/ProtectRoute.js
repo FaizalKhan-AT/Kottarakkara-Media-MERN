@@ -11,7 +11,6 @@ const protect = async (req, res, next) => {
     try {
       token = req.headers.authorization.split(" ")[1];
       let decode = jwt.verify(token, process.env.JWT_SECRET);
-      console.log(decode);
       if (decode.admin) {
         req.user = await admin.findById(decode.id).select("-password");
       } else {
