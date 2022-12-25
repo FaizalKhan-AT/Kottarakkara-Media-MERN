@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import EditorCard from "../../Components/Cards/EditorCards";
 import Error from "../../Components/Error/Error";
+import Footer from "../../Components/Footer/Footer";
 import EditorNav from "../../Components/Navbar/EditorNav";
 import axios from "../../config";
 import { News } from "../../interfaces/NewsInterface";
@@ -32,6 +33,7 @@ const AdminHome: React.FC = () => {
     <>
       {error ? <Error error={error} setError={setError} /> : ""}
       <EditorNav admin />
+
       <div
         style={{ textDecoration: "dotted underline var(--red-color)" }}
         className="text-center h3 fw-bold my-3 mt-5"
@@ -46,15 +48,22 @@ const AdminHome: React.FC = () => {
         </div>
         <br />
         <div className="d-flex flex-column gap-2">
-          {(data?.length as number) > 0
-            ? data?.map((editor) => {
-                return (
-                  <EditorCard key={editor._id} editor={editor as Editor} />
-                );
-              })
-            : ""}
+          {(data?.length as number) > 0 ? (
+            data?.map((editor) => {
+              return (
+                <EditorCard
+                  fetchFn={fetchData}
+                  key={editor._id}
+                  editor={editor as Editor}
+                />
+              );
+            })
+          ) : (
+            <h3 className="text-center my-3">No editors added since now...</h3>
+          )}
         </div>
       </div>
+      <br />
     </>
   );
 };

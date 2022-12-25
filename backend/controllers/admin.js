@@ -79,9 +79,30 @@ const getAllEditors = async (req, res) => {
     });
   }
 };
+const deleteSingleEditor = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const user = await editor.findOneAndDelete({ _id: id });
+    if (user) {
+      return res
+        .status(200)
+        .json({ status: "ok", data: "Editor deleted successfully" });
+    } else
+      return res.status(404).json({
+        status: "error",
+        error: "Couldn't delete the Editor, editor doesn't exist",
+      });
+  } catch (error) {
+    return res.status(500).json({
+      status: "error",
+      error: "Something went wrong :( internal server error",
+    });
+  }
+};
 module.exports = {
   Login,
   addNewAdmin,
   getAdmin,
   getAllEditors,
+  deleteSingleEditor,
 };

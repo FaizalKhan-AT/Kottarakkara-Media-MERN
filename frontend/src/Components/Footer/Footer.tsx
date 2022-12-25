@@ -10,7 +10,7 @@ import wap from "../../assets/socialMediaLogos/wap.png";
 import twitter from "../../assets/socialMediaLogos/twitter.png";
 import mail from "../../assets/socialMediaLogos/mail.png";
 import socialMedia from "../../interfaces/SocialMediaIcons";
-const Footer: React.FC = () => {
+const Footer: React.FC<{ admin?: boolean }> = ({ admin }) => {
   const icons: socialMedia[] = [
     { icon: fb, share: "" },
     { icon: tele, share: "" },
@@ -20,7 +20,7 @@ const Footer: React.FC = () => {
     { icon: mail, share: "" },
   ];
   return (
-    <footer className="bg-dark py-3 d-flex align-items-center">
+    <footer className={`bg-dark py-3 d-flex align-items-center`}>
       <Link to="/">
         <img width="120" src={logo} alt="kottarakkara media logo" />
       </Link>

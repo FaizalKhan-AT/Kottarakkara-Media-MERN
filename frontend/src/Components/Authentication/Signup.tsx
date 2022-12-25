@@ -52,7 +52,7 @@ const Signup: React.FC<Props> = ({ name }) => {
             setError(err);
             return;
           case "ok":
-            navigate("/super-admin");
+            navigate("/admin");
             break;
         }
       });

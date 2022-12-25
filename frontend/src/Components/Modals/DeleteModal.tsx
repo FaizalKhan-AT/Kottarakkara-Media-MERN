@@ -41,7 +41,7 @@ const DeleteModal: React.FC<Props> = ({ open, handleOpen, deleteFn, data }) => {
           </div>
           <div>
             <h4 className="text-center">Are you sure to delete ?</h4>
-            <div className="text-center">{data}</div>
+            <div className="text-center fs-5 ">{data}</div>
             <br />
             <div className="d-flex align-items-center gap-3 justify-content-center">
               <div className="btn btn-secondary" onClick={handleOpen}>
