@@ -68,7 +68,10 @@ const getSingleNews = async (req, res) => {
 };
 const getLatestNews = async (req, res) => {
   try {
-    const posts = await news.find({}).limit(20).sort({ postedAt: -1 });
+    const posts = await news
+      .find({ published: true })
+      .limit(20)
+      .sort({ postedAt: -1 });
     if (posts) {
       let result = [];
       const length = posts.length;
@@ -169,6 +172,7 @@ const getRelatedNews = async (req, res) => {
       _id: { $ne: id },
       category: cat,
       type: "image",
+      published: true,
     });
     if (posts) {
       return res.status(200).json({ status: "ok", data: posts });

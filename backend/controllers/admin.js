@@ -2,6 +2,7 @@ const admin = require("../models/admin");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const editor = require("../models/editor");
+const news = require("../models/news");
 const Login = async (req, res) => {
   const { email, password } = req.body;
   const user = await admin.findOne({ email }).lean();
@@ -99,10 +100,134 @@ const deleteSingleEditor = async (req, res) => {
     });
   }
 };
+const getExternalEditors = async (req, res) => {
+  const editors = await editor.find({ external: true });
+  if (editors) {
+    return res.status(200).json({ status: "ok", data: editors });
+  } else
+    return res.status(404).json({
+      status: "error",
+      error: "No External Editors are present",
+    });
+};
+const getInternalEditors = async (req, res) => {
+  const editors = await editor.find({ external: false });
+  if (editors) {
+    return res.status(200).json({ status: "ok", data: editors });
+  } else
+    return res.status(404).json({
+      status: "error",
+      error: "No internal editors are present",
+    });
+};
+const getPublishedNews = async (req, res, type, time) => {
+  let object = { published: true };
+  let posts = [];
+
+  switch (type) {
+    case "video":
+      object = { ...object, type };
+      break;
+    case "image":
+      object = { ...object, type };
+      break;
+    case "most liked":
+      posts = await news.find(object).sort({ likes: -1 });
+      break;
+    case "most viewed":
+      posts = await news.find(object).sort({ views: -1 });
+      break;
+    default:
+      break;
+  }
+  if (!type.includes("most")) posts = await news.find(object);
+  if (time) {
+    posts = await news
+      .find(object)
+      .sort({ postedAt: time === "oldest" ? 1 : -1 });
+  } else posts = await news.find(object);
+  if (posts) {
+    return res.status(200).json({ status: "ok", data: posts });
+  } else
+    return res.status(404).json({
+      status: "error",
+      error: "No Published news where found..",
+    });
+};
+const getNonPublishedNews = async (req, res, type, time) => {
+  let object = { published: false };
+  let posts = [];
+  switch (type) {
+    case "video":
+      object = { ...object, type };
+      break;
+    case "image":
+      object = { ...object, type };
+      break;
+    case "most liked":
+      posts = await news.find(object).sort({ likes: -1 });
+      break;
+    case "most viewed":
+      posts = await news.find(object).sort({ views: -1 });
+      break;
+    default:
+      break;
+  }
+  if (!type.includes("most")) posts = await news.find(object);
+  if (time) {
+    posts = await news
+      .find(object)
+      .sort({ postedAt: time === "oldest" ? 1 : -1 });
+  } else posts = await news.find(object);
+
+  if (posts) {
+    return res.status(200).json({ status: "ok", data: posts });
+  } else
+    return res.status(404).json({
+      status: "error",
+      error: "No un published news where found..",
+    });
+};
+const filterData = async (req, res) => {
+  const { category: cat, type: ty, time } = req.params;
+  const category = cat.replace("-", " ");
+  let type = "";
+  if (ty) {
+    type = ty.replace("-", " ");
+  }
+  try {
+    switch (category) {
+      case "all editors":
+        getAllEditors(req, res);
+        break;
+      case "external editors":
+        getExternalEditors(req, res);
+        break;
+      case "internal editors":
+        getInternalEditors(req, res);
+        break;
+      case "published news":
+        getPublishedNews(req, res, type, time);
+        break;
+      case "non published news":
+        getNonPublishedNews(req, res, type, time);
+        break;
+      default:
+        break;
+    }
+  } catch (err) {
+    return res.status(500).json({
+      status: "error",
+      error: "something went wrong :( internal error",
+    });
+  }
+};
+
 module.exports = {
   Login,
   addNewAdmin,
   getAdmin,
   getAllEditors,
+  filterData,
   deleteSingleEditor,
 };

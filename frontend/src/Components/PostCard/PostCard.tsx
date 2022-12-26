@@ -12,10 +12,11 @@ import ShareModal from "../Modals/ShareModal";
 import "./card.css";
 interface Props {
   editor?: boolean;
+  admin?: boolean;
   post: News;
   fetchFn?: () => void;
 }
-const PostCard: React.FC<Props> = ({ editor, post, fetchFn }) => {
+const PostCard: React.FC<Props> = ({ editor, post, fetchFn, admin }) => {
   const [liked, setLiked] = useState<boolean>(false);
   const { setPost } = useContext(Post) as PostType;
   const [open, setOpen] = useState<boolean>(false);
@@ -118,6 +119,7 @@ const PostCard: React.FC<Props> = ({ editor, post, fetchFn }) => {
             alt={post.titleEng}
           />
         </div>
+
         <div className="card-body px-2 d-flex flex-column justify-content-between">
           <Link
             to={`/post/${post._id}`}
@@ -125,10 +127,33 @@ const PostCard: React.FC<Props> = ({ editor, post, fetchFn }) => {
           >
             {post.titleMal}
           </Link>
+          {editor ? (
+            <span
+              className={`fw-bold ${
+                post.published ? "text-success" : "text-danger"
+              }`}
+            >
+              {post.published ? "published" : "not published"}
+            </span>
+          ) : (
+            ""
+          )}
+          {admin ? (
+            <span
+              className={`fw-bold ${
+                post.published ? "text-success" : "text-danger"
+              }`}
+            >
+              {post.published ? "published" : "not published"}
+            </span>
+          ) : (
+            ""
+          )}
           <div className="d-flex align-items-center justify-content-between by-line my-1">
             <span>{post.postedAt}</span>
             <span className="fw-bold">@{post.author}</span>
           </div>
+
           <p className="card-text mt-2">{post.newsContent}</p>
           <div className="d-flex align-items-center justify-content-between">
             <div className="d-flex align-items-center gap-1 ">
@@ -155,6 +180,14 @@ const PostCard: React.FC<Props> = ({ editor, post, fetchFn }) => {
                 >
                   delete
                 </div>
+              </div>
+            ) : admin ? (
+              <div
+                style={{ fontSize: "13px" }}
+                className="btn btn-outline-danger btn-rounded"
+                onClick={handleDeleteModal}
+              >
+                delete
               </div>
             ) : (
               <div

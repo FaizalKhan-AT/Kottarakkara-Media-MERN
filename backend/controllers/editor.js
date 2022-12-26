@@ -73,7 +73,13 @@ const login = asyncWrapper(async (req, res) => {
     );
     return res.status(200).json({
       status: "ok",
-      data: { username: user.username, token, email: user.email, id: user._id },
+      data: {
+        username: user.username,
+        token,
+        email: user.email,
+        id: user._id,
+        external: user.external,
+      },
     });
   }
   return res.json({ status: "error", error: "Invalid email / password" });

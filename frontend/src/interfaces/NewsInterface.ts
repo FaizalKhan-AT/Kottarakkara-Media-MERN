@@ -14,5 +14,6 @@ export interface News {
   userId: string;
   postedAt: string;
   author: string;
+  published: boolean;
   _id?: string;
 }

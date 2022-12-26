@@ -12,10 +12,11 @@ import ShareModal from "../Modals/ShareModal";
 import "./card.css";
 interface Props {
   editor?: boolean;
+  admin?: boolean;
   post: News;
   fetchFn?: () => void;
 }
-const VideoCard: React.FC<Props> = ({ editor, post, fetchFn }) => {
+const VideoCard: React.FC<Props> = ({ editor, post, fetchFn, admin }) => {
   const [liked, setLiked] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
@@ -78,6 +79,34 @@ const VideoCard: React.FC<Props> = ({ editor, post, fetchFn }) => {
           </video>
         </div>
         <div className="card-body my-0 py-1">
+          {editor ? (
+            <>
+              <span
+                className={`fw-bold ${
+                  post.published ? "text-success" : "text-danger"
+                }`}
+              >
+                {post.published ? "published" : "not published"}
+              </span>
+              <br />
+            </>
+          ) : (
+            ""
+          )}
+          {admin ? (
+            <>
+              <span
+                className={`fw-bold ${
+                  post.published ? "text-success" : "text-danger"
+                }`}
+              >
+                {post.published ? "published" : "not published"}
+              </span>
+              <br />
+            </>
+          ) : (
+            ""
+          )}
           <Link
             to={`/post/${post._id}`}
             className="card-title fw-bold text-dark w-100"
@@ -138,6 +167,14 @@ const VideoCard: React.FC<Props> = ({ editor, post, fetchFn }) => {
                   >
                     delete
                   </div>
+                </div>
+              ) : admin ? (
+                <div
+                  style={{ fontSize: "13px" }}
+                  className="btn btn-outline-danger btn-rounded"
+                  onClick={handleDeleteModal}
+                >
+                  delete
                 </div>
               ) : (
                 <span

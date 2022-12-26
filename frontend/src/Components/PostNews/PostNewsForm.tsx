@@ -5,6 +5,7 @@ import { Auth, contextType } from "../../contexts/AuthContext";
 import { Post, PostType } from "../../contexts/PostContext";
 import { FILE_BASE_URL } from "../../env";
 import { News } from "../../interfaces/NewsInterface";
+import { Editor } from "../../interfaces/userInterface";
 import Error from "../Error/Error";
 import "./postNews.css";
 const categories: string[] = [
@@ -23,6 +24,9 @@ const PostNewsForm: FC<{ edit?: boolean }> = ({ edit }) => {
   const { post } = useContext(Post) as PostType;
   const [tags, setTags] = useState<string[]>(
     edit ? (post?.tags as string[]) : []
+  );
+  const [editor, setEditor] = useState<Editor>(
+    JSON.parse(localStorage.getItem("user") as string)
   );
   const navigate = useNavigate();
   const [formData, setFormData] = useState<News>(
@@ -44,6 +48,7 @@ const PostNewsForm: FC<{ edit?: boolean }> = ({ edit }) => {
           postedAt: new Date().toLocaleDateString("en-gb"),
           userId: user?._id as string,
           author: user?.username as string,
+          published: false,
         }
   );
   useEffect(() => {
@@ -60,6 +65,7 @@ const PostNewsForm: FC<{ edit?: boolean }> = ({ edit }) => {
   const [vid, setVid] = useState<File | null>();
   const [error, setError] = useState<string>("");
   const [tagInp, setTagInp] = useState<string>("");
+
   const handleChange = (e: FormEvent) => {
     const target = e.target as HTMLInputElement;
     setFormData({ ...formData, [target.name]: target.value.toLowerCase() });
@@ -152,7 +158,7 @@ const PostNewsForm: FC<{ edit?: boolean }> = ({ edit }) => {
     axios
       .post(
         "/news",
-        { ...formData, tags },
+        { ...formData, tags, published: editor.external ? false : true },
         {
           headers: {
             "Content-type": "multipart/form-data",
@@ -180,7 +186,12 @@ const PostNewsForm: FC<{ edit?: boolean }> = ({ edit }) => {
     axios
       .patch(
         `/news/post/${post?._id}`,
-        { ...formData, tags, path: post?.file },
+        {
+          ...formData,
+          tags,
+          path: post?.file,
+          published: editor.external ? false : true,
+        },
         {
           headers: {
             "Content-type": "multipart/form-data",
