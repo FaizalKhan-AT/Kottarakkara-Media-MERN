@@ -5,6 +5,7 @@ const category: string[] = [
   "internal editors",
   "published news",
   "non published news",
+  "trending news",
 ];
 const type: string[] = ["all", "video", "image"];
 const time: string[] = ["oldest", "newest"];
@@ -52,7 +53,8 @@ const AdminFilterNav: React.FC<Props> = ({
               );
             })}
           </select>
-          {filter.category.includes("news") ? (
+          {filter.category.includes("news") &&
+          !filter.category.includes("trending") ? (
             <>
               <select
                 onChange={handleChange}
@@ -67,7 +69,7 @@ const AdminFilterNav: React.FC<Props> = ({
                   );
                 })}
               </select>
-              {!filter.type.includes("most") ? (
+              {!filter.category.includes("trending") ? (
                 <select
                   onChange={handleChange}
                   className="form-select"

@@ -9,6 +9,7 @@ import { likePost } from "../../usefulFunctions/likePost";
 import Error from "../Error/Error";
 import DeleteModal from "../Modals/DeleteModal";
 import ShareModal from "../Modals/ShareModal";
+import Success from "../Success/Success";
 import "./card.css";
 interface Props {
   editor?: boolean;
@@ -21,6 +22,7 @@ const PostCard: React.FC<Props> = ({ editor, post, fetchFn, admin }) => {
   const { setPost } = useContext(Post) as PostType;
   const [open, setOpen] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
+  const [success, setSuccess] = useState<string>("");
   const [delModalOpen, setDelModalOpen] = useState<boolean>(false);
   const navigate = useNavigate();
   const handleDeleteModal = () => setDelModalOpen(!delModalOpen);
@@ -45,8 +47,27 @@ const PostCard: React.FC<Props> = ({ editor, post, fetchFn, admin }) => {
         handleDeleteModal();
       });
   };
+  const handlePatch = (endPoint: string) => {
+    setSuccess("");
+    setError("");
+    axios
+      .patch(`/admin/${endPoint}/${post._id}`)
+      .then((res) => {
+        const { error, data, status } = res.data;
+        switch (status) {
+          case "ok":
+            setSuccess(data);
+            break;
+          case "error":
+            setError(error);
+            break;
+        }
+      })
+      .catch((err) => setError("something went wrong :( while processing"));
+  };
   return (
     <>
+      {success ? <Success success={success} setSuccess={setSuccess} /> : ""}
       {error ? <Error error={error} setError={setError} /> : ""}
       <ShareModal open={open} handleOpen={handleOpenModal} />
       <DeleteModal
@@ -182,12 +203,31 @@ const PostCard: React.FC<Props> = ({ editor, post, fetchFn, admin }) => {
                 </div>
               </div>
             ) : admin ? (
-              <div
-                style={{ fontSize: "13px" }}
-                className="btn btn-outline-danger btn-rounded"
-                onClick={handleDeleteModal}
-              >
-                delete
+              <div className="d-flex align-items-center gap-2">
+                <div
+                  onClick={() =>
+                    handlePatch(post.published ? "unpublish" : "publish")
+                  }
+                  style={{ fontSize: "13px" }}
+                  className={`btn ${
+                    post.published
+                      ? "btn-outline-secondary"
+                      : "btn-outline-success"
+                  } btn-rounded`}
+                >
+                  {post.published ? "un publish" : "publish"}
+                </div>
+                <div
+                  className="btn btn-outline-danger btn-rounded d-flex align-items-center justify-content-center"
+                  onClick={handleDeleteModal}
+                >
+                  <span
+                    style={{ fontSize: "20px" }}
+                    className="material-symbols-outlined"
+                  >
+                    delete
+                  </span>
+                </div>
               </div>
             ) : (
               <div
@@ -199,6 +239,19 @@ const PostCard: React.FC<Props> = ({ editor, post, fetchFn, admin }) => {
               </div>
             )}
           </div>
+          {admin && post.published ? (
+            <div
+              onClick={() =>
+                handlePatch(post.trending ? "remove-trending" : "trending")
+              }
+              style={{ fontSize: "15px" }}
+              className="btn btn-outline-dark btn-rounded w-100 mt-2"
+            >
+              {post.trending ? "remove trending" : "set Trending"}
+            </div>
+          ) : (
+            ""
+          )}
         </div>
       </div>
     </>

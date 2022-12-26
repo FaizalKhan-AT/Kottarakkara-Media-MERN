@@ -45,7 +45,7 @@ const EditorCards: React.FC<Props> = ({ editor, fetchFn }) => {
       {error ? <Error error={error} setError={setError} /> : ""}
       {success ? <Success success={success} setSuccess={setSuccess} /> : ""}
       <div>
-        <div className="card py-2 px-3">
+        <div onClick={() => setExpand(!expand)} className="card py-2 px-3">
           <div className="d-flex align-items-center justify-content-between">
             <div className="d-flex align-items-center gap-2">
               <span className="material-symbols-outlined h3 mb-0">

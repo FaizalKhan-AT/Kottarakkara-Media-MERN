@@ -17,6 +17,7 @@ const news = mongoose.Schema({
   author: { type: String, required: true },
   tags: [{ type: String, required: true }],
   published: { type: Boolean, required: true },
+  trending: { type: Boolean },
 });
 
 module.exports = mongoose.model("post", news);

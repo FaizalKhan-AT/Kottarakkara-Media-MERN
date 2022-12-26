@@ -15,5 +15,6 @@ export interface News {
   postedAt: string;
   author: string;
   published: boolean;
+  trending?: boolean;
   _id?: string;
 }

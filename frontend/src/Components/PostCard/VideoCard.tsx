@@ -9,6 +9,7 @@ import { likePost } from "../../usefulFunctions/likePost";
 import Error from "../Error/Error";
 import DeleteModal from "../Modals/DeleteModal";
 import ShareModal from "../Modals/ShareModal";
+import Success from "../Success/Success";
 import "./card.css";
 interface Props {
   editor?: boolean;
@@ -20,6 +21,7 @@ const VideoCard: React.FC<Props> = ({ editor, post, fetchFn, admin }) => {
   const [liked, setLiked] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
+  const [success, setSuccess] = useState<string>("");
   const handleOpenModal = () => setOpen(!open);
   const { setPost } = useContext(Post) as PostType;
   const navigate = useNavigate();
@@ -41,13 +43,30 @@ const VideoCard: React.FC<Props> = ({ editor, post, fetchFn, admin }) => {
         }
       })
       .catch((err) => {
-        setError("somewent wrong :( while deleting");
+        setError("something went wrong :( while deleting");
         handleDeleteModal();
       });
+  };
+  const handleUnPublish = (endPoint: string) => {
+    axios
+      .patch(`/admin/${endPoint}/${post._id}`)
+      .then((res) => {
+        const { error, data, status } = res.data;
+        switch (status) {
+          case "ok":
+            setSuccess(data);
+            break;
+          case "error":
+            setError(error);
+            break;
+        }
+      })
+      .catch((err) => setError("something went wrong :( while processing"));
   };
   return (
     <>
       {error ? <Error error={error} setError={setError} /> : ""}
+      {success ? <Success success={success} setSuccess={setSuccess} /> : ""}
       <ShareModal open={open} handleOpen={handleOpenModal} />
       <DeleteModal
         open={delModalOpen}
@@ -169,12 +188,30 @@ const VideoCard: React.FC<Props> = ({ editor, post, fetchFn, admin }) => {
                   </div>
                 </div>
               ) : admin ? (
-                <div
-                  style={{ fontSize: "13px" }}
-                  className="btn btn-outline-danger btn-rounded"
-                  onClick={handleDeleteModal}
-                >
-                  delete
+                <div className="d-flex align-items-center gap-2">
+                  <div
+                    onClick={() =>
+                      post.published
+                        ? handleUnPublish("unpublish")
+                        : handleUnPublish("publish")
+                    }
+                    style={{ fontSize: "13px" }}
+                    className={`btn ${
+                      post.published
+                        ? "btn-outline-secondary"
+                        : "btn-outline-success"
+                    } btn-rounded`}
+                  >
+                    {post.published ? "un publish" : "publish"}
+                  </div>
+
+                  <div
+                    style={{ fontSize: "13px" }}
+                    className="btn btn-outline-danger btn-rounded"
+                    onClick={handleDeleteModal}
+                  >
+                    delete
+                  </div>
                 </div>
               ) : (
                 <span

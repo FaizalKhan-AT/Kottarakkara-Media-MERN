@@ -187,6 +187,23 @@ const getRelatedNews = async (req, res) => {
     });
   }
 };
+const getTrendingNews = async (req, res) => {
+  try {
+    const posts = await news.find({ trending: true });
+    if (posts) {
+      return res.status(200).json({ status: "ok", data: posts });
+    } else
+      return res.status(404).json({
+        status: "error",
+        error: "something went wrong :( while fetching the trending news",
+      });
+  } catch (err) {
+    return res.status(500).json({
+      status: "error",
+      error: "something went wrong :( while fetching the news",
+    });
+  }
+};
 module.exports = {
   uploadNews,
   getLatestNews,
@@ -195,4 +212,5 @@ module.exports = {
   likeSinglePost,
   deleteSingleNews,
   getRelatedNews,
+  getTrendingNews,
 };

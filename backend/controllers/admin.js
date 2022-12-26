@@ -174,6 +174,16 @@ const getNonPublishedNews = async (req, res, type, time) => {
       error: "No un published news where found..",
     });
 };
+const getTrendingNews = async (req, res) => {
+  const posts = await news.find({ trending: true });
+  if (posts) {
+    return res.status(200).json({ status: "ok", data: posts });
+  } else
+    return res.status(404).json({
+      status: "error",
+      error: "No Trending news found ",
+    });
+};
 const filterData = async (req, res) => {
   const { category: cat, type: ty, time } = req.params;
   const category = cat.replace("-", " ");
@@ -198,6 +208,9 @@ const filterData = async (req, res) => {
       case "non published news":
         getNonPublishedNews(req, res, type, time);
         break;
+      case "trending news":
+        getTrendingNews(req, res);
+        break;
       default:
         break;
     }
@@ -208,7 +221,86 @@ const filterData = async (req, res) => {
     });
   }
 };
-
+const publishPost = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const post = await news.findOneAndUpdate({ _id: id }, { published: true });
+    if (post) {
+      return res
+        .status(200)
+        .json({ status: "ok", data: "Post published successfully" });
+    } else
+      return res.status(404).json({
+        status: "error",
+        error: "Couldn't publish the post",
+      });
+  } catch (error) {
+    return res.status(500).json({
+      status: "error",
+      error: "Something went wrong :( internal server error",
+    });
+  }
+};
+const unPublishPost = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const post = await news.findOneAndUpdate({ _id: id }, { published: false });
+    if (post) {
+      return res
+        .status(200)
+        .json({ status: "ok", data: "Post unpublished successfully" });
+    } else
+      return res.status(404).json({
+        status: "error",
+        error: "Couldn't unpublish the post",
+      });
+  } catch (error) {
+    return res.status(500).json({
+      status: "error",
+      error: "Something went wrong :( internal server error",
+    });
+  }
+};
+const removeTrending = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const post = await news.findOneAndUpdate({ _id: id }, { trending: false });
+    if (post) {
+      return res
+        .status(200)
+        .json({ status: "ok", data: "Post removed from trending" });
+    } else
+      return res.status(404).json({
+        status: "error",
+        error: "Couldn't remove the post from trending",
+      });
+  } catch (error) {
+    return res.status(500).json({
+      status: "error",
+      error: "Something went wrong :( internal server error",
+    });
+  }
+};
+const setTrending = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const post = await news.findOneAndUpdate({ _id: id }, { trending: true });
+    if (post) {
+      return res
+        .status(200)
+        .json({ status: "ok", data: "Post added to trending" });
+    } else
+      return res.status(404).json({
+        status: "error",
+        error: "Couldn't add the post to trending",
+      });
+  } catch (error) {
+    return res.status(500).json({
+      status: "error",
+      error: "Something went wrong :( internal server error",
+    });
+  }
+};
 module.exports = {
   Login,
   addNewAdmin,
@@ -216,4 +308,8 @@ module.exports = {
   getAllEditors,
   filterData,
   deleteSingleEditor,
+  publishPost,
+  unPublishPost,
+  removeTrending,
+  setTrending,
 };
