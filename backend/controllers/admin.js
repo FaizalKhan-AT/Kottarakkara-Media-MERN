@@ -131,21 +131,13 @@ const getPublishedNews = async (req, res, type, time) => {
     case "image":
       object = { ...object, type };
       break;
-    case "most liked":
-      posts = await news.find(object).sort({ likes: -1 });
-      break;
-    case "most viewed":
-      posts = await news.find(object).sort({ views: -1 });
-      break;
-    default:
-      break;
   }
-  if (!type.includes("most")) posts = await news.find(object);
+
   if (time) {
     posts = await news
       .find(object)
-      .sort({ postedAt: time === "oldest" ? 1 : -1 });
-  } else posts = await news.find(object);
+      .sort({ postedAt: time === "oldest" ? 1 : -1, likes: "asc" });
+  } else posts = await news.find(object).sort({ likes: "asc" });
   if (posts) {
     return res.status(200).json({ status: "ok", data: posts });
   } else
@@ -164,21 +156,15 @@ const getNonPublishedNews = async (req, res, type, time) => {
     case "image":
       object = { ...object, type };
       break;
-    case "most liked":
-      posts = await news.find(object).sort({ likes: -1 });
-      break;
-    case "most viewed":
-      posts = await news.find(object).sort({ views: -1 });
-      break;
     default:
       break;
   }
-  if (!type.includes("most")) posts = await news.find(object);
+
   if (time) {
     posts = await news
       .find(object)
-      .sort({ postedAt: time === "oldest" ? 1 : -1 });
-  } else posts = await news.find(object);
+      .sort({ postedAt: time === "oldest" ? 1 : -1, likes: "asc" });
+  } else posts = await news.find(object).sort({ likes: "asc" });
 
   if (posts) {
     return res.status(200).json({ status: "ok", data: posts });

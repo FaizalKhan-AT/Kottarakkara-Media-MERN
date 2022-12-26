@@ -62,7 +62,29 @@ const AdminHome: React.FC = () => {
       );
   };
 
-  const handleSearch = (search: string) => {};
+  const handleSearch = (search: string) => {
+    if (data.length > 0) {
+      setData(
+        tempData.filter((item) => {
+          if (item.username.toLowerCase().includes(search.toLowerCase()))
+            return item;
+          if (item.email.toLowerCase().includes(search.toLowerCase()))
+            return item;
+        })
+      );
+    } else if (newsData.length > 0) {
+      setNewsData(
+        tempNewsData.filter((item) => {
+          if (item.titleEng.toLowerCase().includes(search.toLowerCase()))
+            return item;
+          if (item.titleMal.toLowerCase().includes(search.toLowerCase()))
+            return item;
+          if (item.author.toLowerCase().includes(search.toLowerCase()))
+            return item;
+        })
+      );
+    }
+  };
   return (
     <>
       {error ? <Error error={error} setError={setError} /> : ""}

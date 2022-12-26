@@ -71,7 +71,7 @@ const getLatestNews = async (req, res) => {
     const posts = await news
       .find({ published: true })
       .limit(20)
-      .sort({ postedAt: -1 });
+      .sort({ postedAt: -1, likes: "desc" });
     if (posts) {
       let result = [];
       const length = posts.length;

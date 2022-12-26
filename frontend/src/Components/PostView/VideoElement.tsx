@@ -9,7 +9,11 @@ const VideoElement: React.FC<{ post: News }> = ({ post }) => {
       <div className="w-100 position-relative">
         <PostNav post={post} />
         <video
-          style={{ borderRadius: "0 0 50px 50px", boxShadow: "var(--shadow)" }}
+          style={{
+            background: "#000",
+            borderRadius: "0 0 50px 50px",
+            boxShadow: "var(--shadow)",
+          }}
           width="100%"
           height="400"
           controlsList="nodownload"

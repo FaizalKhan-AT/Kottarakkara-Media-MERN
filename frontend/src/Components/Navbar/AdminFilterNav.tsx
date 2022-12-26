@@ -6,7 +6,7 @@ const category: string[] = [
   "published news",
   "non published news",
 ];
-const type: string[] = ["all", "video", "image", "most liked", "most viewed"];
+const type: string[] = ["all", "video", "image"];
 const time: string[] = ["oldest", "newest"];
 export interface FilterAdmin {
   category: string;

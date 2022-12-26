@@ -68,7 +68,9 @@ const EditorCards: React.FC<Props> = ({ editor, fetchFn }) => {
             <div className="d-flex flex-column gap-2">
               <span className="d-flex align-items-center gap-3">
                 <span className="fw-bold fs-5">Email : </span>
-                <span className="fw-bold red-color">{editor.email} </span>
+                <span className="fw-bold red-color text-lowercase">
+                  {editor.email}{" "}
+                </span>
               </span>
               <span className="d-flex align-items-center gap-3">
                 <span className="fw-bold fs-5">External : </span>
