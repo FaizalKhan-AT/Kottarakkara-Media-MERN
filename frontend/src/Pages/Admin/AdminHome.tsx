@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import EditorCard from "../../Components/Cards/EditorCards";
 import Error from "../../Components/Error/Error";
+import UpdateLiveModal from "../../Components/Modals/UpdateLiveModal";
 import AdminFilterNav, {
   FilterAdmin,
 } from "../../Components/Navbar/AdminFilterNav";
@@ -18,6 +19,7 @@ const AdminHome: React.FC = () => {
   const [tempNewsData, setTempNewsData] = useState<News[]>([]);
   const [tempData, setTempData] = useState<Editor[]>([]);
   const [title, setTitle] = useState<string>("all editors");
+  const [open, setOpen] = useState<boolean>(false);
   const fetchData = (url: string) => {
     setError("");
     axios
@@ -85,11 +87,43 @@ const AdminHome: React.FC = () => {
       );
     }
   };
+  const handleOpen = () => setOpen(!open);
+  const updateLive = (data: any) => {
+    if (!data.url.includes("youtube.com/")) {
+      handleOpen();
+      setError("not an youtube url");
+      return;
+    }
+    const [_, id] = data.url.split("https://www.youtube.com/watch?v=");
+    if (!id) {
+      handleOpen();
+      setError("no video id present");
+      return;
+    }
+    axios
+      .post(`/news/live`, { url: `https://www.youtube.com/embed/${id}` })
+      .then((res) => {
+        const { status, error, data } = res.data;
+        switch (status) {
+          case "ok":
+            handleOpen();
+            break;
+          case "error":
+            setError(error);
+            break;
+        }
+      })
+      .catch((err) => setError("something went wrong :("));
+  };
   return (
     <>
       {error ? <Error error={error} setError={setError} /> : ""}
       <EditorNav admin />
-
+      <UpdateLiveModal
+        open={open}
+        handleOpen={handleOpen}
+        updateFn={updateLive}
+      />
       <div
         style={{ textDecoration: "dotted underline var(--red-color)" }}
         className="text-center h3 fw-bold my-3 mt-5"
@@ -104,9 +138,12 @@ const AdminHome: React.FC = () => {
       />
       <br />
       <div className="container">
-        <div className="d-flex gap-2 align-items-center">
+        <div onClick={handleOpen} className="btn btn-outline-danger mb-2">
+          Update Live
+        </div>
+        <div className="d-flex gap-2 align-items-center mt-2">
           <span style={{ height: "30px", width: "4px" }} className="bar"></span>
-          <span className="fw-bold text-dark h3 mb-0">{title}</span>
+          <span className="fw-bold text-dark h3 mb-0 ">{title}</span>
         </div>
         <br />
         {title.includes("editors") ? (

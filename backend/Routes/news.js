@@ -7,6 +7,8 @@ const {
   likeSinglePost,
   getRelatedNews,
   getTrendingNews,
+  getLiveNews,
+  updateLiveNews,
 } = require("../controllers/news");
 const upload = require("../middlewares/FileUpload");
 
@@ -21,4 +23,5 @@ Router.route("/latest").get(getLatestNews);
 Router.route("/trending").get(getTrendingNews);
 Router.route("/related/:category/:id").get(getRelatedNews);
 Router.route("/like/:id").get(likeSinglePost);
+Router.route("/live").get(getLiveNews).post(updateLiveNews);
 module.exports = Router;

@@ -1,7 +1,7 @@
 const news = require("../models/news");
 const fs = require("fs");
 const path = require("path");
-
+const Live = require("../models/live");
 const uploadNews = async (req, res) => {
   const {
     category,
@@ -206,6 +206,43 @@ const getTrendingNews = async (req, res) => {
     });
   }
 };
+const getLiveNews = async (req, res) => {
+  try {
+    const live = await Live.find({});
+    if (live) {
+      return res
+        .status(200)
+        .json({ status: "ok", data: live[live.length - 1] });
+    } else
+      return res.status(404).json({
+        status: "error",
+        error: "something went wrong :( while fetching the url",
+      });
+  } catch (error) {
+    return res.status(500).json({
+      status: "error",
+      error: "something went wrong :( while fetching the url",
+    });
+  }
+};
+const updateLiveNews = async (req, res) => {
+  try {
+    await Live.remove({});
+    const live = await Live.create({ liveUrl: req.body.url });
+    if (live) {
+      return res.status(200).json({ status: "ok", data: "live url updated" });
+    } else
+      return res.status(404).json({
+        status: "error",
+        error: "something went wrong :( while fetching the url",
+      });
+  } catch (error) {
+    return res.status(500).json({
+      status: "error",
+      error: "something went wrong :( while fetching the url",
+    });
+  }
+};
 module.exports = {
   uploadNews,
   getLatestNews,
@@ -215,4 +252,6 @@ module.exports = {
   deleteSingleNews,
   getRelatedNews,
   getTrendingNews,
+  getLiveNews,
+  updateLiveNews,
 };

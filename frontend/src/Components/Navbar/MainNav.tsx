@@ -28,10 +28,6 @@ const navLinks: navLinksType[] = [
     route: "news/obituary",
   },
   {
-    title: "Live",
-    route: "news/live",
-  },
-  {
     title: "Tech",
     route: "news/tech",
   },
@@ -68,6 +64,9 @@ const MainNav: React.FC = () => {
               </Link>
             );
           })}
+          <Link className="nav-link" to="/live">
+            Live
+          </Link>
         </div>
         <div
           style={{ width: "18%" }}

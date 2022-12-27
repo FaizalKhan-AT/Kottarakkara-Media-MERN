@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { FRONTEND_BASE_URL } from "../../env";
 import { News } from "../../interfaces/NewsInterface";
 import { formatNumber } from "../../usefulFunctions/formatNumber";
 import { likePost } from "../../usefulFunctions/likePost";
@@ -16,7 +17,11 @@ const PostNav: React.FC<{ post: News | null }> = ({ post }) => {
   return (
     <>
       {error ? <Error error={error} setError={setError} /> : ""}
-      <ShareModal open={open} handleOpen={handleOpenModal} />
+      <ShareModal
+        url={FRONTEND_BASE_URL + `/post/${post?._id}`}
+        open={open}
+        handleOpen={handleOpenModal}
+      />
       <div
         style={{ zIndex: "21" }}
         className="w-100 post-nav top-0  d-flex justify-content-between position-absolute align-items-center gap-3 px-3"

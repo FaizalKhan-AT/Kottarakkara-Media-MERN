@@ -10,6 +10,7 @@ import AddNews from "./Pages/EditorPages/AddNew";
 import EditNews from "./Pages/EditorPages/EditNews";
 import EditorHome from "./Pages/EditorPages/EditorHome";
 import Home from "./Pages/Home/Home";
+import Live from "./Pages/Post/Live";
 import Post from "./Pages/Post/Post";
 
 const App: React.FC = () => {
@@ -17,7 +18,8 @@ const App: React.FC = () => {
     <>
       <Title />
       <Routes>
-        <Route path="/" element={<Home />}></Route>
+        <Route path="/" element={<Home />} />
+        <Route path="/live" element={<Live />} />
         <Route path="/post/:id" element={<Post />} />
         <Route path="/admin">
           <Route index element={<AdminHome />} />
