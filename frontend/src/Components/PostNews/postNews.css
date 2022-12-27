@@ -4,3 +4,6 @@
   flex-wrap: wrap;
   width: fit-content;
 }
+.news-form {
+  text-transform: none;
+}

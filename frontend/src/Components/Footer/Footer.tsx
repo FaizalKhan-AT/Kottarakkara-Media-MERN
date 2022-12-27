@@ -53,7 +53,7 @@ const Footer: React.FC<{ admin?: boolean }> = ({ admin }) => {
             <Link className="footer-links fs-6" to="/grievance">
               Grievance
             </Link>
-            <Link className="footer-links fs-6" to="/editor">
+            <Link className="footer-links fs-6" to="/editor/join-us">
               Join us
             </Link>
           </div>

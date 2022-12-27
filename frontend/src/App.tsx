@@ -4,6 +4,7 @@ import AdminHome from "./Pages/Admin/AdminHome";
 import AddNewEditor from "./Pages/Auth/AddNewEditor";
 import AdminLogin from "./Pages/Auth/AdminLogin";
 import EditorsLogin from "./Pages/Auth/EditorsLogin";
+import EditorsSignup from "./Pages/Auth/EditorsSignup";
 import AddNews from "./Pages/EditorPages/AddNew";
 import EditNews from "./Pages/EditorPages/EditNews";
 import EditorHome from "./Pages/EditorPages/EditorHome";
@@ -23,6 +24,7 @@ const App: React.FC = () => {
         </Route>
         <Route path="/editor">
           <Route index element={<EditorHome />} />
+          <Route path="join-us" element={<EditorsSignup />} />
           <Route path="post" element={<AddNews />} />
           <Route path="login" element={<EditorsLogin />} />
           <Route path="edit" element={<EditNews />} />

@@ -18,6 +18,7 @@ const uploadNews = async (req, res) => {
     author,
     postedAt,
     tags,
+    published,
   } = req.body;
   try {
     const response = await news.create({
@@ -36,6 +37,7 @@ const uploadNews = async (req, res) => {
       author,
       postedAt,
       tags,
+      published,
     });
     return res.json({
       status: "ok",

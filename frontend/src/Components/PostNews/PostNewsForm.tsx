@@ -177,7 +177,7 @@ const PostNewsForm: FC<{ edit?: boolean }> = ({ edit }) => {
         }
       })
       .catch((err) => {
-        setError("Something went wrong :( ...");
+        setError("Something went wrong :( couldn't post news...");
       });
   };
   const handleEdit = (e: FormEvent) => {
@@ -215,7 +215,10 @@ const PostNewsForm: FC<{ edit?: boolean }> = ({ edit }) => {
   };
   return (
     <>
-      <form className="row w-100 " onSubmit={edit ? handleEdit : handleSubmit}>
+      <form
+        className="row w-100 news-form"
+        onSubmit={edit ? handleEdit : handleSubmit}
+      >
         <div className="col-md-6 my-2">
           <label className="form-label">
             Title of the news in Malayalam (under 200 letters)

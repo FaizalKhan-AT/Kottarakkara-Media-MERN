@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "../../config";
 import { validatePassword, validateEmail } from "./Validate";
 interface Props {
   name: string;
+  external?: boolean;
 }
 interface FormData {
   username: string;
@@ -11,7 +12,7 @@ interface FormData {
   email: string;
   external: boolean;
 }
-const Signup: React.FC<Props> = ({ name }) => {
+const Signup: React.FC<Props> = ({ name, external: extern }) => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const navigate = useNavigate();
@@ -19,7 +20,7 @@ const Signup: React.FC<Props> = ({ name }) => {
     username: "",
     password: "",
     email: "",
-    external: false,
+    external: extern ? true : false,
   });
 
   const handleChange = (e: React.FormEvent) => {
@@ -52,7 +53,7 @@ const Signup: React.FC<Props> = ({ name }) => {
             setError(err);
             return;
           case "ok":
-            navigate("/admin");
+            navigate(extern ? "/editor/login" : "/admin");
             break;
         }
       });
@@ -156,6 +157,9 @@ const Signup: React.FC<Props> = ({ name }) => {
                 Register
               </button>
             </div>
+            <span className="text-dark">
+              Already an editor <Link to="/editor/login/">Login</Link>
+            </span>
           </div>
         </form>
       </div>
