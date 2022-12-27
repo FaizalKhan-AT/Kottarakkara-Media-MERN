@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "../../config";
 import { PostType, Post } from "../../contexts/PostContext";
-import { FILE_BASE_URL } from "../../env";
+import { FILE_BASE_URL, FRONTEND_BASE_URL } from "../../env";
 import { News } from "../../interfaces/NewsInterface";
 import { formatNumber } from "../../usefulFunctions/formatNumber";
 import { likePost } from "../../usefulFunctions/likePost";
@@ -69,7 +69,11 @@ const PostCard: React.FC<Props> = ({ editor, post, fetchFn, admin }) => {
     <>
       {success ? <Success success={success} setSuccess={setSuccess} /> : ""}
       {error ? <Error error={error} setError={setError} /> : ""}
-      <ShareModal open={open} handleOpen={handleOpenModal} />
+      <ShareModal
+        url={FRONTEND_BASE_URL + `/post/${post._id}`}
+        open={open}
+        handleOpen={handleOpenModal}
+      />
       <DeleteModal
         open={delModalOpen}
         deleteFn={handlePostDelete}

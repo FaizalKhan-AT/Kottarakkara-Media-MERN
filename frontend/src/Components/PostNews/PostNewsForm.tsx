@@ -320,16 +320,20 @@ const PostNewsForm: FC<{ edit?: boolean }> = ({ edit }) => {
             onChange={handleFileChange}
           />
           <div className="d-flex algin-items-center gap-2">
-            <label className="form-label">
-              <input
-                className="form-check-input"
-                type="radio"
-                name="upload"
-                value={"video"}
-                onClick={handleUploadVid}
-              />{" "}
-              video (1080p)(upload a compressed video below 500mb)
-            </label>
+            {formData.category !== "obituary" ? (
+              <label className="form-label">
+                <input
+                  className="form-check-input"
+                  type="radio"
+                  name="upload"
+                  value={"video"}
+                  onClick={handleUploadVid}
+                />{" "}
+                video (1080p)(upload a compressed video below 500mb)
+              </label>
+            ) : (
+              ""
+            )}
             <label className="form-label">
               <input
                 className="form-check-input"

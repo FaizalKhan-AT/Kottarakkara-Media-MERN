@@ -1,7 +1,5 @@
-import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import React from "react";
 import { News } from "../../interfaces/NewsInterface";
-import ShareModal from "../Modals/ShareModal";
 import ImageElement from "./ImageElement";
 import "./postView.css";
 import VideoElement from "./VideoElement";

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Modals.css";
 import fb from "../../assets/socialMediaLogos/fb.png";
 import linkedin from "../../assets/socialMediaLogos/linkedin.png";
@@ -8,12 +8,15 @@ import wap from "../../assets/socialMediaLogos/wap.png";
 import twitter from "../../assets/socialMediaLogos/twitter.png";
 import mail from "../../assets/socialMediaLogos/mail.png";
 import socialMedia from "../../interfaces/SocialMediaIcons";
+import Error from "../Error/Error";
+import Success from "../Success/Success";
 
 interface Props {
   open: boolean;
   handleOpen: () => void;
+  url: string;
 }
-const ShareModal: React.FC<Props> = ({ open, handleOpen }) => {
+const ShareModal: React.FC<Props> = ({ open, handleOpen, url }) => {
   const socialMediaShare: socialMedia[] = [
     {
       icon: fb,
@@ -45,56 +48,73 @@ const ShareModal: React.FC<Props> = ({ open, handleOpen }) => {
       share: "mailto:?subject=&BODY=",
     },
   ];
+  const [success, setSuccess] = useState<string>("");
+  const [error, setError] = useState<string>("");
+  const copyContent = async () => {
+    try {
+      await navigator.clipboard.writeText(url);
+      setSuccess("Url copied");
+    } catch (err) {
+      setError("Failed to copy ");
+    }
+  };
   return (
-    <div
-      style={{ zIndex: "20" }}
-      className={`position-absolute modal-share ${open ? "active" : ""}`}
-    >
+    <>
       <div
-        onClick={handleOpen}
-        style={{ backdropFilter: "blur(3px)" }}
-        className="overlay  position-fixed start-0 end-0 bottom-0 top-0"
-      ></div>
-      <div
-        style={{ zIndex: "20", width: "40%" }}
-        className="card modal-size position-fixed px-3 py-4 start-50 top-50 translate-middle"
+        style={{ zIndex: "20" }}
+        className={`position-absolute modal-share ${open ? "active" : ""}`}
       >
-        <div>
-          <div className="d-flex gap-2 h4 align-items-center justify-content-between">
-            <div className="d-flex gap-2 h4 align-items-center">
-              <span className="material-symbols-outlined text-dark">share</span>
-              Share
-            </div>
-            <span
-              onClick={handleOpen}
-              className="material-symbols-rounded fs-3"
-            >
-              close
-            </span>
-          </div>
-        </div>
-        <div>
-          <div className="d-flex flex-wrap gap-3 mt-3 justify-content-center">
-            <div
-              title="copy url"
-              style={{ borderRadius: "50%", width: "50px", height: "50px" }}
-              className="btn btn-dark d-flex flex-column align-items-center"
-            >
-              <span className="fs-2 material-symbols-outlined">
-                content_copy
+        <div
+          onClick={handleOpen}
+          style={{ backdropFilter: "blur(3px)" }}
+          className="overlay  position-fixed start-0 end-0 bottom-0 top-0"
+        ></div>
+        {error ? <Error error={error} setError={setError} /> : ""}
+        {success ? <Success success={success} setSuccess={setSuccess} /> : ""}
+        <div
+          style={{ zIndex: "20", width: "40%" }}
+          className="card modal-size position-fixed px-3 py-4 start-50 top-50 translate-middle"
+        >
+          <div>
+            <div className="d-flex gap-2 h4 align-items-center justify-content-between">
+              <div className="d-flex gap-2 h4 align-items-center">
+                <span className="material-symbols-outlined text-dark">
+                  share
+                </span>
+                Share
+              </div>
+              <span
+                onClick={handleOpen}
+                className="material-symbols-rounded fs-3"
+              >
+                close
               </span>
             </div>
-            {socialMediaShare.map((item, idx) => {
-              return (
-                <a target="_blank" key={idx + "share"} href={item.share}>
-                  <img src={item.icon} width="50" />
-                </a>
-              );
-            })}
+          </div>
+          <div>
+            <div className="d-flex flex-wrap gap-3 mt-3 justify-content-center">
+              <div
+                onClick={copyContent}
+                title="copy url"
+                style={{ borderRadius: "50%", width: "50px", height: "50px" }}
+                className="btn btn-dark d-flex flex-column align-items-center"
+              >
+                <span className="fs-2 material-symbols-outlined">
+                  content_copy
+                </span>
+              </div>
+              {socialMediaShare.map((item, idx) => {
+                return (
+                  <a target="_blank" key={idx + url} href={item.share + url}>
+                    <img src={item.icon} width="50" />
+                  </a>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
