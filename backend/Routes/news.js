@@ -9,12 +9,15 @@ const {
   getTrendingNews,
   getLiveNews,
   updateLiveNews,
+  getAllNews,
+  getAllPlaces,
 } = require("../controllers/news");
 const upload = require("../middlewares/FileUpload");
 
 const Router = require("express").Router();
 
-Router.route("/").post(upload.single("file"), uploadNews);
+Router.route("/").post(upload.single("file"), uploadNews).get(getAllNews);
+Router.route("/places").get(getAllPlaces);
 Router.route("/post/:id")
   .get(getSingleNews)
   .patch(upload.single("file"), updateSingleNews)

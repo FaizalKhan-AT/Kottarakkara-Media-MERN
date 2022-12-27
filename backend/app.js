@@ -7,6 +7,7 @@ const User = require("./Routes/user");
 const News = require("./Routes/news");
 const { protect } = require("./middlewares/ProtectRoute");
 const Admin = require("./Routes/admin");
+const Filter = require("./Routes/filter");
 require("dotenv").config();
 const path = require("path");
 //middlewares
@@ -15,6 +16,7 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(cors());
 app.use("/api/v1/editor/", Editor);
 app.use("/api/v1/news", News);
+app.use("/api/v1/filter", Filter);
 app.use("/api/v1/admin", Admin);
 app.use("/api/v1/user", protect, User);
 const startServer = async () => {

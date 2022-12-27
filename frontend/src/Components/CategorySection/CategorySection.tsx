@@ -67,7 +67,7 @@ const CategorySection: React.FC<Props> = ({ relatedNews, name, related }) => {
         </div>
       )}
       <div className="w-100 text-center my-3">
-        <Link to="/news/" className="btn btn-outline-danger btn-rounded">
+        <Link to={`/news/all`} className="btn btn-outline-danger btn-rounded">
           View More
         </Link>
       </div>

@@ -227,7 +227,7 @@ const getLiveNews = async (req, res) => {
 };
 const updateLiveNews = async (req, res) => {
   try {
-    await Live.remove({});
+    await Live.deleteMany({});
     const live = await Live.create({ liveUrl: req.body.url });
     if (live) {
       return res.status(200).json({ status: "ok", data: "live url updated" });
@@ -243,6 +243,115 @@ const updateLiveNews = async (req, res) => {
     });
   }
 };
+const getAllNews = async (req, res) => {
+  try {
+    const posts = await news
+      .find({ published: true })
+      .sort({ postedAt: -1, likes: "desc" });
+    if (posts) {
+      return res.status(200).json({ status: "ok", data: posts });
+    } else
+      return res.status(404).json({
+        status: "error",
+        error: "something went wrong :( posts not found",
+      });
+  } catch (err) {
+    return res.status(500).json({
+      status: "error",
+      error: "something went wrong :( while fetching the news",
+    });
+  }
+};
+const getAllPlaces = async (req, res) => {
+  try {
+    const places = await news
+      .find({ published: true }, { _id: 0, place: 1 })
+      .distinct("place");
+    if (places) {
+      return res.status(200).json({ status: "ok", data: places });
+    } else
+      return res.status(404).json({
+        status: "error",
+        error: "something went wrong :( places not found",
+      });
+  } catch (err) {
+    return res.status(500).json({
+      status: "error",
+      error: "something went wrong :( internal server error",
+    });
+  }
+};
+const filterNews = async (req, res) => {
+  const { category, type, time, place } = req.params;
+  const cat = category.replace("-", " ");
+  let pla = "";
+  if (place) pla = place.replaceAll("-", " ");
+  let obj = { published: true };
+  let sobj = { likes: "desc" };
+  try {
+    switch (cat) {
+      case "all":
+        obj = { ...obj };
+        break;
+      default:
+        obj = { ...obj, category: cat };
+        break;
+    }
+    switch (type) {
+      case "all":
+        obj = { ...obj };
+        break;
+      default:
+        obj = { ...obj, type: type };
+        break;
+    }
+    switch (time) {
+      case "oldest":
+        sobj = { postedAt: 1 };
+        break;
+      case "newest":
+        sobj = { postedAt: -1 };
+      default:
+        break;
+    }
+    if (place) obj = { ...obj, place: pla };
+    const posts = await news.find(obj).sort(sobj);
+    if (posts) {
+      return res.status(200).json({ status: "ok", data: posts });
+    } else
+      return res.status(404).json({
+        status: "error",
+        error: "something went wrong :( posts not found",
+      });
+  } catch (err) {
+    return res.status(500).json({
+      status: "error",
+      error: "something went wrong :( while fetching the news",
+    });
+  }
+};
+const filterCategoryNews = async (req, res) => {
+  const { category } = req.params;
+  const cat = category.replace("-", " ");
+  try {
+    const posts = await news
+      .find({ published: true, category: cat })
+      .sort({ likes: "desc" });
+
+    if (posts) {
+      return res.status(200).json({ status: "ok", data: posts });
+    } else
+      return res.status(404).json({
+        status: "error",
+        error: "something went wrong :( posts not found",
+      });
+  } catch (err) {
+    return res.status(500).json({
+      status: "error",
+      error: "something went wrong :( while fetching the news",
+    });
+  }
+};
 module.exports = {
   uploadNews,
   getLatestNews,
@@ -254,4 +363,8 @@ module.exports = {
   getTrendingNews,
   getLiveNews,
   updateLiveNews,
+  getAllNews,
+  getAllPlaces,
+  filterNews,
+  filterCategoryNews,
 };

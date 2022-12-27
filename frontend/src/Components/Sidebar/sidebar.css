@@ -1,0 +1,9 @@
+.sidebar {
+  width: 25%;
+  top: 10vh;
+  left: -100%;
+  box-shadow: 0 10px 12px rgba(0, 0, 0, 0.3);
+}
+.sidebar.active {
+  left: 0;
+}

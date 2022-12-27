@@ -14,7 +14,6 @@ const categories: string[] = [
   "Life Style",
   "Travel",
   "Obituary",
-  "Live",
   "Tech",
   "Entertainment",
   "Sports",
