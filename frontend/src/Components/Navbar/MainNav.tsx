@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/Logo/logo_dark.png";
+import { Search, SearchType } from "../../contexts/SearchContext";
 import "./NavStyles.css";
 interface navLinksType {
   title: string;
@@ -9,27 +10,27 @@ interface navLinksType {
 const navLinks: navLinksType[] = [
   {
     title: "Local News",
-    route: "news/local-news",
+    route: "/news/local-news",
   },
   {
     title: "News Updates",
-    route: "news/news-updates",
+    route: "/news/news-updates",
   },
   {
     title: "Life Style",
-    route: "news/life-style",
+    route: "/news/life-style",
   },
   {
     title: "Travel",
-    route: "news/travel",
+    route: "/news/travel",
   },
   {
     title: "Obituary",
-    route: "news/obituary",
+    route: "/news/obituary",
   },
   {
     title: "Tech",
-    route: "news/tech",
+    route: "/news/tech",
   },
 ];
 interface Props {
@@ -40,7 +41,9 @@ const MainNav: React.FC<Props> = ({ news, handleOpen }) => {
   useEffect(() => {
     setDate(getDate());
   }, []);
-  const [date, setDate] = useState<String>("");
+  const navigate = useNavigate();
+  const [date, setDate] = useState<string>("");
+  const { search, setSearch } = useContext(Search) as SearchType;
   const getDate = () => {
     const d = new Date();
     return `${new Intl.DateTimeFormat("en-US", {
@@ -48,6 +51,10 @@ const MainNav: React.FC<Props> = ({ news, handleOpen }) => {
     }).format(d)} ${new Intl.DateTimeFormat("en-US", {
       month: "short",
     }).format(d)} ${d.getDate()}, ${d.getFullYear()}`;
+  };
+  const handleChange = (e: React.FormEvent) => {
+    const tar = e.target as HTMLInputElement;
+    setSearch(tar.value);
   };
   return (
     <nav className="navbar sticky-top  navbar-lg ">
@@ -81,9 +88,16 @@ const MainNav: React.FC<Props> = ({ news, handleOpen }) => {
               style={{ paddingRight: "32px" }}
               type="search"
               placeholder="Search"
+              value={search}
+              onChange={handleChange}
               className="form-control search-inp "
             />
-            <span className="btn-search position-absolute end-0 me-2 d-flex align-items-center justify-content-center">
+            <span
+              onClick={() => {
+                navigate(`/news/all/${search}`);
+              }}
+              className="btn-search position-absolute end-0 me-2 d-flex align-items-center justify-content-center"
+            >
               <span className="material-symbols-rounded search">search</span>
             </span>
           </div>

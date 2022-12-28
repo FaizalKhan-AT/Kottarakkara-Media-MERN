@@ -8,6 +8,7 @@ import AdminFilterNav, {
 import EditorNav from "../../Components/Navbar/EditorNav";
 import PostCard from "../../Components/PostCard/PostCard";
 import VideoCard from "../../Components/PostCard/VideoCard";
+import Spinner from "../../Components/Spinner/Spinner";
 import axios from "../../config";
 import { News } from "../../interfaces/NewsInterface";
 import { Editor } from "../../interfaces/userInterface";
@@ -20,8 +21,12 @@ const AdminHome: React.FC = () => {
   const [tempData, setTempData] = useState<Editor[]>([]);
   const [title, setTitle] = useState<string>("all editors");
   const [open, setOpen] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+
   const fetchData = (url: string) => {
     setError("");
+    setLoading(true);
+
     axios
       .get(url)
       .then((res) => {
@@ -39,6 +44,7 @@ const AdminHome: React.FC = () => {
               setData([]);
               setTempData([]);
             }
+            setLoading(false);
             break;
           case "error":
             setError(error);
@@ -146,36 +152,42 @@ const AdminHome: React.FC = () => {
           <span className="fw-bold text-dark h3 mb-0 ">{title}</span>
         </div>
         <br />
-        {title.includes("editors") ? (
-          <div className="d-flex flex-column gap-2">
-            {data.length > 0 ? (
-              data?.map((editor) => {
-                return (
-                  <EditorCard
-                    fetchFn={fetchData}
-                    key={editor._id}
-                    editor={editor as Editor}
-                  />
-                );
-              })
-            ) : (
-              <h3 className="text-center my-3">
-                No editors added since now...
-              </h3>
-            )}
-          </div>
-        ) : newsData.length > 0 ? (
-          <div className="card-section">
-            {newsData.map((post, idx) => {
-              return post.type === "video" ? (
-                <VideoCard admin post={post} key={post._id} />
-              ) : (
-                <PostCard admin post={post} key={post._id} />
-              );
-            })}
-          </div>
+        {loading ? (
+          <Spinner height="50vh" />
         ) : (
-          <h3 className="text-center my-3">No posts since now... </h3>
+          <>
+            {title.includes("editors") ? (
+              <div className="d-flex flex-column gap-2">
+                {data.length > 0 ? (
+                  data?.map((editor) => {
+                    return (
+                      <EditorCard
+                        fetchFn={fetchData}
+                        key={editor._id}
+                        editor={editor as Editor}
+                      />
+                    );
+                  })
+                ) : (
+                  <h3 className="text-center my-3">
+                    No editors added since now...
+                  </h3>
+                )}
+              </div>
+            ) : newsData.length > 0 ? (
+              <div className="card-section">
+                {newsData.map((post, idx) => {
+                  return post.type === "video" ? (
+                    <VideoCard admin post={post} key={post._id} />
+                  ) : (
+                    <PostCard admin post={post} key={post._id} />
+                  );
+                })}
+              </div>
+            ) : (
+              <h3 className="text-center my-3">No posts since now... </h3>
+            )}
+          </>
         )}
       </div>
       <br />

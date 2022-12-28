@@ -28,7 +28,7 @@ const PostNav: React.FC<{ post: News | null }> = ({ post }) => {
       >
         <div className="d-flex align-items-center gap-3">
           <div
-            onClick={() => navigate("/news")}
+            onClick={() => navigate("/news/all")}
             className="btn btn-glass d-flex align-items-center justify-content-center"
           >
             <span className="material-symbols-outlined text-light me-1">

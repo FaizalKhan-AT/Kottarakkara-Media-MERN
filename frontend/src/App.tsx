@@ -22,7 +22,10 @@ const App: React.FC = () => {
         <Route path="/" element={<Home />} />
         <Route path="/live" element={<Live />} />
         <Route path="/post/:id" element={<Post />} />
-        <Route path="/news/:category" element={<NewsFilter />} />
+        <Route path="/news/:category">
+          <Route index element={<NewsFilter />} />
+          <Route path=":key" element={<NewsFilter />} />
+        </Route>
         <Route path="/admin">
           <Route index element={<AdminHome />} />
           <Route path="login" element={<AdminLogin />} />

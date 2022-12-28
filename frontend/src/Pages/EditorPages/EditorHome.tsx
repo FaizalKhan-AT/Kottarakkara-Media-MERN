@@ -7,6 +7,7 @@ import EditorNav from "../../Components/Navbar/EditorNav";
 import FilterNav from "../../Components/Navbar/FilterNav";
 import PostCard from "../../Components/PostCard/PostCard";
 import VideoCard from "../../Components/PostCard/VideoCard";
+import Spinner from "../../Components/Spinner/Spinner";
 import axios from "../../config";
 import { News } from "../../interfaces/NewsInterface";
 export interface Filter {
@@ -17,12 +18,15 @@ const EditorHome: React.FC = () => {
   const [error, setError] = useState<string>("");
   const [posts, setPosts] = useState<News[]>([]);
   const [search, setSearch] = useState<News[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+
   const checkLocalStorage = () => {
     if (!localStorage.getItem("user")) return null;
     const { id } = JSON.parse(localStorage.getItem("user") as string);
     return id;
   };
   const fetchPosts = () => {
+    setLoading(true);
     let id = checkLocalStorage();
     if (id) {
       axios
@@ -33,6 +37,7 @@ const EditorHome: React.FC = () => {
             case "ok":
               setPosts(data);
               setSearch(data);
+              setLoading(false);
               break;
             case "error":
               setError(error);
@@ -104,31 +109,37 @@ const EditorHome: React.FC = () => {
           <span className="fw-bold text-dark h3 mb-0">Your posts</span>
         </div>
         <br />
-        {posts.length > 0 ? (
-          <div className="card-section">
-            {posts.map((post, idx) => {
-              return post.type === "video" ? (
-                <VideoCard
-                  fetchFn={fetchPosts}
-                  editor
-                  post={post}
-                  key={post._id}
-                />
-              ) : (
-                <PostCard
-                  fetchFn={fetchPosts}
-                  editor
-                  post={post}
-                  key={post._id}
-                />
-              );
-            })}
-          </div>
+        {loading ? (
+          <Spinner height="50vh" />
         ) : (
-          <h3 className="text-center my-3">
-            You haven't posted any news yet...{" "}
-            <Link to="/editor/post">Post news</Link>
-          </h3>
+          <>
+            {posts.length > 0 ? (
+              <div className="card-section">
+                {posts.map((post, idx) => {
+                  return post.type === "video" ? (
+                    <VideoCard
+                      fetchFn={fetchPosts}
+                      editor
+                      post={post}
+                      key={post._id}
+                    />
+                  ) : (
+                    <PostCard
+                      fetchFn={fetchPosts}
+                      editor
+                      post={post}
+                      key={post._id}
+                    />
+                  );
+                })}
+              </div>
+            ) : (
+              <h3 className="text-center my-3">
+                You haven't posted any news yet...{" "}
+                <Link to="/editor/post">Post news</Link>
+              </h3>
+            )}
+          </>
         )}
       </div>
       {error ? <Error error={error} setError={setError} /> : ""}

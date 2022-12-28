@@ -12,7 +12,7 @@ const categories: string[] = [
   "entertainment",
   "sports",
 ];
-const time: string[] = ["oldest", "newest"];
+const time: string[] = ["newest", "oldest"];
 const type: string[] = ["all", "image", "video"];
 interface Props {
   handleOpen: () => void;
@@ -29,7 +29,7 @@ const FilterSidebar: React.FC<Props> = ({ open, handleOpen, handleFilter }) => {
   const [places, setPlaces] = useState<string[]>([]);
   const [filter, setFilter] = useState<NFilter>({
     place: "",
-    time: "oldest",
+    time: "newest",
     category: "all",
     type: "all",
   });

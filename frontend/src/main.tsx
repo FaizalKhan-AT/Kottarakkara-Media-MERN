@@ -4,6 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import AuthContext from "./contexts/AuthContext";
 import PostContext from "./contexts/PostContext";
+import SearchContext from "./contexts/SearchContext";
 import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
@@ -11,7 +12,9 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <BrowserRouter>
       <AuthContext>
         <PostContext>
-          <App />
+          <SearchContext>
+            <App />
+          </SearchContext>
         </PostContext>
       </AuthContext>
     </BrowserRouter>

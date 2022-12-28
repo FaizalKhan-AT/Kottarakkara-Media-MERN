@@ -6,6 +6,7 @@ import Ads from "../Ads/Ads";
 import Error from "../Error/Error";
 import PostCard from "../PostCard/PostCard";
 import VideoCard from "../PostCard/VideoCard";
+import Spinner from "../Spinner/Spinner";
 import "./category.css";
 type Props = {
   name: string;
@@ -15,6 +16,7 @@ type Props = {
 const CategorySection: React.FC<Props> = ({ relatedNews, name, related }) => {
   const [latest, setLatest] = useState<News[]>([]);
   const [error, setError] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
   const fetchLatestNews = () => {
     axios
       .get("/news/latest")
@@ -32,46 +34,62 @@ const CategorySection: React.FC<Props> = ({ relatedNews, name, related }) => {
       .catch((err) => {
         setError("Something went wrong :( try refreshing the page");
       });
+    setLoading(false);
   };
 
   useEffect(() => {
+    setLoading(true);
     fetchLatestNews();
   }, []);
   return (
     <>
-      <div className="d-flex gap-2 align-items-center">
-        <span style={{ height: "30px", width: "4px" }} className="bar"></span>
-        <span className="fw-bold text-dark h3 mb-0">{name}</span>
-      </div>
-      {related ? (
-        (relatedNews?.length as number) > 0 ? (
-          <div className="mt-3 card-section ">
-            {relatedNews?.map((post, idx) => {
-              return <PostCard post={post} key={post._id} />;
-            })}
-          </div>
-        ) : (
-          <h4 className="text-center my-2 mb-4">No related news to show ...</h4>
-        )
+      {loading ? (
+        <Spinner />
       ) : (
-        <div className="mt-3 card-section">
-          {latest.length > 0
-            ? latest.map((post, idx) => {
-                return post.type === "video" ? (
-                  <VideoCard post={post} key={post._id} />
-                ) : (
-                  <PostCard post={post} key={post._id} />
-                );
-              })
-            : ""}
-        </div>
+        <>
+          <div className="d-flex gap-2 align-items-center">
+            <span
+              style={{ height: "30px", width: "4px" }}
+              className="bar"
+            ></span>
+            <span className="fw-bold text-dark h3 mb-0">{name}</span>
+          </div>
+          {related ? (
+            (relatedNews?.length as number) > 0 ? (
+              <div className="mt-3 card-section ">
+                {relatedNews?.map((post, idx) => {
+                  return <PostCard post={post} key={post._id} />;
+                })}
+              </div>
+            ) : (
+              <h4 className="text-center my-2 mb-4">
+                No related news to show ...
+              </h4>
+            )
+          ) : (
+            <div className="mt-3 card-section">
+              {latest.length > 0
+                ? latest.map((post, idx) => {
+                    return post.type === "video" ? (
+                      <VideoCard post={post} key={post._id} />
+                    ) : (
+                      <PostCard post={post} key={post._id} />
+                    );
+                  })
+                : ""}
+            </div>
+          )}
+          <div className="w-100 text-center my-3">
+            <Link
+              to={`/news/all`}
+              className="btn btn-outline-danger btn-rounded"
+            >
+              View More
+            </Link>
+          </div>
+          {error ? <Error error={error} setError={setError} /> : ""}
+        </>
       )}
-      <div className="w-100 text-center my-3">
-        <Link to={`/news/all`} className="btn btn-outline-danger btn-rounded">
-          View More
-        </Link>
-      </div>
-      {error ? <Error error={error} setError={setError} /> : ""}
     </>
   );
 };
