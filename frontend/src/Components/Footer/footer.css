@@ -12,3 +12,8 @@
 .dev-link {
   font-size: 15px;
 }
+@media screen and (max-width: 617px) {
+  footer {
+    justify-content: center;
+  }
+}

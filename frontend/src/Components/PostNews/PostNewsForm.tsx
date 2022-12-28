@@ -7,6 +7,7 @@ import { FILE_BASE_URL } from "../../env";
 import { News } from "../../interfaces/NewsInterface";
 import { Editor } from "../../interfaces/userInterface";
 import Error from "../Error/Error";
+import Spinner from "../Spinner/Spinner";
 import "./postNews.css";
 const categories: string[] = [
   "Local News",
@@ -64,7 +65,7 @@ const PostNewsForm: FC<{ edit?: boolean }> = ({ edit }) => {
   const [vid, setVid] = useState<File | null>();
   const [error, setError] = useState<string>("");
   const [tagInp, setTagInp] = useState<string>("");
-
+  const [loading, setLoading] = useState<boolean>(false);
   const handleChange = (e: FormEvent) => {
     const target = e.target as HTMLInputElement;
     setFormData({ ...formData, [target.name]: target.value.toLowerCase() });
@@ -154,6 +155,7 @@ const PostNewsForm: FC<{ edit?: boolean }> = ({ edit }) => {
     e.preventDefault();
     if (!validate()) return;
     setError("");
+    setLoading(true);
     axios
       .post(
         "/news",
@@ -168,6 +170,7 @@ const PostNewsForm: FC<{ edit?: boolean }> = ({ edit }) => {
         const { status, error, data } = res.data;
         switch (status) {
           case "ok":
+            setLoading(false);
             navigate("/editor");
             break;
           case "error":
@@ -178,10 +181,12 @@ const PostNewsForm: FC<{ edit?: boolean }> = ({ edit }) => {
       .catch((err) => {
         setError("Something went wrong :( couldn't post news...");
       });
+    setLoading(false);
   };
   const handleEdit = (e: FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
+    setLoading(true);
     axios
       .patch(
         `/news/post/${post?._id}`,
@@ -201,6 +206,7 @@ const PostNewsForm: FC<{ edit?: boolean }> = ({ edit }) => {
         const { status, error } = res.data;
         switch (status) {
           case "ok":
+            setLoading(false);
             navigate("/editor");
             break;
           case "error":
@@ -211,6 +217,7 @@ const PostNewsForm: FC<{ edit?: boolean }> = ({ edit }) => {
       .catch((err) => {
         setError("Something went wrong :( try again... ");
       });
+    setLoading(false);
   };
   return (
     <>
@@ -452,7 +459,15 @@ const PostNewsForm: FC<{ edit?: boolean }> = ({ edit }) => {
         </div>
         <div className="col-md-12 row w-100 my-4  justify-content-center">
           <button type="submit" className="btn btn-primary col-md-6 ">
-            {edit ? "Edit news" : "Post News"}
+            {loading ? (
+              <span
+                className="spinner-border spinner-border-sm"
+                role="status"
+                aria-hidden="true"
+              ></span>
+            ) : (
+              <>{edit ? "Edit news" : "Post News"}</>
+            )}
           </button>
         </div>
       </form>

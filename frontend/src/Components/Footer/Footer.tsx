@@ -20,7 +20,7 @@ const Footer: React.FC<{ admin?: boolean }> = ({ admin }) => {
     { icon: mail, share: "" },
   ];
   return (
-    <footer className={`bg-dark py-3 d-flex align-items-center`}>
+    <footer className={`bg-dark py-3 d-flex align-items-center flex-wrap`}>
       <Link to="/">
         <img width="120" src={logo} alt="kottarakkara media logo" />
       </Link>
@@ -43,7 +43,7 @@ const Footer: React.FC<{ admin?: boolean }> = ({ admin }) => {
               );
             })}
           </div>
-          <div className="d-flex gap-3 justify-content-center w-100 my-2 mt-3">
+          <div className="d-flex gap-3 flex-wrap justify-content-center w-100 my-2 mt-3">
             <Link className="footer-links fs-6" to="/about-us">
               About us
             </Link>

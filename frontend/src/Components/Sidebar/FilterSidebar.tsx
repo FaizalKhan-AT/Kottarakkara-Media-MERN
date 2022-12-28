@@ -13,7 +13,7 @@ const categories: string[] = [
   "sports",
 ];
 const time: string[] = ["newest", "oldest"];
-const type: string[] = ["all", "image", "video"];
+const type: string[] = ["image", "video"];
 interface Props {
   handleOpen: () => void;
   open: boolean;
@@ -31,7 +31,7 @@ const FilterSidebar: React.FC<Props> = ({ open, handleOpen, handleFilter }) => {
     place: "",
     time: "newest",
     category: "all",
-    type: "all",
+    type: "image",
   });
   const fetchData = (url: string) => {
     axios
@@ -94,6 +94,7 @@ const FilterSidebar: React.FC<Props> = ({ open, handleOpen, handleFilter }) => {
             </select>
           </div>
           <br />
+
           <div className="d-flex flex-column gap-2 mx-3">
             <span className="fw-bold">by type</span>
             <select className="form-select" name="type" onChange={handleChange}>
@@ -119,6 +120,7 @@ const FilterSidebar: React.FC<Props> = ({ open, handleOpen, handleFilter }) => {
               })}
             </select>
           </div>
+
           <br />
           <div className="d-flex flex-column gap-2 mx-3">
             <span className="fw-bold">By place</span>

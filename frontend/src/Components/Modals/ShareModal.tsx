@@ -97,7 +97,7 @@ const ShareModal: React.FC<Props> = ({ open, handleOpen, url }) => {
                 onClick={copyContent}
                 title="copy url"
                 style={{ borderRadius: "50%", width: "50px", height: "50px" }}
-                className="btn btn-dark d-flex flex-column align-items-center"
+                className="btn btn-dark d-flex flex-column justify-content-center align-items-center"
               >
                 <span className="fs-2 material-symbols-outlined">
                   content_copy

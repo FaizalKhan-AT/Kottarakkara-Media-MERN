@@ -6,3 +6,27 @@
 .card-vid {
   grid-column: span 2;
 }
+@media screen and (max-width: 992px) {
+  .card-section {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .card-vid {
+    grid-column: span 3;
+  }
+}
+@media screen and (max-width: 769px) {
+  .card-section {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .card-vid {
+    grid-column: span 2;
+  }
+}
+@media screen and (max-width: 475px) {
+  .card-section {
+    grid-template-columns: 1fr;
+  }
+  .card-vid {
+    grid-column: 1;
+  }
+}

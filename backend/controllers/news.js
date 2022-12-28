@@ -70,14 +70,31 @@ const getSingleNews = async (req, res) => {
 };
 const getLatestNews = async (req, res) => {
   try {
-    const posts = await news
-      .find({ published: true })
-      .limit(20)
-      .sort({ postedAt: -1, likes: "desc" });
-    if (posts) {
-      let result = [];
-      const length = posts.length;
-      return res.status(200).json({ status: "ok", data: posts });
+    const images = await news
+      .find({ published: true, type: "image" })
+      .limit(15)
+      .sort({ postedAt: -1 });
+    const videos = await news
+      .find({ published: true, type: "video" })
+      .limit(5)
+      .sort({ postedAt: -1 });
+    if (images && !videos)
+      return res.status(200).json({ status: "ok", data: images });
+    if (videos && !images)
+      return res.status(200).json({ status: "ok", data: videos });
+    let result = [];
+    if (images && videos) {
+      const length = images.length + videos.length;
+      for (let i = 0; i < length; i++) {
+        if (i % 5 === 0) {
+          if (videos.length < 1) break;
+          result.push(videos.shift());
+        } else {
+          if (images.length < 1) break;
+          result.push(images.shift());
+        }
+      }
+      return res.status(200).json({ status: "ok", data: result });
     } else
       return res.status(404).json({
         status: "error",
@@ -246,8 +263,8 @@ const updateLiveNews = async (req, res) => {
 const getAllNews = async (req, res) => {
   try {
     const posts = await news
-      .find({ published: true })
-      .sort({ postedAt: -1, likes: "desc" });
+      .find({ published: true, type: "image" })
+      .sort({ postedAt: -1 });
     if (posts) {
       return res.status(200).json({ status: "ok", data: posts });
     } else
@@ -282,7 +299,7 @@ const getAllPlaces = async (req, res) => {
   }
 };
 const filterNews = async (req, res) => {
-  const { category, type, time, place } = req.params;
+  const { category, type, time, place, sort } = req.params;
   const cat = category.replace("-", " ");
   let pla = "";
   if (place) pla = place.replaceAll("-", " ");
@@ -314,6 +331,7 @@ const filterNews = async (req, res) => {
       default:
         break;
     }
+
     if (place) obj = { ...obj, place: pla };
     const posts = await news.find(obj).sort(sobj);
     if (posts) {

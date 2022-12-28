@@ -28,12 +28,15 @@ const Slider: React.FC = () => {
       })
       .catch((err) => setError("something went wrong :("));
   };
+
   useEffect(() => {
     fetchTrending();
   }, []);
+
   return (
     <>
       {error ? <Error error={error} setError={setError} /> : ""}
+
       {trending.length > 0 ? (
         <Swiper
           loop={true}

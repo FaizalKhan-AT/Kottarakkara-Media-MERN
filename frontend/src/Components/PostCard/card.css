@@ -44,15 +44,18 @@
   transition: var(--trans);
   transform-origin: left;
 }
-
 .material-symbols-outlined.like:hover + span,
 .material-symbols-outlined.liked:hover + span {
   transform: scale(1);
 }
-
 .by-line {
   font-size: 14px;
 }
 .video-card {
   border-radius: 5px 5px 10px 10px;
+}
+@media screen and (max-width: 377px) {
+  .vid-control {
+    margin-bottom: 8px;
+  }
 }

@@ -43,3 +43,45 @@ img {
 .card-text.slider {
   --lines: 3;
 }
+@media screen and (max-width: 768px) {
+  .scard-link {
+    font-size: 17px !important;
+  }
+}
+@media screen and (max-width: 600px) {
+  .swiper-button-prev,
+  .swiper-button-next {
+    display: none !important;
+  }
+  .no-padding {
+    padding-left: 0 !important;
+  }
+}
+@media screen and (max-width: 460px) {
+  .scard-link {
+    font-size: 16px !important;
+  }
+}
+@media screen and (max-width: 433px) {
+  .scard-link {
+    font-size: 15px !important;
+  }
+  .card-text.slider {
+    --lines: 2;
+  }
+}
+
+@media screen and (max-width: 390px) {
+  .scard-link {
+    font-size: 14px !important;
+  }
+  .card-text.slider {
+    --lines: 2;
+    font-size: 11px;
+  }
+}
+@media screen and (max-width: 340px) {
+  .scard-link {
+    font-size: 13px !important;
+  }
+}

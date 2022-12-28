@@ -135,14 +135,14 @@ const VideoCard: React.FC<Props> = ({ editor, post, fetchFn, admin }) => {
             className="card-title fw-bold text-dark w-100"
           >
             {post.titleMal.length > 60
-              ? post.titleMal.split(post.titleMal.charAt(60))[0]
+              ? post.titleMal.slice(0, 60)
               : post.titleMal}
             ...
           </Link>
 
-          <div className="d-flex align-items-center my-2 justify-content-between mt-2">
-            <div className="d-flex align-items-center gap-2">
-              <div className="d-flex align-items-center">
+          <div className="d-flex align-items-center my-2 flex-wrap w-100 justify-content-between mt-2">
+            <div className="d-flex align-items-center gap-2 vid-control">
+              <div className="d-flex align-items-center like-vid">
                 <span
                   onClick={() => {
                     setLiked(!liked);
@@ -157,9 +157,9 @@ const VideoCard: React.FC<Props> = ({ editor, post, fetchFn, admin }) => {
                 >
                   favorite
                 </span>
-                <span className="">{formatNumber(post.likes)} Likes</span>
+                <span>{formatNumber(post.likes)} Likes</span>
               </div>
-              <div className="d-flex align-items-center gap-1 ">
+              <div className="d-flex align-items-center gap-1 view-vid">
                 <span className="material-symbols-rounded ">visibility</span>
                 <span>{formatNumber(post.views)} views</span>
               </div>

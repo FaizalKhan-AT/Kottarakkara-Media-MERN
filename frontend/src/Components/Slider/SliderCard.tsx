@@ -11,6 +11,7 @@ const SliderCard: React.FC<{ post: News }> = ({ post }) => {
         <div className="position-relative">
           <div className="position-absolute overlay start-0 end-0 top-0 bottom-0"></div>
           <img
+            className="slider-img"
             style={{ objectFit: "cover" }}
             src={FILE_BASE_URL + post.file}
             width="100%"
@@ -20,10 +21,16 @@ const SliderCard: React.FC<{ post: News }> = ({ post }) => {
         </div>
         <div
           style={{ zIndex: "10" }}
-          className="position-absolute start-0 bottom-0 mx-4 ps-4 mb-5"
+          className="position-absolute no-padding start-0 bottom-0 mx-4 ps-4 mb-5"
         >
-          <Link className="scard-link h4 text-start" to={`/post/${post._id}`}>
-            {post.titleMal}
+          <Link
+            className="scard-link card-title h4 text-start"
+            to={`/post/${post._id}`}
+          >
+            {post.titleMal.length > 80
+              ? post.titleMal.slice(0, 80)
+              : post.titleMal}
+            ...
           </Link>
           <p className="text-light mt-2 card-text slider">
             {post.newsContent}

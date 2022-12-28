@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Error from "../../Components/Error/Error";
 import Footer from "../../Components/Footer/Footer";
 import MainNav from "../../Components/Navbar/MainNav";
@@ -14,11 +14,11 @@ import { News } from "../../interfaces/NewsInterface";
 const NewsFilter: React.FC = () => {
   const { category, key } = useParams();
   const [error, setError] = useState<string>("");
-  const { handleSearch, search } = useContext(Search) as SearchType;
+  const { handleSearch, search, setSearch } = useContext(Search) as SearchType;
   const [news, setNews] = useState<News[]>([]);
   const [open, setOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-
+  const navigate = useNavigate();
   const fetchData = (url: string) => {
     axios
       .get(url)
@@ -37,15 +37,16 @@ const NewsFilter: React.FC = () => {
       .catch((err) => setError("couldn't get news :("));
   };
   useEffect(() => {
+    if (category === "all") fetchData("/news/");
+    else fetchData(`/filter/news/${category?.replace(" ", "-")}`);
+  }, []);
+  useEffect(() => {
     setLoading(true);
     if (key !== "") {
       searchPosts();
       return;
     }
-    if (category === "all") fetchData("/news/");
-    else fetchData(`/filter/news/${category?.replace(" ", "-")}`);
   }, [key]);
-
   const handleOpen = () => setOpen(!open);
   const handleFilter = (filter: NFilter) => {
     fetchData(
@@ -58,6 +59,13 @@ const NewsFilter: React.FC = () => {
     setNews(handleSearch());
     setLoading(false);
   };
+  const handleChange = (e: React.FormEvent) => {
+    const tar = e.target as HTMLInputElement;
+    if (tar.value === "") {
+      navigate("/news/all");
+    }
+    setSearch(tar.value);
+  };
   return (
     <>
       {error ? <Error error={error} setError={setError} /> : ""}
@@ -67,6 +75,25 @@ const NewsFilter: React.FC = () => {
         open={open}
         handleOpen={handleOpen}
       />
+      <br />
+      <div className="d-flex container w-100 justify-content-center">
+        <div className="d-flex search-news align-items-center gap-2">
+          <input
+            value={search}
+            name="search"
+            onChange={handleChange}
+            placeholder="search"
+            type="search"
+            className="form-control"
+          />
+          <div
+            onClick={() => navigate(`/news/all/${search}`)}
+            className="btn btn-dark d-flex align-items-center justify-content-center"
+          >
+            <span className="material-symbols-rounded search">search</span>
+          </div>
+        </div>
+      </div>
       <br />
       {loading ? (
         <Spinner height="55vh" />
@@ -83,10 +110,13 @@ const NewsFilter: React.FC = () => {
               })}
             </div>
           ) : (
-            <h3 className="text-center my-3">No News till now...</h3>
+            <h3 style={{ height: "50vh" }} className="text-center my-3">
+              No News till now...
+            </h3>
           )}
         </div>
       )}
+      <br />
       <Footer />
     </>
   );
