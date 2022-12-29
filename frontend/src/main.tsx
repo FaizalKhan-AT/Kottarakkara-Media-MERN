@@ -5,7 +5,7 @@ import App from "./App";
 import AuthContext from "./contexts/AuthContext";
 import PostContext from "./contexts/PostContext";
 import SearchContext from "./contexts/SearchContext";
-import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
+// import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 
 import "./index.css";
 
@@ -22,4 +22,4 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     </BrowserRouter>
   </React.StrictMode>
 );
-serviceWorkerRegistration.register();
+// serviceWorkerRegistration.register();
