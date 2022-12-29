@@ -7,7 +7,7 @@ const category: string[] = [
   "non published news",
   "trending news",
 ];
-const type: string[] = ["all", "video", "image"];
+const type: string[] = ["image", "video"];
 const time: string[] = ["oldest", "newest"];
 export interface FilterAdmin {
   category: string;
@@ -39,7 +39,7 @@ const AdminFilterNav: React.FC<Props> = ({
   return (
     <>
       <nav className="d-flex align-items-center flex-wrap justify-content-between container gap-3">
-        <div className="d-flex align-items-center gap-3">
+        <div className="d-flex align-items-center gap-3 admin-fil-sel">
           <select
             onChange={handleChange}
             className="form-select"

@@ -146,7 +146,10 @@ const FilterSidebar: React.FC<Props> = ({ open, handleOpen, handleFilter }) => {
           <br />
           <div className="d-flex align-items-center justify-content-center">
             <div
-              onClick={() => handleFilter(filter)}
+              onClick={() => {
+                handleFilter(filter);
+                handleOpen();
+              }}
               className="btn btn-outline-dark btn-rounded "
             >
               Apply filters

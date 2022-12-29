@@ -180,14 +180,14 @@ const PostCard: React.FC<Props> = ({ editor, post, fetchFn, admin }) => {
           </div>
 
           <p className="card-text mt-2">{post.newsContent}</p>
-          <div className="d-flex align-items-center justify-content-between">
+          <div className="d-flex align-items-center justify-content-between flex-wrap">
             <div className="d-flex align-items-center gap-1 ">
               <span className="material-symbols-rounded eye">visibility</span>
               <span>{formatNumber(post.views)} views</span>
             </div>
 
             {editor ? (
-              <div className="d-flex align-items-center gap-2">
+              <div className="d-flex align-items-center gap-2 ">
                 <div
                   style={{ fontSize: "13px" }}
                   onClick={() => {

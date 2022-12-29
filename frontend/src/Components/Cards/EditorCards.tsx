@@ -67,19 +67,19 @@ const EditorCards: React.FC<Props> = ({ editor, fetchFn }) => {
           <div className="card expand py-2 px-3 mt-1">
             <div className="d-flex flex-column gap-2">
               <span className="d-flex align-items-center gap-3">
-                <span className="fw-bold fs-5">Email : </span>
+                <span className="fw-bold fs-5 card-ex-det">Email : </span>
                 <span className="fw-bold red-color text-lowercase">
                   {editor.email}{" "}
                 </span>
               </span>
               <span className="d-flex align-items-center gap-3">
-                <span className="fw-bold fs-5">External : </span>
+                <span className="fw-bold fs-5 card-ex-det">External : </span>
                 <span className="fw-bold red-color">
                   {editor.external ? "Yes" : "No"}
                 </span>
               </span>
               <span className="d-flex align-items-center gap-3">
-                <span className="fw-bold fs-5">Password : </span>
+                <span className="fw-bold fs-5 card-ex-det">Password: </span>
                 <input
                   className={`fw-bold ${
                     showPassword ? "red-color" : "text-dark"

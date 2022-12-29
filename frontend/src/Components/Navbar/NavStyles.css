@@ -10,20 +10,9 @@
   font-weight: 500;
   position: relative;
 }
-.nav-link::after {
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 3px;
-  border-radius: 15px;
-  transform: scale(0);
-  transform-origin: right;
-  transition: 0.3s ease-in-out;
-  background: #000;
-  left: 0;
-  bottom: -2px;
-}
-.nav-link:hover::after {
+
+.nav-link:hover::after,
+.nav-link:active::after {
   background: #e20613;
   transform: scale(1);
 }
@@ -106,6 +95,53 @@
   background: #000;
   left: -12px;
 }
+.add-news-btn-mob {
+  display: none !important;
+}
+.ham-edit {
+  display: none;
+}
+@media screen and (max-width: 769px) {
+  .ham-edit {
+    display: block;
+  }
+  .add-news-btn-mob {
+    display: flex !important;
+  }
+  .edit-nav.active {
+    transform: scale(1);
+  }
+  .edit-nav {
+    position: absolute;
+    flex-direction: column;
+    background: #fff;
+    width: 300px;
+    padding: 10px;
+    top: 7vh;
+    border-radius: 6px;
+    box-shadow: var(--shadow);
+    gap: 5px !important;
+    transform: scale(0);
+    transition: var(--trans);
+    transform-origin: top right;
+  }
+  .add-news-btn {
+    display: none !important;
+  }
+  .logout {
+    margin-bottom: 10px;
+  }
+  .logout::after {
+    content: "Logout";
+  }
+  .user-details {
+    text-align: center;
+    font-size: 18px;
+  }
+  .acc {
+    font-size: 2.5rem !important;
+  }
+}
 @media screen and (max-width: 610px) {
   .search-bar {
     width: 60%;
@@ -114,6 +150,17 @@
     width: 150px;
   }
 }
+@media screen and (max-width: 530px) {
+  .edit-pad {
+    padding-right: 10px !important;
+  }
+}
+@media screen and (max-width: 450px) {
+  .admin-fil-sel {
+    flex-wrap: wrap;
+  }
+}
+
 @media screen and (max-width: 390px) {
   .nav-main {
     padding-right: 5px !important;

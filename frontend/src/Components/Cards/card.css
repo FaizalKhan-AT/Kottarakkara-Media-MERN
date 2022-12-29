@@ -4,3 +4,8 @@
   background: none;
   cursor: pointer;
 }
+@media screen and (max-width: 410px) {
+  .card-ex-det {
+    font-size: 15px !important;
+  }
+}

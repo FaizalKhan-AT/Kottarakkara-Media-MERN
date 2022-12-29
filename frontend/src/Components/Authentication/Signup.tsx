@@ -157,9 +157,13 @@ const Signup: React.FC<Props> = ({ name, external: extern }) => {
                 Register
               </button>
             </div>
-            <span className="text-dark">
-              Already an editor <Link to="/editor/login/">Login</Link>
-            </span>
+            {window.location.href.includes("/editor") ? (
+              <span className="text-dark">
+                Already an editor <Link to="/editor/login/">Login</Link>
+              </span>
+            ) : (
+              ""
+            )}
           </div>
         </form>
       </div>

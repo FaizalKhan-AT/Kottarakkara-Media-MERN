@@ -13,6 +13,8 @@ import Home from "./Pages/Home/Home";
 import NewsFilter from "./Pages/News/NewsFilter";
 import Live from "./Pages/Post/Live";
 import Post from "./Pages/Post/Post";
+import About from "./Pages/Static/About";
+import Grievance from "./Pages/Static/Grievance";
 
 const App: React.FC = () => {
   return (
@@ -22,6 +24,8 @@ const App: React.FC = () => {
         <Route path="/" element={<Home />} />
         <Route path="/live" element={<Live />} />
         <Route path="/post/:id" element={<Post />} />
+        <Route path="/about-us" element={<About />} />
+        <Route path="/grievance" element={<Grievance />} />
         <Route path="/news/:category">
           <Route index element={<NewsFilter />} />
           <Route path=":key" element={<NewsFilter />} />

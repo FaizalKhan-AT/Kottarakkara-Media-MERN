@@ -3,21 +3,20 @@ import "./footer.css";
 import logo from "../../assets/Logo/ktr.png";
 import { Link } from "react-router-dom";
 import fb from "../../assets/socialMediaLogos/fb.png";
-import linkedin from "../../assets/socialMediaLogos/linkedin.png";
-import reddit from "../../assets/socialMediaLogos/reddit.png";
 import tele from "../../assets/socialMediaLogos/tele.png";
 import wap from "../../assets/socialMediaLogos/wap.png";
-import twitter from "../../assets/socialMediaLogos/twitter.png";
+import insta from "../../assets/socialMediaLogos/insta.png";
+import yt from "../../assets/socialMediaLogos/yts.png";
 import mail from "../../assets/socialMediaLogos/mail.png";
 import socialMedia from "../../interfaces/SocialMediaIcons";
 const Footer: React.FC<{ admin?: boolean }> = ({ admin }) => {
   const icons: socialMedia[] = [
-    { icon: fb, share: "" },
-    { icon: tele, share: "" },
-    { icon: wap, share: "" },
-    { icon: twitter, share: "" },
-    { icon: reddit, share: "" },
-    { icon: mail, share: "" },
+    { icon: fb, share: "https://www.facebook.com/Kottarakaramedia" },
+    { icon: insta, share: "https://instagram.com/kottarakaramedia" },
+    { icon: yt, share: "https://www.youtube.com/@KOTTARAKKARA" },
+    { icon: tele, share: "https://t.me/kottarakaramedia" },
+    { icon: wap, share: "https://chat.whatsapp.com/CPKCBSVzFOkEJu9bceAjcS" },
+    { icon: mail, share: "mailto:Kottarakaramedia@gmail.com" },
   ];
   return (
     <footer className={`bg-dark py-3 d-flex align-items-center flex-wrap`}>
@@ -34,7 +33,7 @@ const Footer: React.FC<{ admin?: boolean }> = ({ admin }) => {
               return (
                 <a
                   key={idx}
-                  href="http://"
+                  href={icon.share}
                   target="_blank"
                   rel="noopener noreferrer"
                 >

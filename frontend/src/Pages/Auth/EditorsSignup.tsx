@@ -4,10 +4,7 @@ import cover from "../../assets/Logo/coverimg.jpg";
 const EditorsSignup = () => {
   return (
     <>
-      <div
-        style={{ height: "100vh" }}
-        className="w-100 d-flex flex-column align-items-center justify-content-center position-relative"
-      >
+      <div className="w-100 d-flex flex-column align-items-center justify-content-center position-relative">
         <div>
           <div className="text-center h4 my-2 mt-3">
             Are you a enthusiastic reporter ? <br />

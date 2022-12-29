@@ -1,7 +1,7 @@
 import { stringify } from "querystring";
 import React, { useState } from "react";
 import { Filter } from "../../Pages/EditorPages/EditorHome";
-const type: string[] = ["All", "image", "video"];
+const type: string[] = ["image", "video"];
 const time: string[] = ["Oldest", "Newest"];
 const most: string[] = ["most viewed", "most liked"];
 interface Props {
@@ -14,7 +14,7 @@ const FilterNav: React.FC<Props> = ({ handleSearch, handleFilter }) => {
     type: string;
     time: string;
   }>({
-    type: "All",
+    type: "image",
     time: "Oldest",
   });
   const handleChange = (e: React.FormEvent) => {

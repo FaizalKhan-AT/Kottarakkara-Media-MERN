@@ -11,3 +11,13 @@
   width: 38px;
   height: 38px;
 }
+@media screen and (max-width: 500px) {
+  .title-news {
+    font-size: 20px !important;
+  }
+}
+@media screen and (max-width: 420px) {
+  .title-news {
+    font-size: 19px !important;
+  }
+}

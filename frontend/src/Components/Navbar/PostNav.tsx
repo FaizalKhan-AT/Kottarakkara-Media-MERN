@@ -24,7 +24,7 @@ const PostNav: React.FC<{ post: News | null }> = ({ post }) => {
       />
       <div
         style={{ zIndex: "21" }}
-        className="w-100 post-nav top-0  d-flex justify-content-between position-absolute align-items-center gap-3 px-3"
+        className="w-100 post-nav top-0 position-absolute d-flex justify-content-between align-items-center gap-3 px-3"
       >
         <div className="d-flex align-items-center gap-3">
           <div
@@ -36,37 +36,13 @@ const PostNav: React.FC<{ post: News | null }> = ({ post }) => {
             </span>
           </div>
           <div className="d-flex gap-2 align-items-center">
-            <span style={{ height: "35px" }} className="bar"></span>
-            <span style={{ fontWeight: "500" }} className="text-light fs-4">
+            <span style={{ height: "30px" }} className="bar"></span>
+            <span style={{ fontWeight: "500" }} className="text-light fs-5">
               {post?.category}
             </span>
           </div>
         </div>
-        <div className="d-flex align-items-center gap-3 text-light">
-          <div className="d-flex align-items-center">
-            <span
-              onClick={() => {
-                setLiked(!liked);
-                if (!liked) {
-                  likePost(post?._id as string, setError);
-                }
-              }}
-              className={`${
-                liked ? "text-danger vid-like" : ""
-              }  material-symbols-outlined mt-1 mx-1 pointer fs-2`}
-            >
-              favorite
-            </span>
-            <span className="">
-              {formatNumber(post?.likes as number)} Likes
-            </span>
-          </div>
-          <div className="d-flex align-items-center gap-1 ">
-            <span className="material-symbols-rounded eye fs-2">
-              visibility
-            </span>
-            <span>{formatNumber(post?.views as number)} views</span>
-          </div>
+        <div className="d-flex align-items-center justify-content-end gap-3 text-light">
           <div>
             <span className="ms-2 d-flex pointer me-4 align-items-center justify-content-center">
               <span

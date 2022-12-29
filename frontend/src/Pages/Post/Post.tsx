@@ -62,7 +62,7 @@ const Post: React.FC = () => {
       <PostSeo post={post as News} />
       <br />
       <br />
-      <div className="container">
+      <div className="container w-100">
         <CategorySection
           relatedNews={relatedNews}
           name="Related Articles"
