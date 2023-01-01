@@ -1,10 +1,13 @@
 import React from "react";
 import Footer from "../../Components/Footer/Footer";
 import MainNav from "../../Components/Navbar/MainNav";
+import Title from "../../Components/Seo/Title";
 
 const Contact: React.FC = () => {
   return (
     <>
+      <Title />
+
       <MainNav />
       <div
         style={{ textDecoration: "dotted underline var(--red-color)" }}
@@ -13,7 +16,7 @@ const Contact: React.FC = () => {
         contact us
       </div>
       <div
-        style={{ fontSize: "20px", height: "40vh" }}
+        style={{ fontSize: "20px", height: "fit-content" }}
         className="container fw-bold d-flex align-items-center justify-content-center"
       >
         <div className="text-center">

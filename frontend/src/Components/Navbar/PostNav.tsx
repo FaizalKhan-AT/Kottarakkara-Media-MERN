@@ -9,7 +9,6 @@ import ShareModal from "../Modals/ShareModal";
 import "./NavStyles.css";
 const PostNav: React.FC<{ post: News | null }> = ({ post }) => {
   const [open, setOpen] = useState<boolean>(false);
-  const [liked, setLiked] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const handleOpenModal = () => setOpen(!open);
   const navigate = useNavigate();
@@ -18,7 +17,13 @@ const PostNav: React.FC<{ post: News | null }> = ({ post }) => {
     <>
       {error ? <Error error={error} setError={setError} /> : ""}
       <ShareModal
-        url={FRONTEND_BASE_URL + `/post/${post?._id}`}
+        url={
+          FRONTEND_BASE_URL +
+          `/${post?.category.replace(" ", "-")}/${post?.titleEng.replaceAll(
+            " ",
+            "-"
+          )}/${post?._id}`
+        }
         open={open}
         handleOpen={handleOpenModal}
       />

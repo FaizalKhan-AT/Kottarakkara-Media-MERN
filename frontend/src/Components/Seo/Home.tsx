@@ -1,9 +1,8 @@
 import React from "react";
-import { Helmet } from "react-helmet";
 
-const Title: React.FC = () => {
+const Home: React.FC = () => {
   return (
-    <Helmet>
+    <>
       <meta
         name="description"
         content="Get updated quickly with the latest news, specials and events from Kerala with Kottarakara News and get update with Latest Malayalam news too"
@@ -24,8 +23,8 @@ const Title: React.FC = () => {
       />
       <meta property="og:url" content="https://kottarakaramedia.com/" />
       <meta property="og:site_name" content="Kottarakara Media" />
-    </Helmet>
+    </>
   );
 };
 
-export default Title;
+export default Home;

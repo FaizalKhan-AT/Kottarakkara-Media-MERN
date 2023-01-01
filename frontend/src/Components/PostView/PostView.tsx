@@ -23,7 +23,13 @@ const PostView: React.FC<Props> = ({ post }) => {
       {error ? <Error error={error} setError={setError} /> : ""}
 
       <ShareModal
-        url={FRONTEND_BASE_URL + `/post/${post?._id}`}
+        url={
+          FRONTEND_BASE_URL +
+          `/${post?.category.replace(" ", "-")}/${post?.titleEng.replaceAll(
+            " ",
+            "-"
+          )}/${post?._id}`
+        }
         open={open}
         handleOpen={handleOpenModal}
       />
@@ -102,23 +108,23 @@ const PostView: React.FC<Props> = ({ post }) => {
           </div>
         </div>
         <br />
-        <div
-          style={{ width: "80%" }}
-          className="d-flex flex-wrap align-items-center gap-2"
-        >
-          {(post?.tags.length as number) > 0
-            ? post?.tags.map((tag, idx) => {
-                return (
-                  <div
-                    key={idx + tag}
-                    className="chip px-3 d-flex align-items-center justify-content-between py-2 px-2 gap-2"
-                  >
-                    <span>{tag}</span>
-                  </div>
-                );
-              })
-            : ""}
-        </div>
+        {/* <div
+        style={{ width: "80%" }}
+        className="d-flex flex-wrap align-items-center gap-2"
+      >
+        {(post?.tags.length as number) > 0
+          ? post?.tags.map((tag, idx) => {
+              return (
+                <div
+                  key={idx + tag}
+                  className="chip px-3 d-flex align-items-center justify-content-between py-2 px-2 gap-2"
+                >
+                  <span>{tag}</span>
+                </div>
+              );
+            })
+          : ""}
+      </div> */}
       </div>
     </>
   );

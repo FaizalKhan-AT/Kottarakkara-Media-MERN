@@ -1,10 +1,13 @@
 import React from "react";
 import Footer from "../../Components/Footer/Footer";
 import MainNav from "../../Components/Navbar/MainNav";
+import Title from "../../Components/Seo/Title";
 
 const About: React.FC = () => {
   return (
     <>
+      <Title />
+
       <MainNav />
       <div
         style={{ textDecoration: "dotted underline var(--red-color)" }}
@@ -14,7 +17,7 @@ const About: React.FC = () => {
       </div>
       <br />
       <div
-        style={{ height: "50vh", textTransform: "none" }}
+        style={{ height: "fit-content", textTransform: "none" }}
         className="text-justify fs-5 container"
       >
         Kottarakara Media is a news website about Kottarakkara. Kottarakkara

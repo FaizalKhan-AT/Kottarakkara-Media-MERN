@@ -57,9 +57,9 @@ const Post: React.FC = () => {
 
   return (
     <>
+      <PostSeo post={post as News} />
       {error ? <Error error={error} setError={setError} /> : ""}
       <PostView post={post ? post : null} />
-      <PostSeo post={post as News} />
       <br />
       <br />
       <div className="container w-100">

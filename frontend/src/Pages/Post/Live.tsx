@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Error from "../../Components/Error/Error";
 import Footer from "../../Components/Footer/Footer";
 import MainNav from "../../Components/Navbar/MainNav";
+import Title from "../../Components/Seo/Title";
 import Spinner from "../../Components/Spinner/Spinner";
 import axios from "../../config";
 
@@ -34,6 +35,8 @@ const Live = () => {
   }, []);
   return (
     <>
+      <Title />
+
       <MainNav />
       {error ? <Error error={error} setError={setError} /> : ""}
       <div

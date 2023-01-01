@@ -68,7 +68,13 @@ const VideoCard: React.FC<Props> = ({ editor, post, fetchFn, admin }) => {
       {error ? <Error error={error} setError={setError} /> : ""}
       {success ? <Success success={success} setSuccess={setSuccess} /> : ""}
       <ShareModal
-        url={FRONTEND_BASE_URL + `/post/${post._id}`}
+        url={
+          FRONTEND_BASE_URL +
+          `/${post.category.replace(" ", "-")}/${post.titleEng.replaceAll(
+            " ",
+            "-"
+          )}/${post._id}`
+        }
         open={open}
         handleOpen={handleOpenModal}
       />
@@ -131,7 +137,10 @@ const VideoCard: React.FC<Props> = ({ editor, post, fetchFn, admin }) => {
             ""
           )}
           <Link
-            to={`/post/${post._id}`}
+            to={`/${post.category.replace(" ", "-")}/${post.titleEng.replaceAll(
+              " ",
+              "-"
+            )}/${post._id}`}
             className="card-title fw-bold text-dark w-100"
           >
             {post.titleMal.length > 60
@@ -221,7 +230,14 @@ const VideoCard: React.FC<Props> = ({ editor, post, fetchFn, admin }) => {
                 <span
                   style={{ fontSize: "13px" }}
                   className="btn btn-outline-danger btn-rounded"
-                  onClick={() => navigate(`/post/${post._id}`)}
+                  onClick={() =>
+                    navigate(
+                      `/${post.category.replace(
+                        " ",
+                        "-"
+                      )}/${post.titleEng.replaceAll(" ", "-")}/${post._id}`
+                    )
+                  }
                 >
                   Watch Now
                 </span>

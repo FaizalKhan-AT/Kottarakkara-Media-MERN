@@ -20,11 +20,10 @@ import Grievance from "./Pages/Static/Grievance";
 const App: React.FC = () => {
   return (
     <>
-      <Title />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/live" element={<Live />} />
-        <Route path="/post/:id" element={<Post />} />
+        <Route path="/:category/:slug/:id" element={<Post />} />
         <Route path="/about-us" element={<About />} />
         <Route path="/grievance" element={<Grievance />} />
         <Route path="/contact-us" element={<Contact />} />

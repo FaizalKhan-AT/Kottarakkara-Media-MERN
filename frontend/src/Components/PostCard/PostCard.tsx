@@ -43,7 +43,7 @@ const PostCard: React.FC<Props> = ({ editor, post, fetchFn, admin }) => {
         }
       })
       .catch((err) => {
-        setError("somewent wrong :( while deleting");
+        setError("something went wrong :( while deleting");
         handleDeleteModal();
       });
   };
@@ -70,7 +70,13 @@ const PostCard: React.FC<Props> = ({ editor, post, fetchFn, admin }) => {
       {success ? <Success success={success} setSuccess={setSuccess} /> : ""}
       {error ? <Error error={error} setError={setError} /> : ""}
       <ShareModal
-        url={FRONTEND_BASE_URL + `/post/${post._id}`}
+        url={
+          FRONTEND_BASE_URL +
+          `/${post?.category.replace(" ", "-")}/${post.titleEng.replaceAll(
+            " ",
+            "-"
+          )}/${post._id}`
+        }
         open={open}
         handleOpen={handleOpenModal}
       />
@@ -147,7 +153,10 @@ const PostCard: React.FC<Props> = ({ editor, post, fetchFn, admin }) => {
 
         <div className="card-body px-2 d-flex flex-column justify-content-between">
           <Link
-            to={`/post/${post._id}`}
+            to={`/${post.category.replace(" ", "-")}/${post.titleEng.replaceAll(
+              " ",
+              "-"
+            )}/${post._id}`}
             className="card-title fw-bold text-dark w-100"
           >
             {post.titleMal}
@@ -236,7 +245,14 @@ const PostCard: React.FC<Props> = ({ editor, post, fetchFn, admin }) => {
             ) : (
               <div
                 style={{ fontSize: "13px" }}
-                onClick={() => navigate(`/post/${post._id}`)}
+                onClick={() =>
+                  navigate(
+                    `/${post.category.replace(
+                      " ",
+                      "-"
+                    )}/${post.titleEng.replaceAll(" ", "-")}/${post._id}`
+                  )
+                }
                 className="btn btn-outline-danger btn-rounded"
               >
                 Read more

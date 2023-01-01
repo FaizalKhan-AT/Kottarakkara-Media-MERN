@@ -4,6 +4,8 @@ import "./sidebar.css";
 const categories: string[] = [
   "all",
   "local news",
+  "national news",
+  "international news",
   "news updates",
   "life style",
   "travel",

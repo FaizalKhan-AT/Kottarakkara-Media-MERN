@@ -1,10 +1,12 @@
 import React from "react";
 import Footer from "../../Components/Footer/Footer";
 import MainNav from "../../Components/Navbar/MainNav";
+import Title from "../../Components/Seo/Title";
 
 const Grievance = () => {
   return (
     <>
+      <Title />
       <MainNav />
       <div
         style={{ textDecoration: "dotted underline var(--red-color)" }}
@@ -14,7 +16,7 @@ const Grievance = () => {
       </div>
       <br />
       <div
-        style={{ height: "50vh", textTransform: "none" }}
+        style={{ height: "fit-content", textTransform: "none" }}
         className="text-justify container"
       >
         <span className=" fw-bold text-danger text-decoration-underline">
@@ -39,8 +41,9 @@ const Grievance = () => {
           </code>
         </div>
       </div>
+      <br />
       <div
-        style={{ height: "50vh", textTransform: "none" }}
+        style={{ height: "fit-content", textTransform: "none" }}
         className="text-justify container"
       >
         <span className=" fw-bold text-danger text-decoration-underline">

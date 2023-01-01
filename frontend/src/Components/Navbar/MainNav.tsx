@@ -16,6 +16,14 @@ const navLinks: navLinksType[] = [
     route: "/news/local-news",
   },
   {
+    title: "National news",
+    route: "/news/all",
+  },
+  {
+    title: "international News",
+    route: "/news/all",
+  },
+  {
     title: "News Updates",
     route: "/news/news-updates",
   },

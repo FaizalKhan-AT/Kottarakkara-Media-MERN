@@ -25,7 +25,10 @@ const SliderCard: React.FC<{ post: News }> = ({ post }) => {
         >
           <Link
             className="scard-link card-title h4 text-start"
-            to={`/post/${post._id}`}
+            to={`/${post.category.replace(" ", "-")}/${post.titleEng.replaceAll(
+              " ",
+              "-"
+            )}/${post._id}`}
           >
             {post.titleMal.length > 80
               ? post.titleMal.slice(0, 80)

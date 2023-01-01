@@ -11,6 +11,8 @@ import Spinner from "../Spinner/Spinner";
 import "./postNews.css";
 const categories: string[] = [
   "Local News",
+  "National news",
+  "International news",
   "News Updates",
   "Life Style",
   "Travel",
@@ -102,7 +104,7 @@ const PostNewsForm: FC<{ edit?: boolean }> = ({ edit }) => {
     const [file] = target.files as FileList;
 
     if (!file) return;
-
+    setError("");
     switch (target.name) {
       case "image":
         if (file.size > 5000000) {
