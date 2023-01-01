@@ -8,11 +8,7 @@ const PostSeo: React.FC<{ post: News }> = ({ post }) => {
       <Helmet>
         <meta name="author" content={post?.author} />
         <meta name="robots" content="noindex, follow" />
-        {window.location.href.includes("/post") ? (
-          <title>{post?.titleMal + "| kottarakara media"} </title>
-        ) : (
-          ""
-        )}
+        <title>{post?.titleMal + "| kottarakara media"} </title>
         <meta name="keywords" content={post?.tags.toString()} />
         <meta property="og:type" content="article" />
         <meta property="og:title" content={post?.titleMal} />
