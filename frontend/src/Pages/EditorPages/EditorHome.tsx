@@ -91,7 +91,7 @@ const EditorHome: React.FC = () => {
   };
   return (
     <>
-      <Title />
+      {/* <Title /> */}
 
       <EditorNav />
       <div
