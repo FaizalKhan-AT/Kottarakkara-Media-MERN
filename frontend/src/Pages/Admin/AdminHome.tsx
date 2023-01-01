@@ -124,8 +124,7 @@ const AdminHome: React.FC = () => {
   };
   return (
     <>
-      {/* <Title /> */}
-
+      <Title />
       {error ? <Error error={error} setError={setError} /> : ""}
       <EditorNav admin />
       <UpdateLiveModal

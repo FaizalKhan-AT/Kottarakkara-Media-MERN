@@ -3,6 +3,9 @@ import { Helmet } from "react-helmet";
 import { FILE_BASE_URL, FRONTEND_BASE_URL } from "../../env";
 import { News } from "../../interfaces/NewsInterface";
 const PostSeo: React.FC<{ post: News }> = ({ post }) => {
+  const generateTitle = () => {
+    return post?.titleEng.replaceAll(" ", "-");
+  };
   return (
     <>
       <Helmet>
@@ -15,9 +18,9 @@ const PostSeo: React.FC<{ post: News }> = ({ post }) => {
         <meta property="og:description" content={post?.newsContent} />
         <meta
           property="og:url"
-          content={`${FRONTEND_BASE_URL}/${
-            post?.category
-          }/${post?.titleEng.replaceAll(" ", "-")}/${post?._id}`}
+          content={`${FRONTEND_BASE_URL}/${post?.category}/${generateTitle()}/${
+            post?._id
+          }`}
         />
         <meta property="article:published_time" content={post?.postedAt}></meta>
         <meta

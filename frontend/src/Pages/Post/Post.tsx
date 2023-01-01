@@ -65,9 +65,9 @@ const Post: React.FC = () => {
     );
     metaOgType.setAttribute("content", "article");
   };
-  useEffect(() => {
-    if (post) refreshHead();
-  }, [post]);
+  // useEffect(() => {
+  //   if (post) refreshHead();
+  // }, [post]);
   const fetchRelatedNews = (category: string, id: string) => {
     axios
       .get(`/news/related/${category}/${id}`)
@@ -111,7 +111,7 @@ const Post: React.FC = () => {
 
   return (
     <>
-      {/* <PostSeo post={post as News} /> */}
+      <PostSeo post={post as News} />
       {error ? <Error error={error} setError={setError} /> : ""}
       <PostView post={post ? post : null} />
       <br />

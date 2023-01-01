@@ -42,7 +42,7 @@ const Home: React.FC = () => {
   return (
     <>
       {/* <HomeSeo /> */}
-      {/* <Title /> */}
+      <Title />
       <MainNav />
       <br />
       <div className="container fs-4 text-muted text-end">

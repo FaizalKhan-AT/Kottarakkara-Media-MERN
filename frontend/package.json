@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite --host",
     "build": "tsc && vite build",
+    "postbuild": "react-snap",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -38,6 +39,7 @@
     "@types/react-dom": "^18.0.8",
     "@types/react-helmet": "^6.1.6",
     "@vitejs/plugin-react": "^2.2.0",
+    "react-snap": "^1.23.0",
     "typescript": "^4.6.4",
     "vite": "^3.2.3",
     "vite-plugin-pwa": "^0.14.0"

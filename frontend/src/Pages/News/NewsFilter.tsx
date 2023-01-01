@@ -69,7 +69,7 @@ const NewsFilter: React.FC = () => {
   };
   return (
     <>
-      {/* <Title /> */}
+      <Title />
 
       {error ? <Error error={error} setError={setError} /> : ""}
       <MainNav news handleOpen={handleOpen} />

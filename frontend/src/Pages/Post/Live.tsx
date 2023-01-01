@@ -35,7 +35,7 @@ const Live = () => {
   }, []);
   return (
     <>
-      {/* <Title /> */}
+      <Title />
 
       <MainNav />
       {error ? <Error error={error} setError={setError} /> : ""}
