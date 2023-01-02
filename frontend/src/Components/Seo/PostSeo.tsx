@@ -8,7 +8,7 @@ const PostSeo: React.FC<{ post: News }> = ({ post }) => {
   };
   return (
     <>
-      <Helmet>
+      {/* <Helmet>
         <meta name="author" content={post?.author} />
         <meta name="robots" content="noindex, follow" />
         <title>{post?.titleMal + "| kottarakara media"} </title>
@@ -28,7 +28,7 @@ const PostSeo: React.FC<{ post: News }> = ({ post }) => {
           content={FILE_BASE_URL + post?.file}
         />
         <meta property={`og:${post?.type}:type`} content={post?.format} />{" "}
-      </Helmet>
+      </Helmet> */}
     </>
   );
 };

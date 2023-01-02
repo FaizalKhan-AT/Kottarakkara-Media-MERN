@@ -6,10 +6,8 @@ import AuthContext from "./contexts/AuthContext";
 import PostContext from "./contexts/PostContext";
 import SearchContext from "./contexts/SearchContext";
 
-import { hydrate, render } from "react-dom";
 import "./index.css";
-const root = document.getElementById("root") as HTMLElement;
-const APP = (
+export const APP = (
   <React.StrictMode>
     <BrowserRouter>
       <AuthContext>
@@ -22,11 +20,20 @@ const APP = (
     </BrowserRouter>
   </React.StrictMode>
 );
-if (root.hasChildNodes()) {
-  hydrate(APP, root);
-} else {
-  render(APP, root);
-}
+
+// for ssr
+ReactDOM.hydrateRoot(document.getElementById("root") as HTMLElement, APP);
+
+// for react-snap
+// import { hydrate, render } from "react-dom";
+// const root = document.getElementById("root") as HTMLElement;
+
+// if (root.hasChildNodes()) {
+//   hydrate(APP, root);
+// } else {
+//   render(APP, root);
+// }
+// normal
 // ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
 //   <React.StrictMode>
 //     <BrowserRouter>
