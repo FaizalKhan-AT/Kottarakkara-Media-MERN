@@ -1,4 +1,5 @@
 import "bootstrap/dist/css/bootstrap.min.css";
+import { useEffect } from "react";
 import { Routes, Route, Link } from "react-router-dom";
 import Title from "./Components/Seo/Title";
 import AdminHome from "./Pages/Admin/AdminHome";
@@ -16,8 +17,13 @@ import Post from "./Pages/Post/Post";
 import About from "./Pages/Static/About";
 import Contact from "./Pages/Static/Contact";
 import Grievance from "./Pages/Static/Grievance";
-
+import ReactGa from "react-ga4";
+import { TRACKING_ID } from "./env";
+ReactGa.initialize(TRACKING_ID);
 const App: React.FC = () => {
+  useEffect(() => {
+    ReactGa.send({ hitType: "pageview", page: window.location.pathname });
+  }, []);
   return (
     <>
       <Routes>

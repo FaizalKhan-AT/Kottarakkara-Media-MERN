@@ -20,6 +20,7 @@
     "jsonwebtoken": "^8.5.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-ga4": "^1.4.1",
     "react-helmet": "^6.1.0",
     "react-router-dom": "^6.4.5",
     "swiper": "^8.4.5"

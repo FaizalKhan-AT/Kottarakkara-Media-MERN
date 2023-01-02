@@ -3,7 +3,7 @@ const path = require("path");
 const fs = require("fs");
 require("dotenv").config();
 const axios = require("axios");
-const PORT = 5000;
+const PORT = 8080;
 
 const app = express();
 const homeSeo = (req, res) => {
@@ -37,6 +37,7 @@ const homeSeo = (req, res) => {
 };
 const postSeo = (req, res) => {
   let result = {};
+  const url = req.protocol + "://" + req.get("host") + req.originalUrl;
   axios
     .get(process.env.API_URL + req.params.id)
     .then((res) => (result = res.data.data))
@@ -57,15 +58,7 @@ const postSeo = (req, res) => {
           .replace(/__DESCRIPTION__/g, result.newsContent)
           .replace(/__OG_TITLE__/g, result.titleMal)
           .replace(/__OG_DESCRIPTION__/g, result.newsContent)
-          .replace(
-            /__URL__/g,
-            "https://kottarakkaranews.com/" +
-              req.params.category +
-              "/" +
-              req.params.slug +
-              "/" +
-              req.params.id
-          )
+          .replace(/__URL__/g, url)
           .replace(/__TYPE__/g, "article")
           .replace(/__AUTHOR__/g, result.author)
           .replace(/__POSTED_AT__/g, result.postedAt)
