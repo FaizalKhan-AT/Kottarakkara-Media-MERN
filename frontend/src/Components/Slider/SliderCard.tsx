@@ -39,7 +39,7 @@ const SliderCard: React.FC<{ post: News }> = ({ post }) => {
             {post.newsContent}
             ...
           </p>
-          <div className="d-flex gap-2 align-items-center">
+          <div className="d-flex gap-2 align-items-center mt-2">
             <span className="bar"></span>
             <span className="fw-bold text-light">{post.category}</span>
           </div>

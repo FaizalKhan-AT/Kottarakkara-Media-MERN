@@ -30,7 +30,7 @@ const homeSeo = (req, res) => {
         /__OG_DESCRIPTION__/g,
         "Get updated quickly with the latest news, specials and events from Kerala with Kottarakara News and get update with Latest Malayalam news too"
       )
-      .replace(/__URL__/g, "https://kottarakkaranews.com" + req.params.category)
+      .replace(/__URL__/g, "https://kottarakkaranews.com")
       .replace(/__TYPE__/g, "website");
     res.send(data);
   });

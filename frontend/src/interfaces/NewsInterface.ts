@@ -17,4 +17,5 @@ export interface News {
   published: boolean;
   trending?: boolean;
   _id?: string;
+  url?: string;
 }

@@ -56,6 +56,9 @@ img {
   .no-padding {
     padding-left: 0 !important;
   }
+  .card-text.slider {
+    display: none;
+  }
 }
 @media screen and (max-width: 460px) {
   .scard-link {

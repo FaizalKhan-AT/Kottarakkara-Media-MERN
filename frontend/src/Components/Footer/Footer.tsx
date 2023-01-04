@@ -8,6 +8,9 @@ import wap from "../../assets/socialMediaLogos/wap.png";
 import insta from "../../assets/socialMediaLogos/insta.png";
 import yt from "../../assets/socialMediaLogos/yts.png";
 import mail from "../../assets/socialMediaLogos/mail.png";
+import news from "../../assets/socialMediaLogos/news.png";
+import sharechat from "../../assets/socialMediaLogos/sharechat.png";
+import daily from "../../assets/socialMediaLogos/daily.png";
 import socialMedia from "../../interfaces/SocialMediaIcons";
 const Footer: React.FC<{ admin?: boolean }> = ({ admin }) => {
   const icons: socialMedia[] = [
@@ -16,7 +19,21 @@ const Footer: React.FC<{ admin?: boolean }> = ({ admin }) => {
     { icon: yt, share: "https://www.youtube.com/@KOTTARAKKARA" },
     { icon: tele, share: "https://t.me/kottarakaramedia" },
     { icon: wap, share: "https://chat.whatsapp.com/CPKCBSVzFOkEJu9bceAjcS" },
-    { icon: mail, share: "mailto:Kottarakaramedia@gmail.com" },
+    { icon: mail, share: "mailto:kottarakaramedia@gmail.com" },
+    {
+      icon: news,
+      share:
+        "https://news.google.com/s/CBIwx7GegaEB?sceid=IN:en&sceid=IN:en&r=0&oc=1",
+    },
+    {
+      icon: sharechat,
+      share: "https://sharechat.com/profile/kottarakaramedia?d=n",
+    },
+    {
+      icon: daily,
+      share:
+        "https://profile.dailyhunt.in/kottarakkaramedia?uu=0xba5154c275b84c03",
+    },
   ];
   return (
     <footer className={`bg-dark py-3 d-flex align-items-center flex-wrap`}>
@@ -28,7 +45,7 @@ const Footer: React.FC<{ admin?: boolean }> = ({ admin }) => {
         className="d-flex align-items-center  gap-3 "
       >
         <div className="d-flex flex-column align-items-center w-100">
-          <div className="d-flex align-items-center gap-3">
+          <div className="d-flex align-items-center gap-3 flex-wrap justify-content-center">
             {icons.map((icon, idx) => {
               return (
                 <a

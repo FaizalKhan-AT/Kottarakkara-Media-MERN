@@ -51,6 +51,7 @@ const PostNewsForm: FC<{ edit?: boolean }> = ({ edit }) => {
           userId: user?._id as string,
           author: user?.username as string,
           published: false,
+          url: "",
         }
   );
   useEffect(() => {
@@ -412,6 +413,21 @@ const PostNewsForm: FC<{ edit?: boolean }> = ({ edit }) => {
           ) : (
             ""
           )}
+        </div>
+        <div className="col-md-6 my-2">
+          <label className="form-label">
+            Youtube video url{" "}
+            <span className="text-danger">(not mandatory)</span>
+          </label>
+          <input
+            onChange={handleChange}
+            name="url"
+            value={formData.url}
+            placeholder="https://www.youtube.com/watch?v=<id>"
+            type="text"
+            required
+            className="form-control"
+          />
         </div>
         <div className="col-md-6 my-2">
           <label className="form-label">
