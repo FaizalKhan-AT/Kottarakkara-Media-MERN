@@ -52,7 +52,11 @@ const postSeo = (req, res) => {
           console.log(err);
           return res.send("something went wrong while serving this page :(");
         }
-
+        let yt = "https://www.youtube.com/watch?v=";
+        if (result.format === "embed") {
+          let id = result.file.split("/embed/")[1];
+          yt = yt + id;
+        }
         data = data
           .replace(/__TITLE__/g, result.titleMal)
           .replace(/__DESCRIPTION__/g, result.newsContent)
@@ -62,8 +66,13 @@ const postSeo = (req, res) => {
           .replace(/__TYPE__/g, "article")
           .replace(/__AUTHOR__/g, result.author)
           .replace(/__POSTED_AT__/g, result.postedAt)
-          .replace(/__FILE_URL_IMAGE__/g, process.env.FILE_URL + result.file)
-          .replace(/__FILE_URL_VIDEO__/g, process.env.FILE_URL + result.file)
+          .replace(
+            result.type === "image"
+              ? /__FILE_URL_IMAGE__/g
+              : /__FILE_URL_VIDEO__/g,
+            result.format === "embed" ? yt : process.env.FILE_URL + result.file
+          )
+
           .replace(
             result.type === "image" ? /__IMAGE_FORMAT__/g : /__VIDEO_FORMAT__/g,
             result.format
