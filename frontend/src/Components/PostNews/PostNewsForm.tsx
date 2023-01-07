@@ -41,7 +41,7 @@ const PostNewsForm: FC<{ edit?: boolean }> = ({ edit }) => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState<News>(
     edit && post
-      ? post
+      ? { ...post, url: post.format === "embed" ? post.file + "" : "" }
       : {
           category: "",
           external: false,
@@ -165,7 +165,7 @@ const PostNewsForm: FC<{ edit?: boolean }> = ({ edit }) => {
       setError("Add some news tags");
       return false;
     }
-    if (formData.url !== "") {
+    if (formData.url !== "" && !edit) {
       if (
         formData.url?.includes("youtube.com/watch?v") ||
         formData.url?.includes("youtu.be/")
@@ -188,7 +188,7 @@ const PostNewsForm: FC<{ edit?: boolean }> = ({ edit }) => {
         "/news",
         {
           ...formData,
-          file: formData.url !== "" ? "" : formData.file,
+          file: formData.url !== "" ? null : formData.file,
           tags,
           url: formData.url !== "" ? toYTEmbed(formData.url as string) : "",
           published: editor.external ? false : true,
@@ -229,7 +229,12 @@ const PostNewsForm: FC<{ edit?: boolean }> = ({ edit }) => {
         {
           ...formData,
           tags,
-          url: formData.url !== "" ? toYTEmbed(formData.url as string) : "",
+          url:
+            formData.url !== ""
+              ? formData.url?.includes("www.youtube.com/embed/")
+                ? ""
+                : toYTEmbed(formData.url as string)
+              : "",
           path: post?.file,
           published: editor.external ? false : true,
         },
