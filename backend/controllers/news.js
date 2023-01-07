@@ -19,25 +19,27 @@ const uploadNews = async (req, res) => {
     postedAt,
     tags,
     published,
+    url,
   } = req.body;
   try {
     const response = await news.create({
       category,
       external,
-      format,
+      format: format === "" ? "embed" : format,
       newsContent,
       place,
       titleEng,
       titleMal,
-      type,
+      type: url !== "" ? "video" : type,
       likes,
       views,
       userId,
-      file: req.file.path,
+      file: !req.file && url !== "" ? url : req.file.path,
       author,
       postedAt,
       tags,
       published,
+      date: new Date(postedAt),
     });
     return res.json({
       status: "ok",
@@ -73,11 +75,11 @@ const getLatestNews = async (req, res) => {
     const images = await news
       .find({ published: true, type: "image" })
       .limit(15)
-      .sort({ postedAt: -1 });
+      .sort({ date: -1 });
     const videos = await news
       .find({ published: true, type: "video" })
       .limit(5)
-      .sort({ postedAt: -1 });
+      .sort({ date: -1 });
     if (images && !videos)
       return res.status(200).json({ status: "ok", data: images });
     if (videos && !images)
@@ -120,6 +122,9 @@ const updateSingleNews = async (req, res) => {
   if (req.file) {
     handleFileDelete(data.path);
     data = { ...data, file: req.file.path };
+  }
+  if (data.url !== "") {
+    data = { ...data, file: data.url };
   }
   try {
     const post = await news.findOneAndUpdate({ _id: req.body._id }, data, {
@@ -264,7 +269,7 @@ const getAllNews = async (req, res) => {
   try {
     const posts = await news
       .find({ published: true, type: "image" })
-      .sort({ postedAt: -1 });
+      .sort({ date: -1 });
     if (posts) {
       return res.status(200).json({ status: "ok", data: posts });
     } else
@@ -324,10 +329,10 @@ const filterNews = async (req, res) => {
     }
     switch (time) {
       case "oldest":
-        sobj = { postedAt: 1 };
+        sobj = { date: 1 };
         break;
       case "newest":
-        sobj = { postedAt: -1 };
+        sobj = { date: -1 };
       default:
         break;
     }

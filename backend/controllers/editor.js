@@ -9,7 +9,7 @@ const getAllNews = async (req, res) => {
   try {
     const post = await news
       .find({ userId: id, type: "image" })
-      .sort({ postedAt: 1 });
+      .sort({ date: 1 });
     if (post) {
       return res.json({ status: "ok", data: post });
     }
@@ -27,7 +27,7 @@ const filterPosts = async (req, res) => {
     if (time !== "" && type !== "") {
       if (type === "All") {
         const posts = await news.find({ userId: id }).sort({
-          postedAt: time === "Oldest" ? 1 : -1,
+          date: time === "Oldest" ? 1 : -1,
         });
         if (posts) {
           return res.status(200).json({ status: "ok", data: posts });
@@ -38,7 +38,7 @@ const filterPosts = async (req, res) => {
           });
       } else {
         const posts = await news.find({ userId: id, type }).sort({
-          postedAt: time === "Oldest" ? 1 : -1,
+          date: time === "Oldest" ? 1 : -1,
         });
         if (posts) {
           return res.status(200).json({ status: "ok", data: posts });

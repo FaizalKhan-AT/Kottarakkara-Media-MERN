@@ -1,4 +1,11 @@
-import { FC, FormEvent, useContext, useEffect, useRef, useState } from "react";
+import React, {
+  FC,
+  FormEvent,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "../../config";
 import { Auth, contextType } from "../../contexts/AuthContext";
@@ -6,6 +13,7 @@ import { Post, PostType } from "../../contexts/PostContext";
 import { FILE_BASE_URL } from "../../env";
 import { News } from "../../interfaces/NewsInterface";
 import { Editor } from "../../interfaces/userInterface";
+import { toYTEmbed } from "../../usefulFunctions/toYtEmbed";
 import Error from "../Error/Error";
 import Spinner from "../Spinner/Spinner";
 import "./postNews.css";
@@ -71,7 +79,11 @@ const PostNewsForm: FC<{ edit?: boolean }> = ({ edit }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const handleChange = (e: FormEvent) => {
     const target = e.target as HTMLInputElement;
-    setFormData({ ...formData, [target.name]: target.value.toLowerCase() });
+    setFormData({
+      ...formData,
+      [target.name]:
+        target.name === "url" ? target.value : target.value.toLowerCase(),
+    });
   };
   const vidUpRef = useRef<HTMLInputElement>(null);
   const imgUpRef = useRef<HTMLInputElement>(null);
@@ -140,17 +152,29 @@ const PostNewsForm: FC<{ edit?: boolean }> = ({ edit }) => {
     return URL.createObjectURL(file);
   };
   const validate = () => {
+    setError("");
     if (!formData.category) {
       setError("Please select a category");
       return false;
     }
-    if (!formData.file) {
+    if (!formData.file && formData.url === "") {
       setError("upload a video or image for the news...");
       return false;
     }
     if (tags.length < 1) {
       setError("Add some news tags");
       return false;
+    }
+    if (formData.url !== "") {
+      if (
+        formData.url?.includes("youtube.com/watch?v") ||
+        formData.url?.includes("youtu.be/")
+      ) {
+        return true;
+      } else {
+        setError("invalid youtube url");
+        return false;
+      }
     }
     return true;
   };
@@ -162,7 +186,13 @@ const PostNewsForm: FC<{ edit?: boolean }> = ({ edit }) => {
     axios
       .post(
         "/news",
-        { ...formData, tags, published: editor.external ? false : true },
+        {
+          ...formData,
+          file: formData.url !== "" ? "" : formData.file,
+          tags,
+          url: formData.url !== "" ? toYTEmbed(formData.url as string) : "",
+          published: editor.external ? false : true,
+        },
         {
           headers: {
             "Content-type": "multipart/form-data",
@@ -190,12 +220,16 @@ const PostNewsForm: FC<{ edit?: boolean }> = ({ edit }) => {
     e.preventDefault();
     if (!validate()) return;
     setLoading(true);
+    if (formData.url !== "") {
+      setFormData({ ...formData, url: toYTEmbed(formData.url as string) });
+    }
     axios
       .patch(
         `/news/post/${post?._id}`,
         {
           ...formData,
           tags,
+          url: formData.url !== "" ? toYTEmbed(formData.url as string) : "",
           path: post?.file,
           published: editor.external ? false : true,
         },
@@ -308,53 +342,60 @@ const PostNewsForm: FC<{ edit?: boolean }> = ({ edit }) => {
             className="form-control"
           ></textarea>
         </div>
-        <div className="col-md-12 my-2">
-          <label className="form-label">
-            Upload Files (image / video) <span className="text-danger">*</span>
-          </label>
-          <input
-            ref={vidUpRef}
-            type="file"
-            name="video"
-            accept="video/*"
-            hidden
-            onChange={handleFileChange}
-          />
-          <input
-            ref={imgUpRef}
-            type="file"
-            name="image"
-            accept="image/*"
-            hidden
-            onChange={handleFileChange}
-          />
-          <div className="d-flex algin-items-center gap-2">
-            {formData.category !== "obituary" ? (
+        {formData.url === "" ? (
+          <div className="col-md-12 my-2">
+            <label className="form-label">
+              Upload Files (image / video){" "}
+              <span className="text-danger">*</span>
+            </label>
+            <input
+              ref={vidUpRef}
+              type="file"
+              name="video"
+              accept="video/*"
+              hidden
+              onChange={handleFileChange}
+            />
+            <input
+              ref={imgUpRef}
+              type="file"
+              name="image"
+              accept="image/*"
+              hidden
+              onChange={handleFileChange}
+            />
+            <div className="d-flex algin-items-center gap-2">
+              {formData.category !== "obituary" ? (
+                <label className="form-label">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name="upload"
+                    value={"video"}
+                    onClick={handleUploadVid}
+                  />{" "}
+                  video (1080p)(upload a compressed video below 500mb)
+                </label>
+              ) : (
+                ""
+              )}
               <label className="form-label">
                 <input
                   className="form-check-input"
                   type="radio"
                   name="upload"
-                  value={"video"}
-                  onClick={handleUploadVid}
+                  onClick={handleUploadImg}
+                  value={"image"}
                 />{" "}
-                video (1080p)(upload a compressed video below 500mb)
+                image (1080p)(less than 5 mb)
               </label>
-            ) : (
-              ""
-            )}
-            <label className="form-label">
-              <input
-                className="form-check-input"
-                type="radio"
-                name="upload"
-                onClick={handleUploadImg}
-                value={"image"}
-              />{" "}
-              image (1080p)(less than 5 mb)
-            </label>
+            </div>
           </div>
-        </div>
+        ) : (
+          <span className="text-danger my-2 fw-bold">
+            Youtube url detected no need to upload files
+          </span>
+        )}
         {edit && post ? (
           <div className="col-md-12 my-2">
             <h4 style={{ textDecoration: "dotted underline var(--red-color)" }}>
@@ -369,7 +410,7 @@ const PostNewsForm: FC<{ edit?: boolean }> = ({ edit }) => {
             ) : (
               ""
             )}
-            {post.type === "video" ? (
+            {post.type === "video" && post.format !== "embed" ? (
               <video
                 className="video-card"
                 width="300px"
@@ -381,6 +422,17 @@ const PostNewsForm: FC<{ edit?: boolean }> = ({ edit }) => {
               >
                 <source type={post.format} src={FILE_BASE_URL + post.file} />
               </video>
+            ) : (
+              ""
+            )}
+            {post.type === "video" && post.format === "embed" ? (
+              <iframe
+                width="560"
+                height="315"
+                src={post.file + ""}
+                title="YouTube video player"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              ></iframe>
             ) : (
               ""
             )}
@@ -420,12 +472,17 @@ const PostNewsForm: FC<{ edit?: boolean }> = ({ edit }) => {
             <span className="text-danger">(not mandatory)</span>
           </label>
           <input
-            onChange={handleChange}
+            onChange={(e: React.FormEvent) => {
+              if (formData.url !== "") {
+                setVid(null);
+                setImg(null);
+                setFormData({ ...formData, file: null });
+              }
+              handleChange(e);
+            }}
             name="url"
-            value={formData.url}
-            placeholder="https://www.youtube.com/watch?v=<id>"
+            placeholder="https://www.youtube.com/watch?v=<id> or https://youtu.be/<id>"
             type="text"
-            required
             className="form-control"
           />
         </div>

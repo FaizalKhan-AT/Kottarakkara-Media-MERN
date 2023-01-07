@@ -22,7 +22,7 @@ export const APP = (
 );
 
 // for ssr
-ReactDOM.hydrateRoot(document.getElementById("root") as HTMLElement, APP);
+// ReactDOM.hydrateRoot(document.getElementById("root") as HTMLElement, APP);
 
 // for react-snap
 // import { hydrate, render } from "react-dom";
@@ -34,17 +34,17 @@ ReactDOM.hydrateRoot(document.getElementById("root") as HTMLElement, APP);
 //   render(APP, root);
 // }
 // normal
-// ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-//   <React.StrictMode>
-//     <BrowserRouter>
-//       <AuthContext>
-//         <PostContext>
-//           <SearchContext>
-//             <App />
-//           </SearchContext>
-//         </PostContext>
-//       </AuthContext>
-//     </BrowserRouter>
-//   </React.StrictMode>
-// );
+ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
+  <React.StrictMode>
+    <BrowserRouter>
+      <AuthContext>
+        <PostContext>
+          <SearchContext>
+            <App />
+          </SearchContext>
+        </PostContext>
+      </AuthContext>
+    </BrowserRouter>
+  </React.StrictMode>
+);
 // serviceWorkerRegistration.register();

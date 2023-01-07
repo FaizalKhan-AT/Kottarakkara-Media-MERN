@@ -95,17 +95,28 @@ const VideoCard: React.FC<Props> = ({ editor, post, fetchFn, admin }) => {
               {post.category}
             </span>
           </div>
-          <video
-            className="video-card"
-            width="100%"
-            controlsList="nodownload"
-            muted
-            loop
-            controls
-            title={post.titleEng}
-          >
-            <source type={post.format} src={FILE_BASE_URL + post.file} />
-          </video>
+          {post.type === "video" && post.format === "embed" ? (
+            <iframe
+              width="100%"
+              height="258"
+              src={post.file + ""}
+              className="video-card"
+              title="YouTube video player"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            ></iframe>
+          ) : (
+            <video
+              className="video-card"
+              width="100%"
+              controlsList="nodownload"
+              muted
+              loop
+              controls
+              title={post.titleEng}
+            >
+              <source type={post.format} src={FILE_BASE_URL + post.file} />
+            </video>
+          )}
         </div>
         <div className="card-body my-0 py-1">
           {editor ? (

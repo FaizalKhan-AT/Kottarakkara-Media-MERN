@@ -136,7 +136,7 @@ const getPublishedNews = async (req, res, type, time) => {
   if (time) {
     posts = await news
       .find(object)
-      .sort({ postedAt: time === "oldest" ? 1 : -1, likes: "asc" });
+      .sort({ date: time === "oldest" ? 1 : -1, likes: "asc" });
   } else posts = await news.find(object).sort({ likes: "asc" });
   if (posts) {
     return res.status(200).json({ status: "ok", data: posts });
@@ -163,7 +163,7 @@ const getNonPublishedNews = async (req, res, type, time) => {
   if (time) {
     posts = await news
       .find(object)
-      .sort({ postedAt: time === "oldest" ? 1 : -1, likes: "asc" });
+      .sort({ date: time === "oldest" ? 1 : -1, likes: "asc" });
   } else posts = await news.find(object).sort({ likes: "asc" });
 
   if (posts) {
