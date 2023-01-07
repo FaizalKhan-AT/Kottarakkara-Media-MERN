@@ -62,12 +62,8 @@ const postSeo = (req, res) => {
           .replace(/__TYPE__/g, "article")
           .replace(/__AUTHOR__/g, result.author)
           .replace(/__POSTED_AT__/g, result.postedAt)
-          .replace(
-            result.type === "image"
-              ? /__FILE_URL_IMAGE__/g
-              : /__FILE_URL_VIDEO__/g,
-            process.env.FILE_URL + result.file
-          )
+          .replace(/__FILE_URL_IMAGE__/g, process.env.FILE_URL + result.file)
+          .replace(/__FILE_URL_VIDEO__/g, process.env.FILE_URL + result.file)
           .replace(
             result.type === "image" ? /__IMAGE_FORMAT__/g : /__VIDEO_FORMAT__/g,
             result.format
