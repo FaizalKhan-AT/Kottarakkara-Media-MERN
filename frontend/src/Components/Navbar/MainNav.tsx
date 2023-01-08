@@ -17,11 +17,11 @@ const navLinks: navLinksType[] = [
   },
   {
     title: "National news",
-    route: "/news/all",
+    route: "/news/national-news",
   },
   {
     title: "international News",
-    route: "/news/all",
+    route: "/news/international-news",
   },
   {
     title: "News Updates",
@@ -42,6 +42,14 @@ const navLinks: navLinksType[] = [
   {
     title: "Tech",
     route: "/news/tech",
+  },
+  {
+    title: "Sports",
+    route: "/news/sports",
+  },
+  {
+    title: "Entertainment",
+    route: "/news/entertainment",
   },
 ];
 interface Props {

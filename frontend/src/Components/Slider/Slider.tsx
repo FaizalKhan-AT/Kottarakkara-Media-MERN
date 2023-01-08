@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination } from "swiper";
+import { Navigation, Pagination, Autoplay } from "swiper";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -45,7 +45,11 @@ const Slider: React.FC = () => {
             dynamicBullets: true,
             clickable: true,
           }}
-          modules={[Navigation, Pagination]}
+          autoplay={{
+            delay: 5000,
+            disableOnInteraction: false,
+          }}
+          modules={[Navigation, Pagination, Autoplay]}
         >
           {trending.map((post, idx) => {
             return (
