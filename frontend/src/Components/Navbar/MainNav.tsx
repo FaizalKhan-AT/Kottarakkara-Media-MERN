@@ -77,11 +77,16 @@ const MainNav: React.FC<Props> = ({ news, handleOpen }) => {
           {!news ? (
             <>
               <div
-                style={{ width: "55%" }}
+                style={{ width: "55%", height: "90vh", overflowY: "scroll" }}
                 className={`${
                   open ? "active" : ""
                 } d-flex nav-items align-items-center justify-content-around`}
               >
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
                 {navLinks.map(({ title, route }, idx) => {
                   return (
                     <Link className="nav-link" to={route} key={idx + title}>

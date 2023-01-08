@@ -11,6 +11,7 @@ import mail from "../../assets/socialMediaLogos/mail.png";
 import news from "../../assets/socialMediaLogos/news.png";
 import sharechat from "../../assets/socialMediaLogos/sharechat.png";
 import daily from "../../assets/socialMediaLogos/daily.png";
+import motion from "../../assets/socialMediaLogos/motion.png";
 import socialMedia from "../../interfaces/SocialMediaIcons";
 const Footer: React.FC<{ admin?: boolean }> = ({ admin }) => {
   const icons: socialMedia[] = [
@@ -33,6 +34,10 @@ const Footer: React.FC<{ admin?: boolean }> = ({ admin }) => {
       icon: daily,
       share:
         "https://profile.dailyhunt.in/kottarakkaramedia?uu=0xba5154c275b84c03",
+    },
+    {
+      icon: motion,
+      share: "https://www.dailymotion.com/KOTTARAKKARAMEDIA",
     },
   ];
   return (

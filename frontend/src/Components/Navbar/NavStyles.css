@@ -64,7 +64,9 @@
   border-radius: 6px;
   z-index: 22;
 }
-
+::-webkit-scrollbar-track {
+  width: 1rem;
+}
 .nav-link {
   width: 100%;
   padding: 10px 0;
