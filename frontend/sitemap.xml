@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
+<url>
+  <loc>https://kottarakkaranews.com/</loc>
+  <lastmod>2023-01-09T14:47:08+00:00</lastmod>
+</url>
+<url>
+  <loc>https://kottarakkaranews.com/news/:category</loc>
+  <lastmod>2023-01-09T14:47:08+00:00</lastmod>
+</url>
+<url>
+  <loc>https://kottarakkaranews.com/news-updates/:slug/:id</loc>
+  <lastmod>2023-01-09T14:47:08+00:00</lastmod>
+</url>
+<url>
+  <loc>https://kottarakkaranews.com/national-news/:slug/:id</loc>
+  <lastmod>2023-01-09T14:47:08+00:00</lastmod>
+</url>
+<url>
+  <loc>https://kottarakkaranews.com/international-news/:slug/:id</loc>
+  <lastmod>2023-01-09T14:47:08+00:00</lastmod>
+</url>
+<url>
+  <loc>https://kottarakkaranews.com/local-news/:slug/:id</loc>
+  <lastmod>2023-01-09T14:47:08+00:00</lastmod>
+</url>
+<url>
+  <loc>https://kottarakkaranews.com/sports/:slug/:id</loc>
+  <lastmod>2023-01-09T14:47:08+00:00</lastmod>
+</url>
+<url>
+  <loc>https://kottarakkaranews.com/entertainment/:slug/:id</loc>
+  <lastmod>2023-01-09T14:47:08+00:00</lastmod>
+</url>
+<url>
+  <loc>https://kottarakkaranews.com/life-style/:slug/:id</loc>
+  <lastmod>2023-01-09T14:47:08+00:00</lastmod>
+</url>
+<url>
+  <loc>https://kottarakkaranews.com/tech/:slug/:id</loc>
+  <lastmod>2023-01-09T14:47:08+00:00</lastmod>
+</url>
+<url>
+  <loc>https://kottarakkaranews.com/obituary/:slug/:id</loc>
+  <lastmod>2023-01-09T14:47:08+00:00</lastmod>
+</url>
+<url>
+  <loc>https://kottarakkaranews.com/travel/:slug/:id</loc>
+  <lastmod>2023-01-09T14:47:08+00:00</lastmod>
+</url>
+</urlset>
