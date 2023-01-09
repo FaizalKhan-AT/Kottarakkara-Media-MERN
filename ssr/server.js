@@ -12,11 +12,11 @@ const homeSeo = (req, res) => {
       return res.send("something went wrong while serving this page :(");
     }
 
+    // .replace(
+    //   /__TITLE__/g,
+    //   " Kottarakara News | Get updated quickly with latest news and events from Kerala | Kottarakkara News"
+    // )
     data = data
-      .replace(
-        /__TITLE__/g,
-        " Kottarakara News | Get updated quickly with latest news and events from Kerala | Kottarakkara News"
-      )
       .replace(
         /__DESCRIPTION__/g,
         "Get updated quickly with the latest news, specials and events from Kerala with Kottarakara News and get update with Latest Malayalam news too"
