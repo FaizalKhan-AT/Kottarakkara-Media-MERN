@@ -125,6 +125,15 @@ const postSeo = (req, res) => {
     })
     .catch((err) => console.log(err));
 };
+const sitemap = (req, res) => {
+  const filePath = path.resolve(__dirname, "../frontend/dist", "sitemap.xml");
+  fs.readFile(filePath, "utf8", (err, data) => {
+    if (err) {
+      return res.send("something went wrong while serving this page :(");
+    }
+    res.send(data);
+  });
+};
 app.get("/", homeSeo);
 app.get("/local-news/:slug/:id", postSeo);
 app.get("/national-news/:slug/:id", postSeo);
@@ -136,6 +145,7 @@ app.get("/obituary/:slug/:id", postSeo);
 app.get("/tech/:slug/:id", postSeo);
 app.get("/sports/:slug/:id", postSeo);
 app.get("/entertainment/:slug/:id", postSeo);
+app.get("/sitemap", sitemap);
 app.use(express.static(path.resolve(__dirname, "../frontend/dist/")));
 
 app.listen(PORT, () => {
