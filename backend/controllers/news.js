@@ -22,6 +22,7 @@ const uploadNews = async (req, res) => {
     url,
   } = req.body;
   try {
+    const [d, m, y] = postedAt.split("/");
     const response = await news.create({
       category,
       external,
@@ -39,7 +40,7 @@ const uploadNews = async (req, res) => {
       postedAt,
       tags,
       published,
-      date: Date.now(),
+      date: new Date(m + "-" + d + "-" + y),
     });
     return res.json({
       status: "ok",
