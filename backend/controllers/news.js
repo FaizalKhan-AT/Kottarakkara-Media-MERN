@@ -39,13 +39,14 @@ const uploadNews = async (req, res) => {
       postedAt,
       tags,
       published,
-      date: new Date(postedAt),
+      date: Date.now(),
     });
     return res.json({
       status: "ok",
       data: "News uploaded successfully",
     });
   } catch (err) {
+    console.log(err);
     return res.status(500).json({
       status: "error",
       error:

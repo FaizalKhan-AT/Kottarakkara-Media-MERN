@@ -135,6 +135,7 @@ const sitemap = (req, res) => {
   });
 };
 app.get("/", homeSeo);
+app.get("/news/:category", homeSeo);
 app.get("/local-news/:slug/:id", postSeo);
 app.get("/national-news/:slug/:id", postSeo);
 app.get("/international-news/:slug/:id", postSeo);
