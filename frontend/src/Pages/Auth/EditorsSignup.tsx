@@ -1,6 +1,5 @@
 import React from "react";
 import Signup from "../../Components/Authentication/Signup";
-import cover from "../../assets/Logo/coverimg.jpg";
 const EditorsSignup = () => {
   return (
     <>

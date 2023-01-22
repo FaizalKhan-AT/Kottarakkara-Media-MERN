@@ -5,7 +5,6 @@ import Footer from "../../Components/Footer/Footer";
 import MainNav from "../../Components/Navbar/MainNav";
 import PostCard from "../../Components/PostCard/PostCard";
 import VideoCard from "../../Components/PostCard/VideoCard";
-import Title from "../../Components/Seo/Title";
 import FilterSidebar, { NFilter } from "../../Components/Sidebar/FilterSidebar";
 import Spinner from "../../Components/Spinner/Spinner";
 import axios from "../../config";
@@ -69,8 +68,6 @@ const NewsFilter: React.FC = () => {
   };
   return (
     <>
-      <Title />
-
       {error ? <Error error={error} setError={setError} /> : ""}
       <MainNav news handleOpen={handleOpen} />
       <FilterSidebar

@@ -7,7 +7,6 @@ import EditorNav from "../../Components/Navbar/EditorNav";
 import FilterNav from "../../Components/Navbar/FilterNav";
 import PostCard from "../../Components/PostCard/PostCard";
 import VideoCard from "../../Components/PostCard/VideoCard";
-import Title from "../../Components/Seo/Title";
 import Spinner from "../../Components/Spinner/Spinner";
 import axios from "../../config";
 import { News } from "../../interfaces/NewsInterface";
@@ -91,8 +90,6 @@ const EditorHome: React.FC = () => {
   };
   return (
     <>
-      <Title />
-
       <EditorNav />
       <div
         style={{ textDecoration: "dotted underline var(--red-color)" }}

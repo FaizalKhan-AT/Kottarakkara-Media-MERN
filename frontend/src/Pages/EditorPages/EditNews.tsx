@@ -1,8 +1,6 @@
-import { FC, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { FC, useState } from "react";
 import Error from "../../Components/Error/Error";
 import PostNewsForm from "../../Components/PostNews/PostNewsForm";
-import axios from "../../config";
 import { News } from "../../interfaces/NewsInterface";
 
 const EditNews: FC = () => {

@@ -8,7 +8,6 @@ import AdminFilterNav, {
 import EditorNav from "../../Components/Navbar/EditorNav";
 import PostCard from "../../Components/PostCard/PostCard";
 import VideoCard from "../../Components/PostCard/VideoCard";
-import Title from "../../Components/Seo/Title";
 import Spinner from "../../Components/Spinner/Spinner";
 import axios from "../../config";
 import { News } from "../../interfaces/NewsInterface";
@@ -124,7 +123,6 @@ const AdminHome: React.FC = () => {
   };
   return (
     <>
-      <Title />
       {error ? <Error error={error} setError={setError} /> : ""}
       <EditorNav admin />
       <UpdateLiveModal

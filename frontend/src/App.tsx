@@ -1,7 +1,6 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useEffect } from "react";
 import { Routes, Route, Link } from "react-router-dom";
-import Title from "./Components/Seo/Title";
 import AdminHome from "./Pages/Admin/AdminHome";
 import AddNewEditor from "./Pages/Auth/AddNewEditor";
 import AdminLogin from "./Pages/Auth/AdminLogin";

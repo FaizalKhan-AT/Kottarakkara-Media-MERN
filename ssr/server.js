@@ -12,14 +12,16 @@ const homeSeo = (req, res) => {
       return res.send("something went wrong while serving this page :(");
     }
 
-    // .replace(
-    //   /__TITLE__/g,
-    //   " Kottarakara News | Get updated quickly with latest news and events from Kerala | Kottarakkara News"
-    // )
     data = data
       .replace(
         /__DESCRIPTION__/g,
         "Get updated quickly with the latest news, specials and events from Kerala with Kottarakara News and get update with Latest Malayalam news too"
+      )
+      .replace(
+        /__Malayalam_Latest_News__/g,
+        req.params.category
+          ? req.params.category
+          : "" + " Latest Malayalam News - Quick Read News articles"
       )
       .replace(
         /__OG_TITLE__/g,
@@ -66,7 +68,7 @@ const postSeo = (req, res) => {
         if (result.format === "embed") {
           const s = getImgUrl(yt).then((r) => {
             data = data
-              .replace(/__TITLE__/g, result.titleMal)
+              .replace(/__Malayalam_Latest_News__/g, result.titleMal)
               .replace(/__DESCRIPTION__/g, result.newsContent)
               .replace(/__OG_TITLE__/g, result.titleMal)
               .replace(/__OG_DESCRIPTION__/g, result.newsContent)
@@ -75,29 +77,19 @@ const postSeo = (req, res) => {
               .replace(/__AUTHOR__/g, result.author)
               .replace(/__POSTED_AT__/g, result.postedAt)
               .replace(
-                /__FILE_URL_IMAGE__/g,
                 result.format === "embed"
-                  ? r
-                  : process.env.FILE_URL + result.file
+                  ? /__FILE_URL_IMAGE__/g
+                  : "__NOTHING__",
+                r
               )
-              .replace(
-                /__FILE_URL_VIDEO__/g,
-                result.format === "embed"
-                  ? yt
-                  : process.env.FILE_URL + result.file
-              )
-              .replace(
-                result.type === "image"
-                  ? /__IMAGE_FORMAT__/g
-                  : /__VIDEO_FORMAT__/g,
-                result.format
-              )
+
+              .replace(/__IMAGE_FORMAT__/g, "image/*")
               .replace(/__KEYWORDS__/g, result.tags.toString());
             res.send(data);
           });
         } else {
           data = data
-            .replace(/__TITLE__/g, result.titleMal)
+            .replace(/__Malayalam_Latest_News__/g, result.titleMal)
             .replace(/__DESCRIPTION__/g, result.newsContent)
             .replace(/__OG_TITLE__/g, result.titleMal)
             .replace(/__OG_DESCRIPTION__/g, result.newsContent)
@@ -105,12 +97,13 @@ const postSeo = (req, res) => {
             .replace(/__TYPE__/g, "article")
             .replace(/__AUTHOR__/g, result.author)
             .replace(/__POSTED_AT__/g, result.postedAt)
-            .replace(/__FILE_URL_IMAGE__/g, process.env.FILE_URL + result.file)
             .replace(
-              /__FILE_URL_VIDEO__/g,
-              result.format === "embed"
-                ? yt
-                : process.env.FILE_URL + result.file
+              result.type === "image"
+                ? /__FILE_URL_IMAGE__/g
+                : result.type === "video"
+                ? /__FILE_URL_VIDEO__/g
+                : "__NOTHING__",
+              process.env.FILE_URL + result.file
             )
             .replace(
               result.type === "image"

@@ -1,13 +1,10 @@
 import React from "react";
 import Footer from "../../Components/Footer/Footer";
 import MainNav from "../../Components/Navbar/MainNav";
-import Title from "../../Components/Seo/Title";
 
 const Contact: React.FC = () => {
   return (
     <>
-      <Title />
-
       <MainNav />
       <div
         style={{ textDecoration: "dotted underline var(--red-color)" }}
