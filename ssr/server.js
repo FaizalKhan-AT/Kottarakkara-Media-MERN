@@ -20,12 +20,16 @@ const homeSeo = (req, res) => {
       .replace(
         /__Malayalam_Latest_News__/g,
         req.params.category
-          ? req.params.category
-          : "" + " Latest Malayalam News - Quick Read News articles"
+          ? req.params.category +
+              " Latest Malayalam News - Quick Read News articles"
+          : " Kottarakara News | Get updated quickly with latest news and events from Kerala | Latest Malayalam News"
       )
       .replace(
         /__OG_TITLE__/g,
-        " Kottarakara News | Get updated quickly with latest news and events from Kerala | Kottarakkara News"
+        req.params.category
+          ? req.params.category +
+              " Latest Malayalam News - Quick Read News articles"
+          : " Kottarakara News | Get updated quickly with latest news and events from Kerala | Latest Malayalam News"
       )
       .replace(
         /__OG_DESCRIPTION__/g,
