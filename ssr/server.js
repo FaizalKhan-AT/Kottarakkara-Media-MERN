@@ -131,6 +131,15 @@ const sitemap = (req, res) => {
     res.send(data);
   });
 };
+const ads = (req, res) => {
+  const filePath = path.resolve(__dirname, "../frontend/dist", "ads.txt");
+  fs.readFile(filePath, "utf8", (err, data) => {
+    if (err) {
+      return res.send("something went wrong while serving this page :(");
+    }
+    res.send(data);
+  });
+};
 app.get("/", homeSeo);
 app.get("/news/:category", homeSeo);
 app.get("/local-news/:slug/:id", postSeo);
@@ -144,6 +153,7 @@ app.get("/tech/:slug/:id", postSeo);
 app.get("/sports/:slug/:id", postSeo);
 app.get("/entertainment/:slug/:id", postSeo);
 app.get("/sitemap", sitemap);
+app.get("/ads.txt", ads);
 app.use(express.static(path.resolve(__dirname, "../frontend/dist/")));
 
 app.listen(PORT, () => {
