@@ -1,12 +1,12 @@
 import { AxiosResponse } from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, lazy, Suspense } from "react";
 import { Link } from "react-router-dom";
 import Error from "../../Components/Error/Error";
-import Footer from "../../Components/Footer/Footer";
-import EditorNav from "../../Components/Navbar/EditorNav";
-import FilterNav from "../../Components/Navbar/FilterNav";
-import PostCard from "../../Components/PostCard/PostCard";
-import VideoCard from "../../Components/PostCard/VideoCard";
+const Footer = lazy(() => import("../../Components/Footer/Footer"));
+const EditorNav = lazy(() => import("../../Components/Navbar/EditorNav"));
+const FilterNav = lazy(() => import("../../Components/Navbar/FilterNav"));
+const PostCard = lazy(() => import("../../Components/PostCard/PostCard"));
+const VideoCard = lazy(() => import("../../Components/PostCard/VideoCard"));
 import Spinner from "../../Components/Spinner/Spinner";
 import axios from "../../config";
 import { News } from "../../interfaces/NewsInterface";
@@ -90,7 +90,9 @@ const EditorHome: React.FC = () => {
   };
   return (
     <>
-      <EditorNav />
+      <Suspense>
+        <EditorNav />
+      </Suspense>
       <div
         style={{ textDecoration: "dotted underline var(--red-color)" }}
         className="text-center h3 fw-bold my-3 mt-5"
@@ -98,7 +100,9 @@ const EditorHome: React.FC = () => {
         Editor's Panel
       </div>
       <br />
-      <FilterNav handleFilter={handleFilter} handleSearch={handleSearch} />
+      <Suspense>
+        <FilterNav handleFilter={handleFilter} handleSearch={handleSearch} />
+      </Suspense>
       <br />
       <div
         style={{ height: `${posts.length < 1 ? "44vh" : ""}` }}
@@ -117,19 +121,23 @@ const EditorHome: React.FC = () => {
               <div className="card-section">
                 {posts.map((post, idx) => {
                   return post.type === "video" ? (
-                    <VideoCard
-                      fetchFn={fetchPosts}
-                      editor
-                      post={post}
-                      key={post._id}
-                    />
+                    <Suspense fallback={<Spinner height="20vh" />}>
+                      <VideoCard
+                        fetchFn={fetchPosts}
+                        editor
+                        post={post}
+                        key={post._id}
+                      />
+                    </Suspense>
                   ) : (
-                    <PostCard
-                      fetchFn={fetchPosts}
-                      editor
-                      post={post}
-                      key={post._id}
-                    />
+                    <Suspense fallback={<Spinner height="50vh" />}>
+                      <PostCard
+                        fetchFn={fetchPosts}
+                        editor
+                        post={post}
+                        key={post._id}
+                      />
+                    </Suspense>
                   );
                 })}
               </div>
@@ -144,7 +152,9 @@ const EditorHome: React.FC = () => {
       </div>
       {error ? <Error error={error} setError={setError} /> : ""}
       <br />
-      <Footer />
+      <Suspense>
+        <Footer />
+      </Suspense>
     </>
   );
 };

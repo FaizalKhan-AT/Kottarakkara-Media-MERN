@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useState } from "react";
 import axios_instance from "../config";
 import { News } from "../interfaces/NewsInterface";
 export interface SearchType {
@@ -26,12 +26,11 @@ const SearchContext: React.FC<Props> = ({ children }) => {
       })
       .catch((err) => console.error(err));
   };
-  useEffect(() => {
-    fetchData("/news/");
-  }, []);
+
   const [search, setSearch] = useState<string>("");
   const [temp, setTemp] = useState<News[]>([]);
   const handleSearch = () => {
+    if (temp.length < 1) fetchData("/news/");
     return temp.filter((item) => {
       if (item.titleEng.includes(search.toLocaleLowerCase())) return item;
       else if (item.titleMal.includes(search.toLocaleLowerCase())) return item;

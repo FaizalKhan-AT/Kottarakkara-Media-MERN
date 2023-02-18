@@ -1,9 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, lazy, Suspense } from "react";
 import { useParams } from "react-router-dom";
-import CategorySection from "../../Components/CategorySection/CategorySection";
+const CategorySection = lazy(
+  () => import("../../Components/CategorySection/CategorySection")
+);
 import Error from "../../Components/Error/Error";
-import Footer from "../../Components/Footer/Footer";
-import PostView from "../../Components/PostView/PostView";
+import Spinner from "../../Components/Spinner/Spinner";
+const Footer = lazy(() => import("../../Components/Footer/Footer"));
+const PostView = lazy(() => import("../../Components/PostView/PostView"));
 import axios from "../../config";
 import { News } from "../../interfaces/NewsInterface";
 
@@ -56,18 +59,24 @@ const Post: React.FC = () => {
   return (
     <>
       {error ? <Error error={error} setError={setError} /> : ""}
-      <PostView post={post ? post : null} />
+      <Suspense fallback={<Spinner />}>
+        <PostView post={post ? post : null} />
+      </Suspense>
       <br />
       <br />
       <div className="container w-100">
-        <CategorySection
-          relatedNews={relatedNews}
-          name="Related Articles"
-          related
-        />
+        <Suspense fallback={<Spinner />}>
+          <CategorySection
+            relatedNews={relatedNews}
+            name="Related Articles"
+            related
+          />
+        </Suspense>
       </div>
       <br />
-      <Footer />
+      <Suspense>
+        <Footer />
+      </Suspense>
     </>
   );
 };

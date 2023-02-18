@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from "react";
-import CategorySection from "../../Components/CategorySection/CategorySection";
-import Footer from "../../Components/Footer/Footer";
-import MainNav from "../../Components/Navbar/MainNav";
-import Slider from "../../Components/Slider/Slider";
+import React, { useEffect, useState, lazy, Suspense } from "react";
+import Spinner from "../../Components/Spinner/Spinner";
+const CategorySection = lazy(
+  () => import("../../Components/CategorySection/CategorySection")
+);
+const Footer = lazy(() => import("../../Components/Footer/Footer"));
+const MainNav = lazy(() => import("../../Components/Navbar/MainNav"));
+const Slider = lazy(() => import("../../Components/Slider/Slider"));
 
 const Home: React.FC = () => {
   useEffect(() => {
@@ -19,18 +22,24 @@ const Home: React.FC = () => {
   const [date, setDate] = useState<string>("");
   return (
     <>
-      <MainNav />
+      <Suspense>
+        <MainNav />
+      </Suspense>
       <br />
       <div className="container fs-4 text-muted text-end">
         {date ? date : ""}
       </div>
       <br />
       <div className="d-flex container slider">
-        <Slider />
+        <Suspense fallback={<Spinner />}>
+          <Slider />
+        </Suspense>
       </div>
       <div className="container mt-5">
         <br />
-        <CategorySection name="Latest News" />
+        <Suspense fallback={<Spinner height="30vh" />}>
+          <CategorySection name="Latest News" />
+        </Suspense>
         <br />
       </div>
       <Footer />

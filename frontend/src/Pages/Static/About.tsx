@@ -1,11 +1,13 @@
-import React from "react";
-import Footer from "../../Components/Footer/Footer";
-import MainNav from "../../Components/Navbar/MainNav";
+import React, { lazy, Suspense } from "react";
+const Footer = lazy(() => import("../../Components/Footer/Footer"));
+const MainNav = lazy(() => import("../../Components/Navbar/MainNav"));
 
 const About: React.FC = () => {
   return (
     <>
-      <MainNav />
+      <Suspense>
+        <MainNav />
+      </Suspense>
       <div
         style={{ textDecoration: "dotted underline var(--red-color)" }}
         className="text-center h3 fw-bold my-3 mt-5"
@@ -35,7 +37,9 @@ const About: React.FC = () => {
       </div>
       <br />
       <br />
-      <Footer />
+      <Suspense>
+        <Footer />
+      </Suspense>
     </>
   );
 };

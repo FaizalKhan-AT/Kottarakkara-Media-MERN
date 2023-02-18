@@ -144,6 +144,7 @@ const PostCard: React.FC<Props> = ({ editor, post, fetchFn, admin }) => {
           <img
             src={FILE_BASE_URL + post.file}
             width="100%"
+            loading="lazy"
             height={150}
             style={{ objectFit: "cover" }}
             className="card-img-top"

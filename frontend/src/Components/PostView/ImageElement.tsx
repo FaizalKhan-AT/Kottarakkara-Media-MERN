@@ -10,6 +10,7 @@ const ImageElement: React.FC<{ post: News | null }> = ({ post }) => {
       <img
         width="100%"
         height="400"
+        loading="lazy"
         style={{
           objectFit: "cover",
           borderRadius: "0 0 50px 50px",

@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, lazy, Suspense } from "react";
 import Error from "../../Components/Error/Error";
-import Footer from "../../Components/Footer/Footer";
-import MainNav from "../../Components/Navbar/MainNav";
-import Spinner from "../../Components/Spinner/Spinner";
+const Footer = lazy(() => import("../../Components/Footer/Footer"));
+const MainNav = lazy(() => import("../../Components/Navbar/MainNav"));
+const Spinner = lazy(() => import("../../Components/Spinner/Spinner"));
 import axios from "../../config";
 
-const Live = () => {
+const Live: React.FC = () => {
   const [url, setUrl] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
@@ -34,7 +34,9 @@ const Live = () => {
   }, []);
   return (
     <>
-      <MainNav />
+      <Suspense>
+        <MainNav />
+      </Suspense>
       {error ? <Error error={error} setError={setError} /> : ""}
       <div
         style={{ textDecoration: "dotted underline var(--red-color)" }}
@@ -44,7 +46,9 @@ const Live = () => {
       </div>
       <div className="container">
         {loading ? (
-          <Spinner height="50vh" />
+          <Suspense>
+            <Spinner height="50vh" />
+          </Suspense>
         ) : (
           <iframe
             width="100%"
@@ -57,7 +61,9 @@ const Live = () => {
         )}
       </div>
       <br />
-      <Footer />
+      <Suspense>
+        <Footer />
+      </Suspense>
     </>
   );
 };

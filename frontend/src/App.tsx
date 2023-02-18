@@ -1,24 +1,26 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useEffect } from "react";
+import { useEffect, lazy, Suspense } from "react";
 import { Routes, Route, Link } from "react-router-dom";
-import AdminHome from "./Pages/Admin/AdminHome";
-import AddNewEditor from "./Pages/Auth/AddNewEditor";
-import AdminLogin from "./Pages/Auth/AdminLogin";
-import EditorsLogin from "./Pages/Auth/EditorsLogin";
-import EditorsSignup from "./Pages/Auth/EditorsSignup";
-import AddNews from "./Pages/EditorPages/AddNew";
-import EditNews from "./Pages/EditorPages/EditNews";
-import EditorHome from "./Pages/EditorPages/EditorHome";
-import Home from "./Pages/Home/Home";
-import NewsFilter from "./Pages/News/NewsFilter";
-import Live from "./Pages/Post/Live";
-import Post from "./Pages/Post/Post";
-import About from "./Pages/Static/About";
-import Contact from "./Pages/Static/Contact";
-import Grievance from "./Pages/Static/Grievance";
 import ReactGa from "react-ga4";
 import { TRACKING_ID } from "./env";
+import Spinner from "./Components/Spinner/Spinner";
 ReactGa.initialize(TRACKING_ID);
+const Home = lazy(() => import("./Pages/Home/Home"));
+const AdminHome = lazy(() => import("./Pages/Admin/AdminHome"));
+const AddNewEditor = lazy(() => import("./Pages/Auth/AddNewEditor"));
+const AdminLogin = lazy(() => import("./Pages/Auth/AdminLogin"));
+const EditorsLogin = lazy(() => import("./Pages/Auth/EditorsLogin"));
+const EditorsSignup = lazy(() => import("./Pages/Auth/EditorsSignup"));
+const AddNews = lazy(() => import("./Pages/EditorPages/AddNew"));
+const EditNews = lazy(() => import("./Pages/EditorPages/EditNews"));
+const EditorHome = lazy(() => import("./Pages/EditorPages/EditorHome"));
+const NewsFilter = lazy(() => import("./Pages/News/NewsFilter"));
+const Live = lazy(() => import("./Pages/Post/Live"));
+const Post = lazy(() => import("./Pages/Post/Post"));
+const About = lazy(() => import("./Pages/Static/About"));
+const Contact = lazy(() => import("./Pages/Static/Contact"));
+const Grievance = lazy(() => import("./Pages/Static/Grievance"));
+
 const App: React.FC = () => {
   useEffect(() => {
     ReactGa.send({ hitType: "pageview", page: window.location.pathname });
@@ -26,27 +28,139 @@ const App: React.FC = () => {
   return (
     <>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/live" element={<Live />} />
-        <Route path="/:category/:slug/:id" element={<Post />} />
-        <Route path="/about-us" element={<About />} />
-        <Route path="/grievance" element={<Grievance />} />
-        <Route path="/contact-us" element={<Contact />} />
+        <Route
+          path="/"
+          element={
+            <Suspense fallback={<Spinner height="50vh" />}>
+              <Home />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/live"
+          element={
+            <Suspense fallback={<Spinner height="50vh" />}>
+              <Live />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/:category/:slug/:id"
+          element={
+            <Suspense fallback={<Spinner height="50vh" />}>
+              <Post />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/about-us"
+          element={
+            <Suspense fallback={<Spinner height="50vh" />}>
+              <About />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/grievance"
+          element={
+            <Suspense fallback={<Spinner height="50vh" />}>
+              <Grievance />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/contact-us"
+          element={
+            <Suspense fallback={<Spinner height="50vh" />}>
+              <Contact />
+            </Suspense>
+          }
+        />
         <Route path="/news/:category">
-          <Route index element={<NewsFilter />} />
-          <Route path=":key" element={<NewsFilter />} />
+          <Route
+            index
+            element={
+              <Suspense fallback={<Spinner height="50vh" />}>
+                <NewsFilter />
+              </Suspense>
+            }
+          />
+          <Route
+            path=":key"
+            element={
+              <Suspense fallback={<Spinner height="50vh" />}>
+                <NewsFilter />
+              </Suspense>
+            }
+          />
         </Route>
         <Route path="/admin">
-          <Route index element={<AdminHome />} />
-          <Route path="login" element={<AdminLogin />} />
-          <Route path="new-editor" element={<AddNewEditor />} />
+          <Route
+            index
+            element={
+              <Suspense fallback={<Spinner height="50vh" />}>
+                <AdminHome />
+              </Suspense>
+            }
+          />
+          <Route
+            path="login"
+            element={
+              <Suspense fallback={<Spinner height="50vh" />}>
+                <AdminLogin />
+              </Suspense>
+            }
+          />
+          <Route
+            path="new-editor"
+            element={
+              <Suspense fallback={<Spinner height="50vh" />}>
+                <AddNewEditor />
+              </Suspense>
+            }
+          />
         </Route>
         <Route path="/editor">
-          <Route index element={<EditorHome />} />
-          <Route path="join-us" element={<EditorsSignup />} />
-          <Route path="post" element={<AddNews />} />
-          <Route path="login" element={<EditorsLogin />} />
-          <Route path="edit" element={<EditNews />} />
+          <Route
+            index
+            element={
+              <Suspense fallback={<Spinner height="50vh" />}>
+                <EditorHome />
+              </Suspense>
+            }
+          />
+          <Route
+            path="join-us"
+            element={
+              <Suspense fallback={<Spinner height="50vh" />}>
+                <EditorsSignup />
+              </Suspense>
+            }
+          />
+          <Route
+            path="post"
+            element={
+              <Suspense fallback={<Spinner height="50vh" />}>
+                <AddNews />
+              </Suspense>
+            }
+          />
+          <Route
+            path="login"
+            element={
+              <Suspense fallback={<Spinner height="50vh" />}>
+                <EditorsLogin />
+              </Suspense>
+            }
+          />
+          <Route
+            path="edit"
+            element={
+              <Suspense fallback={<Spinner height="50vh" />}>
+                <EditNews />
+              </Suspense>
+            }
+          />
         </Route>
         <Route
           path="*"

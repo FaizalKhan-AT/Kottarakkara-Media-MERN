@@ -1,6 +1,9 @@
-import { FC, useState } from "react";
+import { FC, useState, lazy, Suspense } from "react";
 import Error from "../../Components/Error/Error";
-import PostNewsForm from "../../Components/PostNews/PostNewsForm";
+import Spinner from "../../Components/Spinner/Spinner";
+const PostNewsForm = lazy(
+  () => import("../../Components/PostNews/PostNewsForm")
+);
 import { News } from "../../interfaces/NewsInterface";
 
 const EditNews: FC = () => {
@@ -18,7 +21,9 @@ const EditNews: FC = () => {
           Edit news
         </div>
         <br />
-        <PostNewsForm edit />
+        <Suspense fallback={<Spinner height="50vh" />}>
+          <PostNewsForm edit />
+        </Suspense>
       </div>
     </>
   );

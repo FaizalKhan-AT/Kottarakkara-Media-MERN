@@ -1,16 +1,19 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, lazy, Suspense } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Error from "../../Components/Error/Error";
-import Footer from "../../Components/Footer/Footer";
-import MainNav from "../../Components/Navbar/MainNav";
-import PostCard from "../../Components/PostCard/PostCard";
-import VideoCard from "../../Components/PostCard/VideoCard";
-import FilterSidebar, { NFilter } from "../../Components/Sidebar/FilterSidebar";
+import { NFilter } from "../../Components/Sidebar/FilterSidebar";
 import Spinner from "../../Components/Spinner/Spinner";
 import axios from "../../config";
 import { Search, SearchType } from "../../contexts/SearchContext";
 import { News } from "../../interfaces/NewsInterface";
 
+const Footer = lazy(() => import("../../Components/Footer/Footer"));
+const MainNav = lazy(() => import("../../Components/Navbar/MainNav"));
+const PostCard = lazy(() => import("../../Components/PostCard/PostCard"));
+const VideoCard = lazy(() => import("../../Components/PostCard/VideoCard"));
+const FilterSidebar = lazy(
+  () => import("../../Components/Sidebar/FilterSidebar")
+);
 const NewsFilter: React.FC = () => {
   const { category, key } = useParams();
   const [error, setError] = useState<string>("");
@@ -69,12 +72,16 @@ const NewsFilter: React.FC = () => {
   return (
     <>
       {error ? <Error error={error} setError={setError} /> : ""}
-      <MainNav news handleOpen={handleOpen} />
-      <FilterSidebar
-        handleFilter={handleFilter}
-        open={open}
-        handleOpen={handleOpen}
-      />
+      <Suspense>
+        <MainNav news handleOpen={handleOpen} />
+      </Suspense>
+      <Suspense fallback={<Spinner height="50vh" />}>
+        <FilterSidebar
+          handleFilter={handleFilter}
+          open={open}
+          handleOpen={handleOpen}
+        />
+      </Suspense>
       <br />
       <div className="d-flex container w-100 justify-content-center">
         <div className="d-flex search-news align-items-center gap-2">
@@ -103,9 +110,13 @@ const NewsFilter: React.FC = () => {
             <div className="card-section my-3">
               {news.map((post, idx) => {
                 return post.type === "video" ? (
-                  <VideoCard post={post} key={post._id} />
+                  <Suspense>
+                    <VideoCard post={post} key={post._id} />
+                  </Suspense>
                 ) : (
-                  <PostCard post={post} key={post._id} />
+                  <Suspense>
+                    <PostCard post={post} key={post._id} />
+                  </Suspense>
                 );
               })}
             </div>
@@ -117,7 +128,9 @@ const NewsFilter: React.FC = () => {
         </div>
       )}
       <br />
-      <Footer />
+      <Suspense>
+        <Footer />
+      </Suspense>
     </>
   );
 };

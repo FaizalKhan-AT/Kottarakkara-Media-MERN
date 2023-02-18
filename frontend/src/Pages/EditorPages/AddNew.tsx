@@ -1,5 +1,8 @@
-import React from "react";
-import PostNewsForm from "../../Components/PostNews/PostNewsForm";
+import React, { lazy, Suspense } from "react";
+import Spinner from "../../Components/Spinner/Spinner";
+const PostNewsForm = lazy(
+  () => import("../../Components/PostNews/PostNewsForm")
+);
 
 const AddNews: React.FC = () => {
   return (
@@ -12,7 +15,9 @@ const AddNews: React.FC = () => {
           Post news
         </div>
         <br />
-        <PostNewsForm />
+        <Suspense fallback={<Spinner height="50vh" />}>
+          <PostNewsForm />
+        </Suspense>
       </div>
     </>
   );

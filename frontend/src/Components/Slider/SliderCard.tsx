@@ -12,6 +12,7 @@ const SliderCard: React.FC<{ post: News }> = ({ post }) => {
           <div className="position-absolute overlay start-0 end-0 top-0 bottom-0"></div>
           <img
             className="slider-img"
+            loading="lazy"
             style={{ objectFit: "cover" }}
             src={FILE_BASE_URL + post.file}
             width="100%"

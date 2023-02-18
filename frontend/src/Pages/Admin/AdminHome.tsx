@@ -1,13 +1,16 @@
-import React, { useEffect, useState } from "react";
-import EditorCard from "../../Components/Cards/EditorCards";
+import React, { lazy, useEffect, useState, Suspense } from "react";
 import Error from "../../Components/Error/Error";
-import UpdateLiveModal from "../../Components/Modals/UpdateLiveModal";
-import AdminFilterNav, {
-  FilterAdmin,
-} from "../../Components/Navbar/AdminFilterNav";
-import EditorNav from "../../Components/Navbar/EditorNav";
-import PostCard from "../../Components/PostCard/PostCard";
-import VideoCard from "../../Components/PostCard/VideoCard";
+const EditorCard = lazy(() => import("../../Components/Cards/EditorCards"));
+const UpdateLiveModal = lazy(
+  () => import("../../Components/Modals/UpdateLiveModal")
+);
+import { FilterAdmin } from "../../Components/Navbar/AdminFilterNav";
+const AdminFilterNav = lazy(
+  () => import("../../Components/Navbar/AdminFilterNav")
+);
+const EditorNav = lazy(() => import("../../Components/Navbar/EditorNav"));
+const PostCard = lazy(() => import("../../Components/PostCard/PostCard"));
+const VideoCard = lazy(() => import("../../Components/PostCard/VideoCard"));
 import Spinner from "../../Components/Spinner/Spinner";
 import axios from "../../config";
 import { News } from "../../interfaces/NewsInterface";
@@ -124,12 +127,16 @@ const AdminHome: React.FC = () => {
   return (
     <>
       {error ? <Error error={error} setError={setError} /> : ""}
-      <EditorNav admin />
-      <UpdateLiveModal
-        open={open}
-        handleOpen={handleOpen}
-        updateFn={updateLive}
-      />
+      <Suspense>
+        <EditorNav admin />
+      </Suspense>
+      <Suspense>
+        <UpdateLiveModal
+          open={open}
+          handleOpen={handleOpen}
+          updateFn={updateLive}
+        />
+      </Suspense>
       <div
         style={{ textDecoration: "dotted underline var(--red-color)" }}
         className="text-center h3 fw-bold my-3 mt-5"
@@ -137,11 +144,13 @@ const AdminHome: React.FC = () => {
         Admin Panel
       </div>
       <br />
-      <AdminFilterNav
-        setTitle={setTitle}
-        handleFilter={handleFilter}
-        handleSearch={handleSearch}
-      />
+      <Suspense>
+        <AdminFilterNav
+          setTitle={setTitle}
+          handleFilter={handleFilter}
+          handleSearch={handleSearch}
+        />
+      </Suspense>
       <br />
       <div className="container">
         <div onClick={handleOpen} className="btn btn-outline-danger mb-2">
@@ -161,11 +170,13 @@ const AdminHome: React.FC = () => {
                 {data.length > 0 ? (
                   data?.map((editor) => {
                     return (
-                      <EditorCard
-                        fetchFn={fetchData}
-                        key={editor._id}
-                        editor={editor as Editor}
-                      />
+                      <Suspense>
+                        <EditorCard
+                          fetchFn={fetchData}
+                          key={editor._id}
+                          editor={editor as Editor}
+                        />
+                      </Suspense>
                     );
                   })
                 ) : (
@@ -178,9 +189,13 @@ const AdminHome: React.FC = () => {
               <div className="card-section">
                 {newsData.map((post, idx) => {
                   return post.type === "video" ? (
-                    <VideoCard admin post={post} key={post._id} />
+                    <Suspense>
+                      <VideoCard admin post={post} key={post._id} />
+                    </Suspense>
                   ) : (
-                    <PostCard admin post={post} key={post._id} />
+                    <Suspense>
+                      <PostCard admin post={post} key={post._id} />
+                    </Suspense>
                   );
                 })}
               </div>

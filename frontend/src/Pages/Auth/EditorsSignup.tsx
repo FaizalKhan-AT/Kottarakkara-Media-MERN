@@ -1,6 +1,7 @@
-import React from "react";
-import Signup from "../../Components/Authentication/Signup";
-const EditorsSignup = () => {
+import React, { lazy, Suspense } from "react";
+import Spinner from "../../Components/Spinner/Spinner";
+const Signup = lazy(() => import("../../Components/Authentication/Signup"));
+const EditorsSignup: React.FC = () => {
   return (
     <>
       <div className="w-100 d-flex flex-column align-items-center justify-content-center position-relative">
@@ -31,7 +32,9 @@ const EditorsSignup = () => {
             </li>
           </ul>
         </div>
-        <Signup external name="Sign up" />
+        <Suspense fallback={<Spinner height="50vh" />}>
+          <Signup external name="Sign up" />
+        </Suspense>
       </div>
     </>
   );
