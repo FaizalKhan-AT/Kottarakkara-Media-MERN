@@ -1,4 +1,5 @@
 const express = require("express");
+const compression = require("compression");
 const app = express();
 const connectDB = require("./db/connect");
 const cors = require("cors");
@@ -11,6 +12,7 @@ const Filter = require("./Routes/filter");
 require("dotenv").config();
 const path = require("path");
 //middlewares
+app.use(compression());
 app.use(express.json());
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(cors());
