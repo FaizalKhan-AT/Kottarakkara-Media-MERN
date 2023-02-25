@@ -63,14 +63,28 @@ const PostView: React.FC<Props> = ({ post }) => {
           style={{ fontSize: "18px", fontWeight: "500", textTransform: "none" }}
           className="my-3 text-justify"
         >
-          <span className="fw-bold text-capitalize fs-4 ">
-            {" "}
-            {post?.place} &#x2726;{" "}
+          <span>
+            {post?.newsContent
+              .slice(1)
+              .split("\n")
+              .map((para, idx) => (
+                <p>
+                  {idx === 0 ? (
+                    <span className="fw-bold text-capitalize fs-4 ">
+                      {" "}
+                      {post?.place} &#x2726;{" "}
+                    </span>
+                  ) : (
+                    ""
+                  )}
+
+                  <span className="red-color fw-bold fs-3 text-capitalize">
+                    {idx === 0 ? post?.newsContent.charAt(0) : ""}
+                  </span>
+                  {para}
+                </p>
+              ))}
           </span>
-          <span className="red-color fw-bold fs-3 text-capitalize">
-            {post?.newsContent.charAt(0)}
-          </span>
-          {post?.newsContent.slice(1)}
         </div>
         <div className="d-flex align-items-center gap-2 flex-wrap">
           <div className="d-flex align-items-center">
